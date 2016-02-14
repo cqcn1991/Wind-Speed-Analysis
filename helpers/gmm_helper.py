@@ -1,15 +1,15 @@
-import numpy as np
-from math import *
-
+from .gemfile import *
 from .utility_helper import chunks
-from operator import itemgetter
+
 
 def group_gmm_param_from_gmm_param_array(gmm_param_array, sort_group = True):
+    from operator import itemgetter
     # from 17-1 -> 6-n array
     gmm = list(chunks(gmm_param_array,6))
     if sort_group:
         gmm = sorted(gmm, key=itemgetter(0),reverse=True) # reorder by fraction, from big to small
     return gmm
+
 
 # GMM result
 def read_gmm_em_result(clf, printable = True):
@@ -27,17 +27,20 @@ def read_gmm_em_result(clf, printable = True):
             print gaussian_params
     return gmm_em_result
 
-from scipy.stats import multivariate_normal
+
 def create_gaussian_2d(meanx,meany,sigx,sigy,rho):
+    from scipy.stats import multivariate_normal
     sigxy = rho*sigx*sigy
     return multivariate_normal(mean=[meanx,meany], cov=[[sigx**2,sigxy],[sigxy,sigy**2]], allow_singular=True)
+
 
 def generate_gmm_pdf_from_grouped_gmm_param(gmm):
     gaussian_group=[]
     for gaussian_param in gmm:
-        f,u,v,sigu,sigv,rho = gaussian_param
-        g = create_gaussian_2d(u,v,sigu,sigv,rho)
+        f, u, v, sigu, sigv, rho = gaussian_param
+        g = create_gaussian_2d(u, v, sigu, sigv, rho)
         gaussian_group.append([f,g])
+
     def mixed_model_pdf(points):
         result = 0
         for (f,g) in gaussian_group:
@@ -45,13 +48,15 @@ def generate_gmm_pdf_from_grouped_gmm_param(gmm):
         return result
     return mixed_model_pdf
 
+
 def width_height_ratio(g):
     sigx, sigy, sigxy = g[3],g[4],g[5]*g[3]*g[4]
     cov_matrix = np.matrix([[sigx**2, sigxy], [sigxy, sigy**2]])
     w, v = np.linalg.eigh(cov_matrix)
-    a = sqrt(w[0])
-    b = sqrt(w[1])
+    a = np.sqrt(w[0])
+    b = np.sqrt(w[1])
     return a/b
+
 
 def width_height_ratios_set(gmm):
     gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = False)

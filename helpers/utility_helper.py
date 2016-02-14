@@ -1,12 +1,10 @@
-import numpy as np
-from matplotlib import pyplot as plt
+from .gemfile import *
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
         yield l[i:i+n]
 
-from mpl_toolkits.mplot3d import Axes3D
 def plot_3d_prob_density(X,Y,Z, ax = None):
     if ax is None:
         fig = plt.figure()

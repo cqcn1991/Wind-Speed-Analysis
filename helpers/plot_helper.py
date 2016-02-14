@@ -1,7 +1,4 @@
-import numpy as np
-from math import *
-import matplotlib as mpl
-from matplotlib import pyplot as plt
+from .gemfile import *
 
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
@@ -31,7 +28,7 @@ def plot_gmm_ellipses(gmm, ax = None):
         # print fraction, rotation agnle, u v mean(in standalone panel), std
         print g[0], xy_mean, np.sqrt(w), angle
 
-        ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*sqrt(w[0]), height=2*sqrt(w[1]),
+        ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
                                   angle = angle, color = color_set[i], alpha = g[0])
         ax.add_patch(ell)
 
