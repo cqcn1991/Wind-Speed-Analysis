@@ -1,4 +1,4 @@
-from .gemfile import *
+from .shared_imports import *
 
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
@@ -34,7 +34,7 @@ def plot_gmm_ellipses(gmm, ax = None):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    return plt.show()
+    plt.show()
 
 def plot_speed_and_angle_distribution(df, title = None):
     plt.subplot(1,2,1)

@@ -1,4 +1,4 @@
-from .gemfile import *
+from .shared_imports import *
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""

@@ -1,4 +1,4 @@
-from .gemfile import *
+from .shared_imports import *
 from .utility_helper import chunks
 
 
@@ -12,8 +12,8 @@ def group_gmm_param_from_gmm_param_array(gmm_param_array, sort_group = True):
 
 
 # GMM result
-def read_gmm_em_result(clf, printable = True):
-    if printable:
+def read_gmm_em_result(clf, print_result = True):
+    if print_result:
         print 'GMM EM Result:'
     gmm_em_result = []
     for i in xrange(clf.n_components):
@@ -23,7 +23,7 @@ def read_gmm_em_result(clf, printable = True):
         rho = clf.covars_ [i][0,1]/(sigx*sigy)
         gaussian_params = weight,meanx,meany, sigx,sigy,rho
         gmm_em_result.extend(gaussian_params)
-        if printable:
+        if print_result:
             print gaussian_params
     return gmm_em_result
 
