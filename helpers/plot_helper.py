@@ -44,7 +44,7 @@ def plot_speed_and_angle_distribution(df, title = None):
 
     plt.subplot(1,2,2)
     bins=np.arange(min(df.dir), max(df.dir) + 10, 5)
-    df['dir'].hist(bins=bins, alpha=0.3, figsize=(15, 4))
+    df['dir'].hist(bins=bins, alpha=0.3, figsize=(15, 3))
     plt.xlabel("Direction")
     if title:
         plt.suptitle(title)
