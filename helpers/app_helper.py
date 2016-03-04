@@ -20,7 +20,9 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result, count):
     MSE = np.average(error_array)
     RMSE = np.sqrt(MSE)
     R_square = R_square_of(MSE, kde_result)
-    Chi_square = sum(error_array/gmm_pdf_result) * count
+    # Chi_square = sum(error_array/gmm_pdf_result) * count
+    Chi_square = sum(error_array/gmm_pdf_result)
+
 
     gmm_cdf = cdf_from_pdf(gmm_pdf_result)
     kde_cdf = cdf_from_pdf(kde_result)
