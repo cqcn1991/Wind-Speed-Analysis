@@ -26,7 +26,7 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result, count):
 
     gmm_cdf = cdf_from_pdf(gmm_pdf_result)
     kde_cdf = cdf_from_pdf(kde_result)
-    diff = gmm_cdf - kde_cdf
+    diff = abs(gmm_cdf - kde_cdf)
     KS_stat = np.amax(diff)
 
     return {
