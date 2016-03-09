@@ -4,11 +4,13 @@ from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 color_set = ['r','y','blue','grey','black', 'pink', 'pink','pink']
 def plot_gmm_ellipses(gmm, ax = None):
+    from operator import itemgetter
     if ax is None:
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
     if not isinstance(gmm[0], np.ndarray):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = False)
+    gmm = sorted(gmm, key=itemgetter(0),reverse=True)
     for i, g in enumerate(gmm):
         xy_mean = np.matrix([g[1],g[2]])
         sigx, sigy, sigxy = g[3],g[4],g[5]*g[3]*g[4]
