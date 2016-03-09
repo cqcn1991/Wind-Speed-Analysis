@@ -59,3 +59,12 @@ def pretty_print_gmm(gmm):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = True)
     pretty_result = pd.DataFrame(gmm, columns = ['weight','mean_x','mean_y','sig_x','sig_y','corr'])
     return pretty_result
+
+def select_df_by_angle(df, start_angle, end_angle):
+    if start_angle <0:
+        sub_df=df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)' )
+    else:
+        sub_df=df.query('(dir >= @start_angle) & (dir < @end_angle)')
+    sub_max_speed = sub_df.speed.max()
+
+    return sub_df, sub_max_speed
