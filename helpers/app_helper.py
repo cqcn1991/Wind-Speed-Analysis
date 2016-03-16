@@ -71,5 +71,5 @@ def select_df_by_angle(df, start_angle, end_angle):
 
 def max_count_for_histogram(data, sector_number):
     count, div = np.histogram(data, bins=np.arange(0, data.max()))
-    max_count = count.max()/(sector_number) * 2.2
+    max_count = count.max()/(sector_number) * 2.5
     return max_count
