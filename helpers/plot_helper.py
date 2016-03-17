@@ -2,9 +2,9 @@ from .shared_imports import *
 
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
-color_set = ['r','y','blue','grey','black', 'pink', 'pink','pink']
 def plot_gmm_ellipses(gmm, ax = None):
     from operator import itemgetter
+    prop_cycle=iter(sns.color_palette("hls", 6))
     if ax is None:
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
@@ -31,7 +31,7 @@ def plot_gmm_ellipses(gmm, ax = None):
         print g[0], xy_mean, np.sqrt(w), angle
 
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
-                                  angle = angle, color = color_set[i], alpha = g[0])
+                                  angle = angle, alpha = 0.7, color = next(prop_cycle))
         ax.add_patch(ell)
 
     ax.autoscale()
@@ -39,15 +39,17 @@ def plot_gmm_ellipses(gmm, ax = None):
     plt.show()
 
 def plot_speed_and_angle_distribution(df, title = None):
+    prop_cycle=iter(sns.color_palette())
     plt.subplot(1,2,1)
     bins = np.arange(0, 40 + 1, 1)
-    df['speed'].hist(bins=bins,figsize=(15, 4))
+    df['speed'].hist(bins=bins, color=next(prop_cycle))
     plt.xlabel("Speed")
 
     plt.subplot(1,2,2)
-    bins=np.arange(min(df.dir), max(df.dir) + 10, 5)
-    df['dir'].hist(bins=bins, alpha=0.3, figsize=(15, 3))
+    bins=np.arange(-5, 360 + 10, 10)
+    df['dir'].hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
     plt.xlabel("Direction")
+    plt.axis('tight')
     if title:
         plt.suptitle(title)
     plt.show()
