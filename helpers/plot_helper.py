@@ -38,16 +38,16 @@ def plot_gmm_ellipses(gmm, ax = None):
     ax.set_aspect('equal')
     plt.show()
 
-def plot_speed_and_angle_distribution(df, title = None):
+def plot_speed_and_angle_distribution(df_speed, df_dir, title = None):
     prop_cycle=iter(sns.color_palette())
     plt.subplot(1,2,1)
     bins = np.arange(0, 40 + 1, 1)
-    df['speed'].hist(bins=bins, color=next(prop_cycle))
+    df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.xlabel("Speed")
 
     plt.subplot(1,2,2)
-    bins=np.arange(-5, 360 + 10, 10)
-    df['dir'].hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
+    bins=np.arange(-5, 360, 10)
+    df_dir.hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
     plt.xlabel("Direction")
     plt.axis('tight')
     if title:
