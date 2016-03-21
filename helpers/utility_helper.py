@@ -23,7 +23,7 @@ def plot_2d_prob_density(X,Y,Z,ax = None):
         fig.set_size_inches(14, 8)
     ax.set_aspect('equal')
     CS = plt.contourf(X, Y, Z, 10, alpha=.75, cmap='jet')
-    cbar = plt.colorbar(CS)
+    plt.colorbar(CS)
 
 def generate_Z_from_X_Y(X,Y, Z_func):
     XX,YY=np.meshgrid(X,Y)
