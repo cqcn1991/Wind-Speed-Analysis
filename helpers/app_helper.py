@@ -14,7 +14,7 @@ def R_square_of(MSE, kde_result):
     return R_square
 
 
-def goodness_of_fit_summary(gmm_pdf_result, kde_result, count):
+def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     error_array = np.power(gmm_pdf_result - kde_result,2)
 
     MSE = np.average(error_array)

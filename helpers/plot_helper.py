@@ -2,6 +2,7 @@ from .shared_imports import *
 
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
+
 def plot_gmm_ellipses(gmm, ax = None):
     from operator import itemgetter
     prop_cycle=iter(sns.color_palette("hls", 6))
@@ -9,7 +10,7 @@ def plot_gmm_ellipses(gmm, ax = None):
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
     if not isinstance(gmm[0], np.ndarray):
-        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = False)
+        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
     for i, g in enumerate(gmm):
         xy_mean = np.matrix([g[1],g[2]])
@@ -31,12 +32,13 @@ def plot_gmm_ellipses(gmm, ax = None):
         print g[0], xy_mean, np.sqrt(w), angle
 
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
-                                  angle = angle, alpha = 0.7, color = next(prop_cycle))
+                                  angle=angle, alpha=0.7, color=next(prop_cycle))
         ax.add_patch(ell)
 
     ax.autoscale()
     ax.set_aspect('equal')
     plt.show()
+
 
 def plot_speed_and_angle_distribution(df_speed, df_dir, title = None):
     prop_cycle=iter(sns.color_palette())
