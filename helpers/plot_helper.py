@@ -3,7 +3,7 @@ from .shared_imports import *
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
-def plot_gmm_ellipses(gmm, ax = None):
+def plot_gmm_ellipses(gmm, ax=None):
     from operator import itemgetter
     prop_cycle=iter(sns.color_palette("hls", 6))
     if ax is None:
@@ -13,8 +13,8 @@ def plot_gmm_ellipses(gmm, ax = None):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
     for i, g in enumerate(gmm):
-        xy_mean = np.matrix([g[1],g[2]])
-        sigx, sigy, sigxy = g[3],g[4],g[5]*g[3]*g[4]
+        xy_mean = np.matrix([g[1], g[2]])
+        sigx, sigy, sigxy = g[3], g[4], g[5]*g[3]*g[4]
         cov_matrix = np.matrix([[sigx**2, sigxy], [sigxy, sigy**2]])
 
         # eigenvalues, and eigen vector
@@ -40,14 +40,14 @@ def plot_gmm_ellipses(gmm, ax = None):
     plt.show()
 
 
-def plot_speed_and_angle_distribution(df_speed, df_dir, title = None):
+def plot_speed_and_angle_distribution(df_speed, df_dir, title=None):
     prop_cycle=iter(sns.color_palette())
-    plt.subplot(1,2,1)
+    plt.subplot(1, 2, 1)
     bins = np.arange(0, 40 + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.xlabel("Speed")
 
-    plt.subplot(1,2,2)
+    plt.subplot(1, 2, 2)
     bins=np.arange(-5, 360, 10)
     df_dir.hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
     plt.xlabel("Direction")
