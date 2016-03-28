@@ -1,5 +1,5 @@
+from __future__ import division
 from .shared_imports import *
-
 
 def R_square_of(MSE, kde_result):
     # R square measure:

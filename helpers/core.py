@@ -1,5 +1,7 @@
+from __future__ import division
 from .shared_imports import *
 from .gmm_helper import *
+from .app_helper import *
 
 
 def GMM_fit_score(gmm, kde_result, points, method='square_error'):
@@ -20,6 +22,7 @@ def GMM_fit_score(gmm, kde_result, points, method='square_error'):
     elif method == 'K_S':
         # 2.3 K-S statistc
         gmm_cdf = cdf_from_pdf(gmm_pdf_result)
+        kde_cdf = cdf_from_pdf(kde_result)
         diff = abs(gmm_cdf - kde_cdf)
         result = KS_stat = log(np.amax(diff))
     return result
