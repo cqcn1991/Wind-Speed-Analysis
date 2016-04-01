@@ -9,7 +9,7 @@ def plot_gmm_ellipses(gmm, ax=None):
     if ax is None:
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
-    if not isinstance(gmm[0], np.ndarray):
+    if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
     for i, g in enumerate(gmm):
