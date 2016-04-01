@@ -14,6 +14,7 @@ sns.set_style('whitegrid')
 
 from scipy import integrate
 from sklearn import mixture, neighbors
+from math import ceil as ceil
 from numpy import inf, arange, array, linspace, exp, log, power, pi, cos, sin, radians
 
 from windrose import WindroseAxes, WindAxes

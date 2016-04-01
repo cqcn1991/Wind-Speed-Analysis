@@ -72,10 +72,20 @@ def select_df_by_angle(df, start_angle, end_angle):
     return sub_df, sub_max_speed
 
 
-def max_count_for_histogram(data, sector_number):
+def max_count_for_histogram(data):
     count, div = np.histogram(data, bins=np.arange(0, data.max()))
-    max_count = count.max()/sector_number * 2.5
+    max_count = count.max()
     return max_count
+
+
+def max_count_for_angles(df, start, end, incre):
+    max_count_group=[]
+    for angle in arange(start, end, incre):
+        start_angle, end_angle = angle-incre/2, angle+incre/2
+        sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
+        sub_max_count = max_count_for_histogram(sub_df.speed)
+        max_count_group.append(sub_max_count)
+    return max(max_count_group)
 
 
 def generate_mean_gof(gof_result_groups):
