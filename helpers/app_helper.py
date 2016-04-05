@@ -15,6 +15,10 @@ def R_square_of(MSE, kde_result):
     return R_square
 
 
+def pretty_pd_display(data):
+    return display(pd.DataFrame(data))
+
+
 def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     error_array = np.power(gmm_pdf_result - kde_result,2)
 
@@ -88,9 +92,13 @@ def max_count_for_angles(df, start, end, incre):
     return max(max_count_group)
 
 
-def generate_mean_gof(gof_result_groups):
+def generate_mean_std_gof(gof_result_groups):
     mean_gof_all = []
-    for idx, gof_group in enumerate(gof_result_groups):
-        mean_gof = np.mean(pd.DataFrame(gof_group))
+    std_gof_all = []
+    for gof_group in gof_result_groups:
+        df = pd.DataFrame(gof_group)
+        mean_gof = np.mean(df)
+        std_gof = np.std(df)
         mean_gof_all.append(mean_gof)
-    return pd.DataFrame(mean_gof_all)
+        std_gof_all.append(std_gof)
+    return pd.DataFrame(mean_gof_all), pd.DataFrame(std_gof_all)
