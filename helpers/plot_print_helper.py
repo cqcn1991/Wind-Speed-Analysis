@@ -1,5 +1,4 @@
 from .shared_imports import *
-
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
@@ -55,3 +54,13 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title=None):
     if title:
         plt.suptitle(title)
     plt.show()
+
+
+def pretty_print_gmm(gmm):
+    from gmm_helper import group_gmm_param_from_gmm_param_array
+    if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
+        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = True)
+    pretty_result = pd.DataFrame(gmm, columns=['weight','mean_x','mean_y','sig_x','sig_y','corr'])
+    pretty_result.index += 1
+
+    return pretty_result

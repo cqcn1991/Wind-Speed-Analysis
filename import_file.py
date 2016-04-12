@@ -23,5 +23,5 @@ from helpers.core import *
 from helpers.utility_helper import *
 from helpers.app_helper import *
 from helpers.gmm_helper import *
-from helpers.plot_helper import *
+from helpers.plot_print_helper import *
 from helpers.data_reader import *

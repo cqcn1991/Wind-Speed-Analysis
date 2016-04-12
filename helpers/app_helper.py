@@ -1,10 +1,11 @@
 from __future__ import division
 from .shared_imports import *
 
+
 def R_square_of(MSE, kde_result):
     # R square measure:
     # https://en.wikipedia.org/wiki/Coefficient_of_determination
-    # Measures Model-Observation variance against Observation-Average variacen
+    # Measures Model-Observation variance against Observation-Average variance
     y_mean = np.mean(kde_result)
     SS_tot = np.power(kde_result - y_mean,2)
     SS_tot_avg = np.average(SS_tot)
@@ -13,10 +14,6 @@ def R_square_of(MSE, kde_result):
     R_square = 1 - SS_res_avg/SS_tot_avg
 
     return R_square
-
-
-def pretty_pd_display(data):
-    return display(pd.DataFrame(data))
 
 
 def goodness_of_fit_summary(gmm_pdf_result, kde_result):
@@ -58,16 +55,8 @@ def cdf_from_pdf(pdf):
     return cdf
 
 
-def pretty_print_gmm(gmm):
-    from gmm_helper import group_gmm_param_from_gmm_param_array
-    if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
-        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = True)
-    pretty_result = pd.DataFrame(gmm, columns = ['weight','mean_x','mean_y','sig_x','sig_y','corr'])
-    return pretty_result
-
-
 def select_df_by_angle(df, start_angle, end_angle):
-    if start_angle <0:
+    if start_angle < 0:
         sub_df=df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)' )
     else:
         sub_df=df.query('(dir >= @start_angle) & (dir < @end_angle)')
