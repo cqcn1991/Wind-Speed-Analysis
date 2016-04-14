@@ -20,11 +20,12 @@ def plot_gmm_ellipses(gmm, ax=None):
         w, v = np.linalg.eigh(cov_matrix)
 
         uu = v[0] / np.linalg.norm(v[0])
-        # The New
+        # rotation angle, from x, y to u, v
         angle_arc = np.arctan2(uu[0,1], uu[0,0])
-        angle = 180 * angle_arc / np.pi
+        angle = np.degrees(angle_arc)
 
-        transform_matrix = np.matrix([[np.cos(angle_arc ), -np.sin(angle_arc )], [np.sin(angle_arc ), np.cos(angle_arc )]])
+        transform_matrix = np.matrix([[np.cos(angle_arc), -np.sin(angle_arc)],
+                                      [np.sin(angle_arc), np.cos(angle_arc)]])
         xy_mean_in_uv = transform_matrix * xy_mean.T
 
         # print fraction, rotation agnle, u v mean(in standalone panel), std
@@ -62,5 +63,4 @@ def pretty_print_gmm(gmm):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = True)
     pretty_result = pd.DataFrame(gmm, columns=['weight','mean_x','mean_y','sig_x','sig_y','corr'])
     pretty_result.index += 1
-
     return pretty_result
