@@ -19,6 +19,7 @@ def plot_gmm_ellipses(gmm, ax=None):
         # eigenvalues, and eigen vector
         w, v = np.linalg.eigh(cov_matrix)
 
+        # normalized the eigen vector
         uu = v[0] / np.linalg.norm(v[0])
         # rotation angle, from x, y to u, v
         angle_arc = np.arctan2(uu[0,1], uu[0,0])
