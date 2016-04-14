@@ -65,3 +65,14 @@ def pretty_print_gmm(gmm):
     pretty_result = pd.DataFrame(gmm, columns=['weight','mean_x','mean_y','sig_x','sig_y','corr'])
     pretty_result.index += 1
     return pretty_result
+
+
+def output_HTML(read_file, output_file):
+    from nbconvert import HTMLExporter
+    import codecs
+    import nbformat
+    exporter = HTMLExporter()
+    # read_file is '.ipynb', output_file is '.html'
+    output_notebook = nbformat.read(read_file, as_version=4)
+    output, resources = exporter.from_notebook_node(output_notebook)
+    codecs.open(output_file, 'w', encoding='utf-8').write(output)
