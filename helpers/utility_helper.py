@@ -38,20 +38,3 @@ def generate_Z_from_X_Y(X,Y, Z_func):
     coords=np.array((XX.ravel(), YY.ravel())).T
     Z = Z_func(coords).reshape(XX.shape)
     return Z
-
-
-def toggle_cell():
-    return HTML('''<script>
-    code_show=false;
-    function code_toggle() {
-     if (code_show){
-     $('div.input').hide();
-     } else {
-     $('div.input').show();
-     }
-     code_show = !code_show
-    }
-    $( document ).ready(code_toggle);
-    </script>
-    <form action="javascript:code_toggle()"><input type="submit" value="Click here to toggle on/off the raw code."></form>''')
-
