@@ -13,7 +13,7 @@ def output_HTML(read_file, output_file):
 
 
 def toggle_cell():
-    return HTML('''<script>
+    toggle = '''<script>
     code_show=false;
     function code_toggle() {
      if (code_show){
@@ -25,10 +25,11 @@ def toggle_cell():
     }
     $( document ).ready(code_toggle);
     </script>
-    <form action="javascript:code_toggle()"><input type="submit" value="Click here to toggle on/off the raw code."></form>''')
+    <form action="javascript:code_toggle()"><input type="submit" value="Click here to toggle on/off the raw code."></form>'''
+    return HTML(toggle)
 
 
-def load_sidebar():
+def sidebar():
     from jsmin import jsmin
     with open('./lib/my_toc/1.0.js') as js_file:
         js = jsmin(js_file.read())
@@ -41,3 +42,8 @@ def load_sidebar():
     #     <link rel="stylesheet" type="text/css" href='./lib/my_toc/main.css' media="screen" />
     #     """
     return HTML(js+css)
+
+
+def load_libs():
+    display(toggle_cell())
+    display(sidebar())
