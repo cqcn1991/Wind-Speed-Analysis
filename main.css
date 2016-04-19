@@ -1,24 +1,10 @@
-/*extracted from https://gist.github.com/magican/5574556*/
-
 #toc {
-  max-height: 500px;
-  padding: 0px;
-  overflow-y: auto;
+    height: 100%;
 }
 
 .toc-item-num{
     display: none;
 }
-
-#toc  ol.toc-item {
-    counter-reset: item;
-    list-style: none;
-    padding: 0.1em;
-  }
-
-#toc ol.toc-item li {
-    display: block;
-  }
 
 #toc ul.toc-item {
     list-style-type: none;
@@ -26,25 +12,18 @@
     margin:  0;
 }
 
-#toc  ol.toc-item li:before {
-    font-size: 90%;
-    font-family: Georgia, Times New Roman, Times, serif;
-    counter-increment: item;
-    content: counters(item, ".")" ";
-  }
-
+#ipython-main-app #toc-wrapper{
+    height: 85%;
+}
 
 #toc-wrapper {
+    height: 95%;
     padding: 10px;
     position: fixed;
-  max-width: 200px;
-  /*border: thin solid rgba(0, 0, 0, 0.38);*/
-  /*border-radius: 5px;*/
-  /*padding:10px;*/
-  background-color: #fff;
-  opacity: .8;
-  /*z-index: 100;*/
-  overflow: hidden;
+    max-width: 200px;
+    background-color: #fff;
+    opacity: .8;
+    overflow: scroll;
 }
 
 #toc-wrapper.closed {
@@ -91,17 +70,4 @@
     color: black;
 }
 
-.lev1 {margin-left: 80px}
-.lev2 {margin-left: 100px}
-.lev3 {margin-left: 120px}
-.lev4 {margin-left: 140px}
-.lev5 {margin-left: 160px}
-.lev6 {margin-left: 180px}
-.lev7 {margin-left: 200px}
-.lev8 {margin-left: 220px}
-
 .nav .active a {  color: black; }
-
-body{
-    position: relative !important;
-}

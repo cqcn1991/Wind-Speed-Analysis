@@ -10,31 +10,19 @@ var make_link = function (h) {
     return a;
   };
 
-var ol_depth = function (element) {
-    // get depth of nested ol
-    var d = 0;
-    while (element.prop("tagName").toLowerCase() == 'ol') {
-      d += 1;
-      element = element.parent();
-    }
-    return d;
-  };
 
-function generate_toc(){
+var generate_toc = function (){
     var all_headers= $("#notebook").find(":header");
     var ul = $("<ul/>").addClass("toc-item");
     $("#toc").empty().append(ul);
     var depth = 1;
     var li= ul;//yes, initialize li with ul!
-    var min_lvl=1, lbl_ary= [];
-    for(; min_lvl <= 6; min_lvl++){ if(all_headers.is('h'+min_lvl)){break;} }
-    for(var i= min_lvl; i <= 6; i++){ lbl_ary[i - min_lvl]= 0; }
-    var newLine, el, title, link;
+    var min_level = 3;
 
     all_headers.each(function (i, h) {
-      var level = parseInt(h.tagName.slice(1), 10) - min_lvl + 1;
+      var level = parseInt(h.tagName.slice(1), 10);
       // skip below threshold
-      if (!h.id){ return; }
+      if (level> min_level){ return; }
 
       // walk down levels
       for(var elm=li; depth < level; depth++) {
@@ -54,8 +42,15 @@ function generate_toc(){
       ul.append(li);
         });
 
-    return ul
-}
+   //
+   //  return ul
+};
+
+var generate_toc_all = function(){
+    generate_toc();
+    // var ToC = generate_toc();
+    // $("#toc").empty().append(ToC);
+};
 
 var create_toc_div = function () {
     var toc_wrapper = $('<div id="toc-wrapper"/>')
@@ -70,7 +65,7 @@ var create_toc_div = function () {
             title:  'Reload ToC',
             text: "  \u21BB"
         }).click( function(){
-          table_of_contents();
+          generate_toc_all();
           return false;
         })
       ).
@@ -86,27 +81,51 @@ var create_toc_div = function () {
       )
     ).append(
         $("<div/>", {
-            id: "toc",
+            id: "toc"
         })
     );
 
     $('<div/>', {
         class: 'col-md-2',
-        id: 'toc-column',
+        id: 'toc-column'
     }).append(toc_wrapper).insertBefore('#notebook-container');
-
-
 
   };
 
-$( document ).ready(function(){
-    ToC = generate_toc();
+var toggle_toc = function () {
+    $("#toc-column").toggle({duration:0, complete:function(){
+        $('#notebook-container').toggleClass("col-md-9").toggleClass("col-md-10 col-md-offset-1");
+      }
+    });
+  };
+
+var init_toc = function (){
+    if ($("#toc_button").length === 0) {
+        if (typeof IPython != "undefined") {
+        IPython.toolbar.add_buttons_group([
+        {'label'   : 'Table of Contents',
+          'icon'    : 'fa-list',
+          'callback': toggle_toc,
+          'id'      : 'toc_button'
+        }
+        ]);}}
+    create_toc_div();
+    $('#notebook').addClass('row');
+    $('#notebook-container').addClass('col-md-9').removeClass('container');
+};
+
+$(document).ready(function(){
     if (!$('#notebook').hasClass('row')) {
-        create_toc_div();
-        $('#notebook').addClass('row');
-        $('#notebook-container').addClass('col-md-9').removeClass('container');
-        $("#toc").empty().append(ToC);
+        init_toc()
     }
+
+    if (typeof IPython != "undefined") {
+      $([IPython.events]).on("rendered.MarkdownCell", function(){
+        generate_toc_all();
+    });
+    }
+
+    generate_toc_all();
 });
 
 
