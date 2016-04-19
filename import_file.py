@@ -1,4 +1,4 @@
-from IPython.display import display
+from IPython.display import display, HTML, Javascript
 
 import numpy as np
 import scipy as sp

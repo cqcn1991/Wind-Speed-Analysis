@@ -1,4 +1,4 @@
-from IPython.display import display, HTML
+from IPython.display import display, HTML, Javascript
 
 
 def output_HTML(read_file, output_file):
@@ -27,6 +27,11 @@ def toggle_cell():
     </script>
     <form action="javascript:code_toggle()"><input type="submit" value="Click here to toggle on/off the raw code."></form>'''
     return HTML(toggle)
+
+
+def save_notebook():
+    return display(Javascript("IPython.notebook.save_notebook()"),
+                   include=['application/javascript'])
 
 
 def sidebar():

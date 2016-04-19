@@ -100,3 +100,4 @@ def get_location_name(file_path):
     else:
         location_name = file_name.split('.txt')[0]
     return location_name
+

@@ -1,4 +1,4 @@
-from IPython.display import display, HTML
+from IPython.display import display, HTML, Javascript
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
