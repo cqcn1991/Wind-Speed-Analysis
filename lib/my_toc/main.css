@@ -1,0 +1,73 @@
+#toc {
+    height: 100%;
+}
+
+.toc-item-num{
+    display: none;
+}
+
+#toc ul.toc-item {
+    list-style-type: none;
+    padding: 0;
+    margin:  0;
+}
+
+#ipython-main-app #toc-wrapper{
+    height: 85%;
+}
+
+#toc-wrapper {
+    height: 95%;
+    padding: 10px;
+    position: fixed;
+    max-width: 200px;
+    background-color: #fff;
+    opacity: .8;
+    overflow: scroll;
+}
+
+#toc-wrapper.closed {
+  min-width: 100px;
+  width: auto;
+  height:auto;
+  /*transition: width;*/
+}
+#toc-wrapper:hover{
+  opacity: 1;
+}
+#toc-wrapper .header {
+  font-size: 18px;
+  font-weight: bold;
+}
+#toc-wrapper .hide-btn {
+  font-size: 14px;
+  font-family: monospace;
+}
+
+#toc-reload-btn, #display-heading-number-btn {
+    font-size: 14px;
+    font-family: monospace;
+    margin-right: 10px;
+}
+
+
+/* don't waste so much screen space... */
+#toc-wrapper .toc-item{
+  padding-left: 20px;
+}
+
+#toc-wrapper .toc-item .toc-item{
+  padding-left: 10px;
+}
+
+.toc-item-num {
+    font-style: normal;
+}
+
+#toc-wrapper .toc-item-num {
+    font-style: normal;
+    font-family: Georgia, Times New Roman, Times, serif;
+    color: black;
+}
+
+.nav .active a {  color: black; }
