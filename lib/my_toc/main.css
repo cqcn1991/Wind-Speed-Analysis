@@ -2,15 +2,33 @@
     height: 100%;
 }
 
-.toc-item-num{
-    display: none;
-}
-
-#toc ul.toc-item {
-    list-style-type: none;
+#toc > .toc-item {
     padding: 0;
     margin:  0;
 }
+
+#toc .toc-item .toc-item{
+  padding-left: 10px;
+}
+
+.toc-item.unstyle {
+    list-style-type: none;
+}
+
+ol.nested
+{
+    counter-reset: item
+}
+li.nested
+{
+    display: block
+}
+li.nested:before
+{
+    content: counters(item, ".") ". ";
+    counter-increment: item
+}
+
 
 #ipython-main-app #toc-wrapper{
     height: 85%;
@@ -50,19 +68,6 @@
     margin-right: 10px;
 }
 
-
-/* don't waste so much screen space... */
-#toc-wrapper .toc-item{
-  padding-left: 20px;
-}
-
-#toc-wrapper .toc-item .toc-item{
-  padding-left: 10px;
-}
-
-.toc-item-num {
-    font-style: normal;
-}
 
 #toc-wrapper .toc-item-num {
     font-style: normal;
