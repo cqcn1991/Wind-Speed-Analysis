@@ -4,7 +4,7 @@ from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 def plot_gmm_ellipses(gmm, ax=None):
     from operator import itemgetter
-    prop_cycle=iter(sns.color_palette("hls", 6))
+    prop_cycle = iter(sns.color_palette("hls", 6))
     if ax is None:
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
@@ -22,7 +22,7 @@ def plot_gmm_ellipses(gmm, ax=None):
         # normalized the eigen vector
         uu = v[0] / np.linalg.norm(v[0])
         # rotation angle, from x, y to u, v
-        angle_arc = np.arctan2(uu[0,1], uu[0,0])
+        angle_arc = np.arctan2(uu[0, 1], uu[0, 0])
         angle = np.degrees(angle_arc)
 
         transform_matrix = np.matrix([[np.cos(angle_arc), -np.sin(angle_arc)],
@@ -42,14 +42,14 @@ def plot_gmm_ellipses(gmm, ax=None):
 
 
 def plot_speed_and_angle_distribution(df_speed, df_dir, title=None):
-    prop_cycle=iter(sns.color_palette())
+    prop_cycle = iter(sns.color_palette())
     plt.subplot(1, 2, 1)
     bins = np.arange(0, 40 + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.xlabel("Speed")
 
     plt.subplot(1, 2, 2)
-    bins=np.arange(-5, 360, 10)
+    bins = np.arange(-5, 360, 10)
     df_dir.hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
     plt.xlabel("Direction")
     plt.axis('tight')
@@ -61,8 +61,10 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title=None):
 def pretty_print_gmm(gmm):
     from gmm_helper import group_gmm_param_from_gmm_param_array
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
-        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group = True)
-    pretty_result = pd.DataFrame(gmm, columns=['weight','mean_x','mean_y','sig_x','sig_y','corr'])
+        gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=True)
+    pretty_result = pd.DataFrame(gmm, columns=['weight',
+                                               'mean_x', 'mean_y',
+                                               'sig_x', 'sig_y','corr'])
     pretty_result.index += 1
     return pretty_result
 

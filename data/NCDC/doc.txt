@@ -1,0 +1,188 @@
+IDENTIFICATION: CDS header
+	Length:0
+
+USAF: Identification FIXED-WEATHER-STATION USAF MASTER STATION CATALOG identifier
+
+	The identifier that represents a FIXED-WEATHER-STATION. 
+	Length:6
+
+NCDC: Identification FIXED-WEATHER-STATION NCDC WBAN identifier
+
+	The identifier that represents a FIXED-WEATHER-STATION. 
+	Length:5
+
+DATE: Identification GEOPHYSICAL-POINT-OBSERVATION date
+
+	The date of a GEOPHYSICAL-POINT-OBSERVATION. 
+	Length:8
+
+HRMN: Identification GEOPHYSICAL-POINT-OBSERVATION time
+
+	The time of a GEOPHYSICAL-POINT-OBSERVATION based on Coordinated Universal 
+	Time Code (UTC). 
+	Length:4
+
+I: Identification GEOPHYSICAL-POINT-OBSERVATION data source flag
+
+	The flag of a GEOPHYSICAL-POINT-OBSERVATION showing the source or combination 
+	of sources used in creating the observation. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: USAF hourly observation, candidate for merge with NCDC Surface Hourly (not yet merged, failed element cross-checks)
+2: NCDC hourly observation, candidate for merge with USAF Surface Hourly (not yet merged, failed element cross-checks)
+3: USAF hourly/NCDC hourly merged observation
+4: USAF Surface Hourly observation
+5: NCDC hourly observation
+6: ASOS/AWOS observation from NCDC*
+7: ASOS/AWOS observation merged with USAF Surface Hourly observation*
+8: MAPSO observation (NCDC)*
+A: USAF hourly/NCDC hourly precipitation merged observation, candidate for merge with NCDC Surface Hourly (not yet merged, failed element cross-checks)
+B: NCDC hourly/NCDC hourly precipitation merged observation, candidate for merge with USAF Surface Hourly (not yet merged, failed element cross-checks)
+C: USAF hourly/NCDC hourly/NCDC hourly precipitation merged observation
+D: USAF hourly/NCDC hourly precipitation merged observation
+E: NCDC hourly/NCDC hourly precipitation merged observation
+F: Form OMR/1001 - Weather Bureau city office (keyed data)*
+G: SAO surface airways observation, pre-1949 (keyed data)*
+H: SAO surface airways observation, 1965-1981 format/period (keyed data)*
+I: Climate Reference Network observation*
+J: Cooperative Network observation*
+K: Radiation Network observation*
+L: Data from Climate Data Modernization Program (CDMP) data source*
+M: National Renewable Energy Laboratory (NREL)*
+N: NCAR / NCDC cooperative effort (various national datasets)*
+
+
+TYPE: Identification GEOPHYSICAL-REPORT-TYPE code
+
+	The code that denotes the type of geophysical surface observation. 
+	Length:5
+	Default Value:99999
+	Table of Values:
+
+	AERO: Aerological report
+	AUST: Dataset from Australia*
+	AUTO: Report from an automatic station
+	BOGUS: Bogus report
+	BRAZ: Dataset from Brazil*
+	COOPD: US Cooperative Network summary of day report*
+	COOPS: US Cooperative Network soil temperature report*
+	CRB: Climate Reference Book data from CDMP*
+	CRN05: Climate Reference Network report, with 5-minute reporting interval*
+	CRN15: Climate Reference Network report, with 15-minute reporting interval*
+	FM-12: SYNOP Report of surface observation form a fixed land station
+	FM-13: SHIP Report of surface observation from a sea station
+	FM-14: SYNOP MOBIL Report of surface observation from a mobile land station
+	FM-15: METAR Aviation routine weather report
+	FM-16: SPECI Aviation selected special weather report
+	FM-18: BUOY Report of a buoy observation
+	GREEN: Dataset from Greenland*
+	MESOS: MESONET operated civilian or government agency
+	MEXIC: Dataset from Mexico*
+	NSRDB: National Solar Radiation Data Base
+	PCP15: US 15-minute precipitation network report*
+	PCP60: US 60-minute precipitation network report*
+	S-S-A: Synoptic, airways, and auto merged report
+	SA-AU: Airways and auto merged report
+	SAO: Airways report (includes record specials)
+	SAOSP: Airways special report (excluding record specials)
+	SHEF: Standard Hydrologic Exchange Format
+	SMARS: Supplementary airways station report
+	SOD: Summary of day report from U.S. ASOS or AWOS station*
+	SOM: Summary of month report from U.S. ASOS or AWOS station*
+	SURF: Surface Radiation Network report*
+	SY-AE: Synoptic and aero merged report
+	SY-AU: Synoptic and auto merged report
+	SY-MT: Synoptic and METAR merged report
+	SY-SA: Synoptic and airways merged report
+	WBO: Weather Bureau Office*
+	WNO: Washington Naval Observatory
+	
+
+WIND: WIND-OBSERVATION header
+	Length:0
+
+DIR: WIND-OBSERVATION direction angle
+
+	The angle, measured in a clockwise direction, between true north and the 
+	direction from which the wind is blowing. 
+	Length:3
+	Scale:1
+	Unit:Angular Degrees
+	Default Value:999
+	Table of Values:
+
+	999: Missing.  If type code (below) = V, then 999 indicates variable wind direction.
+	
+
+Q: WIND-OBSERVATION direction quality code
+
+	The code that denotes a quality status of a reported WIND-OBSERVATION direction 
+	angle. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check , data originate from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+I: WIND-OBSERVATION type code
+
+	The code that denotes the character of the WIND-OBSERVATION. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	A: Abridged Beaufort
+	B: Beaufort
+	C: Calm
+	H: 5-Minute Average Speed
+	N: Normal
+	Q: Squall
+	R: 60-Minute Average Speed
+	T: 180 Minute Average Speed
+	V: Variable
+	
+
+SPD: WIND-OBSERVATION speed rate
+
+	The rate of horizontal travel of air past a fixed point. 
+	Length:4
+	Scale:10
+	Unit:Meters per Second
+	Default Value:9999
+
+Q: WIND-OBSERVATION speed quality code
+
+	The code that denotes a quality status of a reported WIND-OBSERVATION speed 
+	rate. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check , data originate from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+QCP: Identification METEOROLOGICAL-POINT-OBSERVATION quality control process name
+
+	The name of the quality control process applied to a weather observation. 
+	
+	Length:4
+

@@ -17,7 +17,7 @@ def R_square_of(MSE, kde_result):
 
 
 def goodness_of_fit_summary(gmm_pdf_result, kde_result):
-    error_array = np.power(gmm_pdf_result - kde_result,2)
+    error_array = np.power(gmm_pdf_result - kde_result, 2)
 
     MSE = np.average(error_array)
     RMSE = np.sqrt(MSE)
@@ -42,24 +42,24 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
 def cdf_from_pdf(pdf):
     if not isinstance(pdf[0], np.ndarray):
         original_dim = int(np.sqrt(len(pdf)))
-        pdf = pdf.reshape(original_dim,original_dim)
+        pdf = pdf.reshape(original_dim, original_dim)
     cdf = np.copy(pdf)
     xdim, ydim = cdf.shape
-    for i in xrange(1,xdim):
+    for i in xrange(1, xdim):
         cdf[i,0] = cdf[i-1,0] + cdf[i,0]
-    for i in xrange(1,ydim):
+    for i in xrange(1, ydim):
         cdf[0,i] = cdf[0,i-1] + cdf[0,i]
-    for j in xrange(1,ydim):
-        for i in xrange(1,xdim):
+    for j in xrange(1, ydim):
+        for i in xrange(1, xdim):
             cdf[i,j] = cdf[i-1,j] + cdf[i,j-1] - cdf[i-1,j-1] + pdf[i,j]
     return cdf
 
 
 def select_df_by_angle(df, start_angle, end_angle):
     if start_angle < 0:
-        sub_df=df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)' )
+        sub_df = df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
     else:
-        sub_df=df.query('(dir >= @start_angle) & (dir < @end_angle)')
+        sub_df = df.query('(dir >= @start_angle) & (dir < @end_angle)')
     sub_max_speed = sub_df.speed.max()
 
     return sub_df, sub_max_speed
@@ -72,7 +72,7 @@ def max_count_for_histogram(data):
 
 
 def max_count_for_angles(df, start, end, incre):
-    max_count_group=[]
+    max_count_group = []
     for angle in arange(start, end, incre):
         start_angle, end_angle = angle-incre/2, angle+incre/2
         sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
