@@ -68,11 +68,4 @@ li.nested:before
     margin-right: 10px;
 }
 
-
-#toc-wrapper .toc-item-num {
-    font-style: normal;
-    font-family: Georgia, Times New Roman, Times, serif;
-    color: black;
-}
-
 .nav .active a {  color: black; }

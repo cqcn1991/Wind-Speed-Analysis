@@ -1,5 +1,5 @@
 from IPython.display import display, HTML, Javascript
-
+from my_toc.loader import *
 
 def output_HTML(read_file, output_file):
     from nbconvert import HTMLExporter
@@ -32,25 +32,6 @@ def toggle_cell():
 def save_notebook():
     return display(Javascript("IPython.notebook.save_notebook()"),
                    include=['application/javascript'])
-
-
-def sidebar():
-    from jsmin import jsmin
-    with open('./lib/my_toc/2.0.js') as js_file:
-        js = jsmin(js_file.read())
-    js = "<script type='text/javascript'>"+js +'</script>'
-
-    with open('./lib/my_toc/main.css', 'r') as myfile:
-        css=myfile.read().replace('\n', '')
-    css = "<style media='screen' type='text/css'>"+css +'</style>'
-    return HTML(js+css)
-
-
-def test_sidebar():
-    lib_files = """ <script type='text/javascript' src='./lib/my_toc/2.0.js'></script>
-        <link rel="stylesheet" type="text/css" href='./lib/my_toc/main.css' media="screen" />
-        """
-    return HTML(lib_files)
 
 
 def load_libs():

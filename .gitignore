@@ -1,9 +1,9 @@
 *.xls
 *.xlsx
 *.xlsm
-*.ipynb
 *.csv
 data/*
+.ipynb
 
 .DS_Store
 .idea/
