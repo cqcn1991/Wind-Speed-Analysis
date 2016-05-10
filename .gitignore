@@ -3,7 +3,7 @@
 *.xlsm
 *.csv
 data/*
-.ipynb
+#*.ipynb
 
 .DS_Store
 .idea/
