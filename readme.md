@@ -1,6 +1,6 @@
 # Modeling the Joint Probability Distribution of Wind Speed and Direction using Gaussian Mixture Models
 
-## What is this
+## What is this?
 
 This is a Python program for modelling the joint distribution of wind speed and direction.
 
@@ -28,7 +28,7 @@ Left: Histogram vs. Model, Middle: Empirical vs. Model CDF, Right: Weibull ECDF 
 
 The above results are avaiable at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html
-, along with other analysis results.
+, along with other analysis.
 
 ## Getting Started, for first-time Python Users
 

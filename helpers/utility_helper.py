@@ -11,7 +11,7 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-def plot_3d_prob_density(X,Y,Z, ax = None):
+def plot_3d_prob_density(X, Y, Z, ax=None):
     if ax is None:
         fig = plt.figure()
         # fig.set_size_inches(14, 6)
@@ -23,7 +23,7 @@ def plot_3d_prob_density(X,Y,Z, ax = None):
         linewidth=0, antialiased=False)
 
 
-def plot_2d_prob_density(X,Y,Z,ax = None):
+def plot_2d_prob_density(X, Y, Z, ax=None):
     # For docs, see `help(plt.contour)`
     if ax is None:
         fig, ax = plt.subplots()

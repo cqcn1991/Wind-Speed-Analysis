@@ -33,11 +33,12 @@ def plot_gmm_ellipses(gmm, ax=None):
         print g[0], xy_mean, np.sqrt(w), angle
 
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
-                                  angle=angle, alpha=0.7, color=next(prop_cycle))
+                                  angle=angle, alpha=0.7, color=next(prop_cycle), label = "{0:.3f}".format(g[0]))
         ax.add_patch(ell)
 
     ax.autoscale()
     ax.set_aspect('equal')
+    plt.legend()
     plt.show()
 
 
@@ -66,7 +67,8 @@ def pretty_print_gmm(gmm):
                                                'mean_x', 'mean_y',
                                                'sig_x', 'sig_y','corr'])
     pretty_result.index += 1
-    return pretty_result
+    decimal_format = lambda x: "{0:.3f}".format(x)
+    return pretty_result.applymap(decimal_format)
 
 
 
