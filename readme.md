@@ -60,8 +60,19 @@ in your command line to install them
 
 ### 3. Download the current repo
 
-### 4. Run the Jupyter Notebook, and open the file
+### 4. Start Jupyter Notebook, and open the `GMM.ipynb`
 
+## For experienced Scipy Users
+
+Run `conda env create -f environment.yml`
+
+Then run
+
+Linux, OS X: `source activate windspeed`
+
+Windows: `activate windspeed`
+
+The code is in `GMM.ipynb`, you can start to play with it now.
 
 If you have any question, you could post it at
 https://github.com/cqcn1991/Wind-Speed-Analysis/issues
