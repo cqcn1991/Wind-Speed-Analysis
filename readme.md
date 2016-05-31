@@ -1,4 +1,4 @@
-# Modeling the Joint Probability Distribution of Wind Speed and Direction using Gaussian Mixture Models
+# A Joint Probability Model for Wind Speed and Direction, by Gaussian Mixture Models
 
 ## What is this?
 
@@ -8,7 +8,7 @@ The method is based on:
 
 1. Harris, Cook, The parent wind speed distribution: Why Weibull?, http://www.sciencedirect.com/science/article/pii/S0167610514001056
 
-2. Gaussian Mixture Modles, http://scikit-learn.org/stable/modules/mixture.html
+2. Gaussian Mixture Models, http://scikit-learn.org/stable/modules/mixture.html
 
 ## Fitting Effect
 
@@ -30,7 +30,8 @@ The above results are avaiable at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html
 , along with other analysis.
 
-## Getting Started, for first-time Python Users
+
+## Getting Started
 
 ### 1. Install Anaconda
 
@@ -61,18 +62,6 @@ in your command line to install them
 ### 3. Download the current repo
 
 ### 4. Start Jupyter Notebook, and open the `GMM.ipynb`
-
-## For experienced Scipy Users
-
-Run `conda env create -f environment.yml`
-
-Then run
-
-Linux, OS X: `source activate windspeed`
-
-Windows: `activate windspeed`
-
-The code is in `GMM.ipynb`, you can start to play with it now.
 
 If you have any question, you could post it at
 https://github.com/cqcn1991/Wind-Speed-Analysis/issues
