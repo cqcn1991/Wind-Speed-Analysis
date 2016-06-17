@@ -30,6 +30,53 @@ The above results are avaiable at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html
 , along with other analysis.
 
+## Gallery
+
+Here is how the method analysis different locations across the world.
+You can use the code toggle button and sidebar to navigate these reports.
+
+![](./doc/gallery/navigate_tip.gif)
+
+![](./doc/gallery/marham.png)
+
+[Marham, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html)
+
+![](./doc/gallery/tiree.png)
+
+[Tiree, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/tiree.html)
+
+![](./doc/gallery/vatry.png)
+
+[Vatry, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/vatry.html)
+
+![](./doc/gallery/landsberg_lech.png)
+
+[Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
+
+![](./doc/gallery/narrandera.png)
+
+[Narrandera, Australia](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/narrandera.html)
+
+![](./doc/gallery/melita_man.png)
+
+[Melita Man, Canada](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/melita_man.html)
+
+![](./doc/gallery/mildred_lake_alta.png)
+
+[Mildred Lake Alta, Canada](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/mildred_lake_alta.html)
+
+![](./doc/gallery/luogang.png)
+
+[Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/luogang.html)
+
+
+![](./doc/gallery/shanghai_hongqiao.png)
+
+[Shanghai, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html)
+
+![](./doc/gallery/paya_lebar.png)
+
+[Paya Lebar, Singapore](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/paya_lebar.html)
 
 ## Getting Started
 
@@ -51,17 +98,15 @@ https://github.com/scls19fr/windrose
 3. jsmin
 https://github.com/tikitu/jsmin
 
-Just run
+Just run these in your command line to install them
 
     pip install seaborn
     pip install windrose
     pip install jsmin
 
-in your command line to install them
-
 ### 3. Download the current repo
 
-### 4. Start Jupyter Notebook, and open the `GMM.ipynb`
+### 4. Start Jupyter Notebook, open the `GMM.ipynb`, start playing with it
 
 If you have any question, you could post it at
 https://github.com/cqcn1991/Wind-Speed-Analysis/issues
