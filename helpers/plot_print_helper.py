@@ -83,23 +83,27 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    plt_configure(legend=True)
+    plt_configure(legend=True, xlabel='x', ylabel='y')
     plt.show()
 
 
 def plot_speed_and_angle_distribution(df_speed, df_dir, title=''):
-    prop_cycle = iter(sns.color_palette())
+    # prop_cycle = iter(sns.color_palette())
+    prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     plt.subplot(1, 2, 1)
     bins = np.arange(0, 40 + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
+    plt.locator_params(axis='y', nbins=5)
     plt_configure("Speed", "Frequency")
 
     plt.subplot(1, 2, 2)
     bins = np.arange(-5, 360, 10)
-    df_dir.hist(bins=bins, figsize=(15, 3), color=next(prop_cycle))
+    df_dir.hist(bins=bins, color=next(prop_cycle))
     plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight')
+    plt.gcf().set_size_inches(10, 1.5)
+    plt.locator_params(axis='y', nbins=5)
     if title:
-        plt.suptitle(title)
+        plt.suptitle(title, y=1.08)
     plt.show()
 
 
