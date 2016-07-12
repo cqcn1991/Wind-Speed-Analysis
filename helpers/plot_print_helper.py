@@ -2,23 +2,47 @@ from .shared_imports import *
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
-def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False, figsize=False):
-    if title:
+# def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False, figsize=False):
+#     if title:
+#         plt.suptitle(title)
+#     plt.xlabel(xlabel)
+#     plt.ylabel(ylabel)
+#     if legend:
+#         if isinstance(legend, dict):
+#             plt.legend(**legend)
+#         else:
+#             plt.legend()
+#     if tight:
+#         if tight == 'xtight' or tight == 'x':
+#             plt.autoscale(enable=True, axis='x', tight=True)
+#         elif tight == 'ytight':
+#             plt.autoscale(enable=True, axis='y', tight=True)
+#         else:
+#             plt.axis('tight')
+#     if figsize:
+#         plt.gcf().set_size_inches(figsize)
+
+
+def plt_configure(ax=None, xlabel='', ylabel='', title='', legend=False, tight=False, figsize=False):
+    if ax == None :
+        ax=plt.gca()
         plt.suptitle(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    else:
+        ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
     if legend:
         if isinstance(legend, dict):
-            plt.legend(**legend)
+            ax.legend(**legend)
         else:
-            plt.legend()
+            ax.legend()
     if tight:
         if tight == 'xtight' or tight == 'x':
-            plt.autoscale(enable=True, axis='x', tight=True)
+            ax.autoscale(enable=True, axis='x', tight=True)
         elif tight == 'ytight':
-            plt.autoscale(enable=True, axis='y', tight=True)
+            ax.autoscale(enable=True, axis='y', tight=True)
         else:
-            plt.axis('tight')
+            ax.axis('tight')
     if figsize:
         plt.gcf().set_size_inches(figsize)
 
@@ -30,22 +54,18 @@ def pretty_pd_display(data):
 def plot_3d_prob_density(X, Y, Z, ax=None):
     if ax is None:
         fig = plt.figure()
-        # fig.set_size_inches(14, 6)
-        ax = fig.gca(projection='3d')
-    ax.set_aspect('equal')
+        ax = plt.gca(projection='3d')
     X, Y = np.meshgrid(X, Y)
     surf = ax.plot_surface(
         X, Y, Z,rstride=1, cstride=1, cmap='jet',
         linewidth=0, antialiased=False)
+    plt.gca().set_aspect('equal')
 
 
-def plot_2d_prob_density(X, Y, Z, ax=None, xlabel = '', ylabel = ''):
-    # For docs, see `help(plt.contour)`
-    if ax is None:
-        fig, ax = plt.subplots()
-    ax.set_aspect('equal')
+def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = ''):
     CS = plt.contourf(X, Y, Z, 8, alpha=.75, cmap='jet')
-    plt_configure(xlabel, ylabel)
+    plt.gca().set_aspect('equal')
+    plt_configure(xlabel=xlabel, ylabel=ylabel)
     plt.colorbar(CS)
 
 
@@ -96,7 +116,7 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title=''):
     bins = np.arange(0, 40 + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
-    plt_configure("Speed", "Frequency", tight='y')
+    plt_configure(xlabel="Speed", ylabel="Frequency", tight='y')
 
     plt.subplot(1, 2, 2)
     bins = np.arange(-5, df_dir.max()+10, 10)
