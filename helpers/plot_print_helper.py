@@ -2,7 +2,7 @@ from .shared_imports import *
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
-def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False):
+def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False, figsize=False):
     if title:
         plt.suptitle(title)
     plt.xlabel(xlabel)
@@ -13,12 +13,14 @@ def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False):
         else:
             plt.legend()
     if tight:
-        if tight == 'xtight':
+        if tight == 'xtight' or tight == 'x':
             plt.autoscale(enable=True, axis='x', tight=True)
         elif tight == 'ytight':
             plt.autoscale(enable=True, axis='y', tight=True)
         else:
             plt.axis('tight')
+    if figsize:
+        plt.gcf().set_size_inches(figsize)
 
 
 def pretty_pd_display(data):
@@ -42,7 +44,7 @@ def plot_2d_prob_density(X, Y, Z, ax=None, xlabel = '', ylabel = ''):
     if ax is None:
         fig, ax = plt.subplots()
     ax.set_aspect('equal')
-    CS = plt.contourf(X, Y, Z, 10, alpha=.75, cmap='jet')
+    CS = plt.contourf(X, Y, Z, 8, alpha=.75, cmap='jet')
     plt_configure(xlabel, ylabel)
     plt.colorbar(CS)
 
@@ -78,7 +80,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
         print g[0], xy_mean, np.sqrt(w), angle
 
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
-                                  angle=angle, alpha=0.7, color=next(prop_cycle), label = "{0:.3f}".format(g[0]))
+                                  angle=angle, alpha=0.7, color=next(prop_cycle), label="{0:.3f}".format(g[0]))
         ax.add_patch(ell)
 
     ax.autoscale()
@@ -94,10 +96,10 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title=''):
     bins = np.arange(0, 40 + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
-    plt_configure("Speed", "Frequency")
+    plt_configure("Speed", "Frequency", tight='y')
 
     plt.subplot(1, 2, 2)
-    bins = np.arange(-5, 360, 10)
+    bins = np.arange(-5, df_dir.max()+10, 10)
     df_dir.hist(bins=bins, color=next(prop_cycle))
     plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight')
     plt.gcf().set_size_inches(10, 1.5)
@@ -119,4 +121,19 @@ def pretty_print_gmm(gmm):
     return pretty_result.applymap(decimal_format)
 
 
+def gof_df(gmm_pdf_result, kde_result):
+    from app_helper import goodness_of_fit_summary
+    gof_df = pd.DataFrame([goodness_of_fit_summary(gmm_pdf_result, kde_result)])
+    gof_df = gof_df[['R_square', 'K_S','Chi_square', 'MSE', 'RMSE / Max', 'RMSE / Mean']]
+    return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
+
+
+def check_time_shift(df):
+    for start_time in xrange(19850000, 20150000, 50000):
+        end_time = start_time + 50000
+        sub_df = df.query('(date >= @start_time) & (date < @end_time)')
+        if len(sub_df) > 0 :
+            title = '%s - %s' %(start_time//10000, end_time//10000-1)
+            print title
+            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir)
 

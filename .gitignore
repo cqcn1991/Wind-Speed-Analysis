@@ -3,7 +3,8 @@
 *.xlsm
 *.csv
 data/*
-#*.ipynb
+Playground.ipynb
+Variable Inspector.ipynb
 
 .DS_Store
 .idea/
