@@ -14,7 +14,7 @@ The method is based on:
 
 ### 1. PDF (Probability Density Function) Comparison
 
-![](./doc/pdf_comparsion.png)
+![](./doc/gallery/marham.png)
 
 Left: Empirical PDF, Right: Model PDF
 
@@ -53,22 +53,9 @@ You can use the code toggle button and sidebar to navigate these reports.
 
 [Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
 
-![](./doc/gallery/narrandera.png)
-
-[Narrandera, Australia](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/narrandera.html)
-
-![](./doc/gallery/melita_man.png)
-
-[Melita Man, Canada](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/melita_man.html)
-
-![](./doc/gallery/mildred_lake_alta.png)
-
-[Mildred Lake Alta, Canada](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/mildred_lake_alta.html)
-
 ![](./doc/gallery/luogang.png)
 
 [Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/luogang.html)
-
 
 ![](./doc/gallery/shanghai_hongqiao.png)
 
@@ -111,3 +98,7 @@ Just run these in your command line to install them
 If you have any question, you could post it at
 https://github.com/cqcn1991/Wind-Speed-Analysis/issues
 or mail me at 38306608#qq.com
+
+## Acknowledgement
+
+This work would be impossible without the help from Harris and Cook. Thank you!

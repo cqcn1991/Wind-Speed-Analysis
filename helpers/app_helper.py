@@ -56,10 +56,15 @@ def cdf_from_pdf(pdf):
 
 
 def select_df_by_angle(df, start_angle, end_angle):
-    if start_angle < 0:
-        sub_df = df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
+    start_angle, end_angle = start_angle%360, end_angle%360
+    if start_angle > end_angle:
+        sub_df = df.query('(dir >= @start_angle) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
     else:
         sub_df = df.query('(dir >= @start_angle) & (dir < @end_angle)')
+    # if (start_angle < 0) & (end_angle>0):
+    #     sub_df = df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
+    # else:
+    #     sub_df = df.query('(dir >= @start_angle%360) & (dir < @end_angle%360)')
     sub_max_speed = sub_df.speed.max()
 
     return sub_df, sub_max_speed
@@ -101,3 +106,9 @@ def get_location_name(file_path):
         location_name = file_name.split('.txt')[0]
     return location_name
 
+
+def generate_Z_from_X_Y(X,Y, Z_func):
+    XX, YY=np.meshgrid(X,Y)
+    coords=np.array((XX.ravel(), YY.ravel())).T
+    Z = Z_func(coords).reshape(XX.shape)
+    return Z

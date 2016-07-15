@@ -1,5 +1,6 @@
 from IPython.display import display, HTML, Javascript
 from my_toc.loader import *
+from output_and_hide.loader import *
 
 
 def align_figures():
@@ -16,10 +17,15 @@ def align_figures():
         src = base64.encodestring(png).decode()
         images.append('<img style="margin:0" align="left" src="data:image/png;base64,{}"/>'.format(src))
 
-    html = "<div>{}</div>".format("".join(images))
+    html = "{}".format("".join(images))
     show._draw_called = False
     matplotlib.pyplot.close('all')
     display_html(html, raw=True)
+
+
+def hide_as(button_text='+/-'):
+    button = "<button class='hide-prompt'>" + button_text + "</button>"
+    return HTML(button)
 
 
 def output_HTML(read_file, output_file):
@@ -59,3 +65,7 @@ def save_notebook():
 def load_libs():
     display(toggle_cell())
     display(sidebar())
+
+
+def test_libs():
+    display(test_output_and_hide())

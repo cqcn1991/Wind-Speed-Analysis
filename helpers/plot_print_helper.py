@@ -2,27 +2,6 @@ from .shared_imports import *
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
-# def plt_configure(xlabel='', ylabel='', title=None, legend=False, tight=False, figsize=False):
-#     if title:
-#         plt.suptitle(title)
-#     plt.xlabel(xlabel)
-#     plt.ylabel(ylabel)
-#     if legend:
-#         if isinstance(legend, dict):
-#             plt.legend(**legend)
-#         else:
-#             plt.legend()
-#     if tight:
-#         if tight == 'xtight' or tight == 'x':
-#             plt.autoscale(enable=True, axis='x', tight=True)
-#         elif tight == 'ytight':
-#             plt.autoscale(enable=True, axis='y', tight=True)
-#         else:
-#             plt.axis('tight')
-#     if figsize:
-#         plt.gcf().set_size_inches(figsize)
-
-
 def plt_configure(ax=None, xlabel='', ylabel='', title='', legend=False, tight=False, figsize=False):
     if ax == None :
         ax=plt.gca()
@@ -57,21 +36,31 @@ def plot_3d_prob_density(X, Y, Z, ax=None):
         ax = plt.gca(projection='3d')
     X, Y = np.meshgrid(X, Y)
     surf = ax.plot_surface(
-        X, Y, Z,rstride=1, cstride=1, cmap='jet',
+        X, Y, Z,rstride=1, cstride=1, cmap='viridis',
         linewidth=0, antialiased=False)
     plt.gca().set_aspect('equal')
 
 
-def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = ''):
-    CS = plt.contourf(X, Y, Z, 8, alpha=.75, cmap='jet')
-    plt.gca().set_aspect('equal')
-    plt_configure(xlabel=xlabel, ylabel=ylabel)
-    plt.colorbar(CS)
+def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_lim=None):
+    from matplotlib import ticker
+    # contourf accept vmin, vmax
+    if ax is None:
+        ax = plt.gca()
+    CS = ax.contourf(X, Y, Z, 8, alpha=.75, cmap='viridis')
+    ax.set_aspect('equal')
+    plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
+    cb = plt.colorbar(CS)
+    # tick_locator = ticker.MaxNLocator(nbins=6)
+    # cb.locator = tick_locator
+    # cb.update_ticks()
 
 
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     from operator import itemgetter
-    prop_cycle = iter(sns.color_palette("hls", 6))
+    if 'sns' in globals():
+        prop_cycle = iter(sns.color_palette("hls", 6))
+    else:
+        prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
         fig, ax = plt.subplots()
     print 'GMM Plot Result'
@@ -105,7 +94,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    plt_configure(legend=True, xlabel='x', ylabel='y')
+    plt_configure(legend={'loc':'best'}, xlabel='x', ylabel='y')
     plt.show()
 
 
@@ -156,4 +145,6 @@ def check_time_shift(df):
             title = '%s - %s' %(start_time//10000, end_time//10000-1)
             print title
             plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir)
+
+
 
