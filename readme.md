@@ -65,6 +65,29 @@ You can use the code toggle button and sidebar to navigate these reports.
 
 [Paya Lebar, Singapore](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/paya_lebar.html)
 
+## The Probability Model
+
+The model I'm using is Gaussian Mixture Models, or simply put, the sum of some normal distributions. The idea is very simple:
+
+#### 1. For a certain wind character, the wind vector (speed and direction) follows the normal distribution:
+
+![](./doc/normal_distribution.png)
+
+#### 2. For specific location, its wind speed direction distribution is composed of several such wind characters, and hence the sum of several normal distributions:
+
+![](./doc/combination.png)
+
+fi denotes the normal distribution component.
+
+The chief beauty of this model is its elegance. You can use such a simple model (GMM) to describe wind, contrary to previous Weibull combination and others. 
+
+For a complete introduction of how GMM fit the joint distribution of wind speed and direction, you can read 
+
+> Harris, Cook, The parent wind speed distribution: Why Weibull?, http://www.sciencedirect.com/science/article/pii/S0167610514001056
+
+And I'm also working on a paper about it, this is my Master Thesis. And if you have any interest (question, collaboration...) feel free to ask me. I open source the project is meant to help you try it.
+
+
 ## Getting Started
 
 ### 1. Install Anaconda
