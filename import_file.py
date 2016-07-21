@@ -20,6 +20,9 @@ from helpers.app_helper import *
 from helpers.gmm_helper import *
 from helpers.plot_print_helper import *
 from helpers.data_reader import *
+from helpers.sector_compare import *
+from helpers.pre_process import *
+
 from lib.lib_loader import *
 
 

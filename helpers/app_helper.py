@@ -16,6 +16,22 @@ def R_square_of(MSE, kde_result):
     return R_square
 
 
+def true_R_square(density_collection):
+    densities = []
+    densities_expected = []
+    for density_curves in density_collection:
+        densities.extend(density_curves['density'])
+        densities_expected.extend(density_curves['density_expected'])
+    y_mean = np.mean(densities)
+    SS_tot = np.sum(np.power(densities - y_mean, 2))
+    SS_res = np.sum(np.power(np.asarray(densities) - np.asarray(densities_expected), 2))
+    SS_tot_avg = SS_tot
+    SS_res_avg = SS_res
+
+    R_square = 1 - SS_res_avg / SS_tot_avg
+    return R_square
+
+
 def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     error_array = np.power(gmm_pdf_result - kde_result, 2)
 
@@ -58,7 +74,7 @@ def cdf_from_pdf(pdf):
 def select_df_by_angle(df, start_angle, end_angle):
     start_angle, end_angle = start_angle%360, end_angle%360
     if start_angle > end_angle:
-        sub_df = df.query('(dir >= @start_angle) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
+        sub_df = df.query('(dir >= @start_angle) & (dir <= 360)|(dir >= 0) & (dir <= @end_angle)')
     else:
         sub_df = df.query('(dir >= @start_angle) & (dir < @end_angle)')
     # if (start_angle < 0) & (end_angle>0):
