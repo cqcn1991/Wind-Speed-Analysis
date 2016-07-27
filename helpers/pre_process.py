@@ -2,6 +2,7 @@ from __future__ import division
 from .shared_imports import *
 from plot_print_helper import plt_configure
 
+
 def is_with_too_many_zero(df, threshold=1.5):
     too_many_zero = False
     bins = arange(0, df.speed.max())
@@ -15,11 +16,12 @@ def is_with_too_many_zero(df, threshold=1.5):
     return too_many_zero, null_wind_frequency
 
 
-def randomize_angle(df, DIR_REDISTRIBUTE, sector_length = 10):
+def randomize_angle(df, DIR_REDISTRIBUTE, sector_span = 10):
+    df = df.copy()
     if DIR_REDISTRIBUTE == 'even':
-        df['dir_ran'] = df['dir'].apply(lambda x: (x + np.random.uniform(-sector_length/2,sector_length/2)))
+        df['dir_ran'] = df['dir'].apply(lambda x: (x + np.random.uniform(-sector_span/2,sector_span/2)))
     else:
-        df['dir_ran'] = df['dir'].apply(lambda x: (x + np.random.uniform(0,sector_length)))
+        df['dir_ran'] = df['dir'].apply(lambda x: (x + np.random.uniform(0,sector_span)))
 
     bins=arange(0, 360+10, 5)
     df['dir'].hist(bins=bins, alpha=0.5, label='Original Data')
@@ -33,9 +35,10 @@ def randomize_angle(df, DIR_REDISTRIBUTE, sector_length = 10):
     return df
 
 
-def randomize_speed(df, with_too_many_zero):
+def randomize_speed(df, contain_zero):
+    df = df.copy()
     # Round down speed, need more caution
-    if not with_too_many_zero:
+    if contain_zero:
         speed_redistribution_info = 'Redistribute upward, e.g. 0 -> [0,1]'
         df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(0,1)))
     else:
@@ -49,5 +52,5 @@ def randomize_speed(df, with_too_many_zero):
     plt_configure(xlabel="Speed", ylabel="Frequency", legend=True, figsize=(8, 3))
 
     df['speed']=df['speed_ran']
-    df.drop(['speed_ran'], 1,inplace=True)
+    df.drop(['speed_ran'], 1, inplace=True)
     return df, speed_redistribution_info

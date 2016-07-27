@@ -46,13 +46,13 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
     # contourf accept vmin, vmax
     if ax is None:
         ax = plt.gca()
-    CS = ax.contourf(X, Y, Z, 8, alpha=.75, cmap='viridis')
+    CS = ax.contourf(X, Y, Z, 6, alpha=.75, cmap='viridis')
     ax.set_aspect('equal')
     plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
     cb = plt.colorbar(CS)
-    # tick_locator = ticker.MaxNLocator(nbins=6)
-    # cb.locator = tick_locator
-    # cb.update_ticks()
+    tick_locator = ticker.MaxNLocator(nbins=6)
+    cb.locator = tick_locator
+    cb.update_ticks()
 
 
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
@@ -111,7 +111,7 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title=''):
     bins = np.arange(-5, df_dir.max()+10, 10)
     df_dir.hist(bins=bins, color=next(prop_cycle))
     plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight')
-    plt.gcf().set_size_inches(10, 1.5)
+    plt.gcf().set_size_inches(10, 1.2)
     plt.locator_params(axis='y', nbins=5)
     if title:
         plt.suptitle(title, y=1.08)
@@ -138,8 +138,8 @@ def gof_df(gmm_pdf_result, kde_result):
 
 
 def check_time_shift(df):
-    for start_time in xrange(19850000, 20150000, 50000):
-        end_time = start_time + 50000
+    for start_time in xrange(19850000, 20160000, 50000):
+        end_time = min(start_time + 50000, df.date.max()+ 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
         if len(sub_df) > 0 :
             title = '%s - %s' %(start_time//10000, end_time//10000-1)

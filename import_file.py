@@ -1,5 +1,5 @@
 # Standard Scientific Import
-from IPython.display import display, HTML, Javascript
+from IPython.display import display, HTML, Javascript, set_matplotlib_formats
 import numpy as np
 import scipy as sp
 import pandas as pd
@@ -12,6 +12,7 @@ from numpy import inf, arange, array, linspace, exp, log, power, pi, cos, sin, r
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 sns.set_style('whitegrid')
+set_matplotlib_formats('png', 'pdf')
 
 
 # Module Imports

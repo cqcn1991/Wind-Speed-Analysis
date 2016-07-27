@@ -111,7 +111,10 @@ def generate_mean_std_gof(gof_result_groups):
         std_gof = np.std(df)
         mean_gof_all.append(mean_gof)
         std_gof_all.append(std_gof)
-    return pd.DataFrame(mean_gof_all), pd.DataFrame(std_gof_all)
+    mean_gof_df, std_gof_df = pd.DataFrame(mean_gof_all), pd.DataFrame(std_gof_all)
+    mean_gof_df.index += 1
+    std_gof_df.index += 1
+    return mean_gof_df, std_gof_df
 
 
 def get_location_name(file_path):
