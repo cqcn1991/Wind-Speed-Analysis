@@ -88,7 +88,7 @@ For a complete introduction of how GMM fit the joint distribution of wind speed 
 And I'm also working on a paper about it, this is my Master Thesis. And if you have any interest (question, collaboration...) feel free to ask me. I open source the project is meant to help you try it.
 
 
-## Getting Started
+## How to use it
 
 ### 1. Install Anaconda
 
@@ -116,11 +116,13 @@ Just run these in your command line to install them
 
 ### 3. Download the current repo
 
-### 4. Start Jupyter Notebook, open the `GMM.ipynb`, start playing with it
+### 4. Start Jupyter Notebook, open the `GMM.ipynb`, and start playing with it
 
-If you have any question, you could post it at
-https://github.com/cqcn1991/Wind-Speed-Analysis/issues
-or mail me at 38306608#qq.com
+You may need some datasets to get started, for this reason,  I have include some in
+https://github.com/cqcn1991/Wind-Speed-Analysis/tree/master/data
+If you want additional data, you can find them at http://www.ncdc.noaa.gov/
+
+If you have any question, you could post it at [issue](https://github.com/cqcn1991/Wind-Speed-Analysis/issues), or mail me at 38306608#qq.com
 
 ## Acknowledgement
 

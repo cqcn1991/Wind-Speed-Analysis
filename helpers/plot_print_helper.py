@@ -2,14 +2,25 @@ from .shared_imports import *
 from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
-def plt_configure(ax=None, xlabel='', ylabel='', title='', legend=False, tight=False, figsize=False):
+def pdf_comparison(X, Y, kde_Z, pdf_Z):
+    fig = plt.figure(figsize=(6, 3))
+    with sns.axes_style({'axes.grid': False}):
+        ax1 = fig.add_subplot(1, 2, 1)
+        plot_2d_prob_density(X, Y, kde_Z, colorbar=False)
+        ax2 = fig.add_subplot(1, 2, 2)
+        plot_2d_prob_density(X, Y, pdf_Z, colorbar=False)
+
+
+def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False):
     if ax == None :
         ax=plt.gca()
         plt.suptitle(title)
     else:
         ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if ylabel:
+        ax.set_ylabel(ylabel)
     if legend:
         if isinstance(legend, dict):
             ax.legend(**legend)
@@ -41,7 +52,7 @@ def plot_3d_prob_density(X, Y, Z, ax=None):
     plt.gca().set_aspect('equal')
 
 
-def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_lim=None):
+def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_lim=None, colorbar=True):
     from matplotlib import ticker
     # contourf accept vmin, vmax
     if ax is None:
@@ -49,10 +60,11 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
     CS = ax.contourf(X, Y, Z, 6, alpha=.75, cmap='viridis')
     ax.set_aspect('equal')
     plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
-    cb = plt.colorbar(CS)
-    tick_locator = ticker.MaxNLocator(nbins=6)
-    cb.locator = tick_locator
-    cb.update_ticks()
+    if colorbar:
+        cb = plt.colorbar(CS)
+        tick_locator = ticker.MaxNLocator(nbins=6)
+        cb.locator = tick_locator
+        cb.update_ticks()
 
 
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
