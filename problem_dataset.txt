@@ -1,0 +1,15 @@
+## Problem dataset
+# ipath= "./data/NCDC/europe/horns_rev_a/dat.txt" # problematic data
+# ipath= "./data/NCDC/europe/horns_rev_b/dat.txt" # problematic data
+# ipath= "./data/NCDC/canada/stony_rapids_arpt/dat.txt" # truncate data
+# ipath= "./data/NCDC/canada/baker_lake/dat.txt" # wrong data
+# ipath= "./data/NCDC/canada/rankin_inlet/dat.txt" # wrong data
+# ipath= "./data/NCDC/canada/deer_lake_a/dat.txt" # bad dataset
+# ipath= './data/NCDC/europe/tenerife_sur/dat.txt'  # recent year speed wired
+# ipath= "./data/NCDC/south_america/carlos_ibanez/dat.txt" # bad dataset, direction
+# ipath= "./data/NCDC/south_america/rio_cuarto/dat.txt"  # bad dataset
+# ipath= "./data/NCDC/south_america/senador_nilo/dat.txt" # bad dataset, direction
+# ipath= "./data/NCDC/cn/长沙huanghua/dat.txt" # direction may not be real
+# ipath= "./data/NCDC/dr_ambedkar_intl/dat.txt" # Wrong data
+# ipath= "./data/NCDC/gran_canaria/dat.txt" # problem
+# ipath= "./data/NCDC/tenerife_norte/dat.txt" # truncate

@@ -74,7 +74,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     else:
         prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(3.5, 3.5))
     print 'GMM Plot Result'
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
@@ -106,7 +106,8 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    plt_configure(legend={'loc':'best'}, xlabel='x', ylabel='y')
+    plt_configure(xlabel='x', ylabel='y')
+    plt.legend(loc='best')
     plt.show()
 
 

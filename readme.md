@@ -67,7 +67,7 @@ You can use the code toggle button and sidebar to navigate these reports.
 
 ## The Probability Model
 
-The model I'm using is Gaussian Mixture Models, or simply put, the sum of some normal distributions. The idea is very simple:
+The model I'm using is Gaussian Mixture Model, or simply put, the sum of some normal distributions. The idea is very simple:
 
 #### 1. For a certain wind character, the wind vector (speed and direction) follows the normal distribution:
 
@@ -77,11 +77,11 @@ The model I'm using is Gaussian Mixture Models, or simply put, the sum of some n
 
 ![](./doc/combination.png)
 
-fi denotes the normal distribution component.
+fi is the PDF of normal distribution component, pi is its weight.
 
-The chief beauty of this model is its elegance. You can use such a simple model (GMM) to describe wind, contrary to previous Weibull combination and others. 
+The chief beauty of this model is its elegance (simplicity). You can use such a simple model (GMM) to describe wind, contrary to previous Weibull combination and others. 
 
-For a complete introduction of how GMM fit the joint distribution of wind speed and direction, you can read 
+For a complete explanation of how GMM fit the joint distribution of wind speed and direction, you can read 
 
 > Harris, Cook, The parent wind speed distribution: Why Weibull?, http://www.sciencedirect.com/science/article/pii/S0167610514001056
 
@@ -95,11 +95,11 @@ And I'm also working on a paper about it, this is my Master Thesis. And if you h
 Download at
 https://www.continuum.io/downloads
 
-This repo use Python 2.7, so you should use the 2.7 version
+This repo use Python 2.7, so you should use the 2.7 as well.
 
 ### 2. Additional Environment Configuration
 
-After installing Anaconda, there are still some additional packages need to install:
+After installing Anaconda, there are still some additional packages you need to install:
 
 1. Seaborn
 https://github.com/mwaskom/seaborn/
@@ -118,7 +118,7 @@ Just run these in your command line to install them
 
 ### 4. Start Jupyter Notebook, open the `GMM.ipynb`, and start playing with it
 
-You may need some datasets to get started, for this reason,  I have include some in
+You may need some datasets to get started. For this reason,  I have include some in
 https://github.com/cqcn1991/Wind-Speed-Analysis/tree/master/data
 If you want additional data, you can find them at http://www.ncdc.noaa.gov/
 

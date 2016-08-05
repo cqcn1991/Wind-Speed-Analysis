@@ -38,5 +38,5 @@ def plot_sectoral_comparison(gmm, weibull, direction, datasize):
     line,= plt.plot(direction, weibull, '-', label = 'Weibull', marker='o')
     plt.axhline(weibull_mean, linestyle='--', color = line.get_color(), label ='Weibull weighted average')
     plt_configure(xlabel='Direction',
-                  legend={'loc':'best'},figsize=(5, 3))
+                  legend={'loc':'best'},figsize=(4.5, 2.5))
     plt.locator_params(axis='y', nbins=5)
