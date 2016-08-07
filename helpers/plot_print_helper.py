@@ -111,11 +111,12 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     plt.show()
 
 
-def plot_speed_and_angle_distribution(df_speed, df_dir, title=''):
-    # prop_cycle = iter(sns.color_palette())
+def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None):
+    if speed_limit == None:
+        speed_limit = 40
     prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     plt.subplot(1, 2, 1)
-    bins = np.arange(0, 40 + 1, 1)
+    bins = np.arange(0, speed_limit + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
     plt_configure(xlabel="Speed", ylabel="Frequency", tight='y')
@@ -151,13 +152,14 @@ def gof_df(gmm_pdf_result, kde_result):
 
 
 def check_time_shift(df):
+    speed_limit = df.speed.max()
     for start_time in xrange(19850000, 20160000, 50000):
         end_time = min(start_time + 50000, df.date.max()+ 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
         if len(sub_df) > 0 :
             title = '%s - %s' %(start_time//10000, end_time//10000-1)
             print title
-            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir)
+            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit)
 
 
 

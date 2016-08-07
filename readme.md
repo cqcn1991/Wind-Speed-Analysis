@@ -1,8 +1,8 @@
-# A Joint Probability Model for Wind Speed and Direction, by Gaussian Mixture Models
+# Modeling the Joint Distribution of Wind Speed and Direction (Gaussian Mixture Models)
 
 ## What is this?
 
-This is a Python program for modelling the joint distribution of wind speed and direction.
+This is a Python program for modeling the joint distribution of wind speed and direction.
 
 The method is based on:
 
