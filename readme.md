@@ -108,11 +108,14 @@ https://github.com/scls19fr/windrose
 3. jsmin
 https://github.com/tikitu/jsmin
 
+and some others
+
 Just run these in your command line to install them
 
     pip install seaborn
     pip install windrose
     pip install jsmin
+    pip install joblib
 
 ### 3. Download the current repo
 
