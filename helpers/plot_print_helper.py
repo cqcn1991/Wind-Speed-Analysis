@@ -11,7 +11,7 @@ def pdf_comparison(X, Y, kde_Z, pdf_Z):
         plot_2d_prob_density(X, Y, pdf_Z, colorbar=False)
 
 
-def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False):
+def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False, no_axis=False):
     if ax == None :
         ax=plt.gca()
         plt.suptitle(title)
@@ -35,6 +35,11 @@ def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tig
             ax.axis('tight')
     if figsize:
         plt.gcf().set_size_inches(figsize)
+    if no_axis:
+        plt.gca().axis('off')
+        legend = ax.legend()
+        if legend:
+            legend.remove()
 
 
 def pretty_pd_display(data):
@@ -106,25 +111,24 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    plt_configure(xlabel='x', ylabel='y')
-    plt.legend(loc='best')
-    plt.show()
+    plt_configure(xlabel='x', ylabel='y',legend={'loc':'best'})
+    # plt.show()
 
 
-def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None):
+def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None, no_axis=False):
     if speed_limit == None:
-        speed_limit = 40
+        speed_limit = df_speed.max()
     prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     plt.subplot(1, 2, 1)
     bins = np.arange(0, speed_limit + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
-    plt_configure(xlabel="Speed", ylabel="Frequency", tight='y')
+    plt_configure(xlabel="Speed", ylabel="Frequency", tight='y', no_axis=no_axis)
 
     plt.subplot(1, 2, 2)
     bins = np.arange(-5, df_dir.max()+10, 10)
     df_dir.hist(bins=bins, color=next(prop_cycle))
-    plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight')
+    plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight', no_axis=no_axis)
     plt.gcf().set_size_inches(10, 1.2)
     plt.locator_params(axis='y', nbins=5)
     if title:

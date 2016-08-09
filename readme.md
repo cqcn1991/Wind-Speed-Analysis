@@ -1,4 +1,4 @@
-# Modeling the Joint Distribution of Wind Speed and Direction (Gaussian Mixture Models)
+# A Joint Probability Model for Wind Speed and Direction (Gaussian Mixture Models)
 
 ## What is this?
 
