@@ -17,9 +17,7 @@ def sector_r_square(density, density_expected):
     y_mean = np.mean(density)
     SS_tot = np.sum(np.power(density - y_mean, 2))
     SS_res = np.sum(np.power(density - density_expected, 2))
-    SS_tot_avg = SS_tot
-    SS_res_avg = SS_res
-    R_square = 1 - SS_res_avg / SS_tot_avg
+    R_square = 1 - SS_res / SS_tot
     return R_square
 
 

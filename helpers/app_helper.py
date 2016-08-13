@@ -77,10 +77,6 @@ def select_df_by_angle(df, start_angle, end_angle):
         sub_df = df.query('(dir >= @start_angle) & (dir <= 360)|(dir >= 0) & (dir <= @end_angle)')
     else:
         sub_df = df.query('(dir >= @start_angle) & (dir < @end_angle)')
-    # if (start_angle < 0) & (end_angle>0):
-    #     sub_df = df.query('(dir >= @start_angle%360) & (dir < 360)|(dir >= 0) & (dir < @end_angle)')
-    # else:
-    #     sub_df = df.query('(dir >= @start_angle%360) & (dir < @end_angle%360)')
     sub_max_speed = sub_df.speed.max()
 
     return sub_df, sub_max_speed

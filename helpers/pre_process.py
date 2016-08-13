@@ -3,23 +3,23 @@ from .shared_imports import *
 from plot_print_helper import plt_configure
 
 
-def knot_unit_detect(df):
-    # df = df.copy()
-    # 1. Determine whether using knot unit
-    df['decimal'] = df.speed % 1
-    df.decimal.hist(alpha=0.5, label='m/s', figsize=(4, 3))
-    knot_unit = True if len(df.query('decimal >= 0.2')) / len(df) > 0.3 else False
-
-    # 2. Convert into knot unit
-    if knot_unit:
-        df['speed'] = df['speed'] * 1.943845
-        df['decimal'] = df.speed % 1
-        df.decimal.hist(alpha=0.5, label='knot')
-        # need more elaboration, some is not near an integer
-        df['speed'] = df['speed'].apply(lambda x: int(round(x)))
-    plt_configure(xlabel='Decimal', ylabel='Frequency', legend={'loc': 'best'}, title='Decimal Distribution')
-
-    return knot_unit, df
+# def knot_unit_detect(df):
+#     # df = df.copy()
+#     # 1. Determine whether using knot unit
+#     df['decimal'] = df.speed % 1
+#     df.decimal.hist(alpha=0.5, label='m/s', figsize=(4, 3))
+#     knot_unit = True if len(df.query('decimal >= 0.2')) / len(df) > 0.3 else False
+#
+#     # 2. Convert into knot unit
+#     if knot_unit:
+#         df['speed'] = df['speed'] * 1.943845
+#         df['decimal'] = df.speed % 1
+#         df.decimal.hist(alpha=0.5, label='knot')
+#         # need more elaboration, some is not near an integer
+#         df['speed'] = df['speed'].apply(lambda x: int(round(x)))
+#     plt_configure(xlabel='Decimal', ylabel='Frequency', legend={'loc': 'best'}, title='Decimal Distribution')
+#
+#     return knot_unit, df
 
 
 def is_with_too_many_zero(df, threshold=1.5):

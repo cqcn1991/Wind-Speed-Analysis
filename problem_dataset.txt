@@ -1,17 +1,3 @@
-## US dataset, is mostly truncate, low wind speed is not complete
-# ipath= './data/NCDC/us/newark/dat.txt'
-# ipath= "./data/NCDC/us/sacramento_arp/dat.txt"
-# ipath= './data/NCDC/us/newark/dat.txt'
-# ipath= "./data/NCDC/us/quad_city_arp/dat.txt"
-# ipath= "./data/NCDC/us/general_mitchell_intl/dat.txt"
-# ipath= "./data/NCDC/us/st_louis_arp/9511346969491dat.txt"
-# ipath= './data/NCDC/us/huron/3461896967321dat.txt'
-# ipath= "./data/NCDC/us/baltimore/9963956959409dat.txt"
-# ipath= './data/NCDC/us/kennedy/5807936958436dat.txt'
-# ipath= './data/NCDC/us/la_guardia/1057036958434dat.txt'
-# ipath= "./data/NCDC/us/olympia_airport/2647036962786dat.txt"
-# ipath= "./data/NCDC/us/sidney/6062326959357dat.txt"
-
 # ipath= "./data/NCDC/canada/fort_smith/dat.txt" # truncate, initial data very high
 # ipath= "./data/NCDC/canada/moosonee_awos/dat.txt" # truncate, many irregular sample time
 # ipath= "./data/NCDC/canada/hay_rivier_a/dat.txt" # truncate
@@ -26,6 +12,8 @@
 # ipath= "./data/NCDC/south_america/senador_petronio/dat.txt" # instable speed distribution
 # ipath= "./data/NCDC/south_america/ambrosio_lv/dat.txt" # truncate 16 sectors
 
+# ipath= "./data/NCDC/uk/lakenheath/dat.txt" # many irregular sampling time, high 0
+# ipath= "./data/NCDC/uk/mildenhall/dat.txt" #  many irregular sampling time, high 0
 
 # ipath= "./data/NCDC/cn/广州baiyun/dat.txt" # Problematic data, some direction are blocked
 # ipath= "./data/NCDC/cn/武汉tianhe/dat.txt" # Problematic data, some direction are blocked
@@ -35,7 +23,19 @@
 # ipath= "./data/NCDC/cn/baoan_intl/dat.txt" # Possible problem data, some direction blocked
 # ipath= "./data/NCDC/cn/yueyang/dat.txt" # 16 sectors, possible problem data, some direction may be blocked
 
-
+## US dataset, is mostly truncate, low wind speed is not complete
+# ipath= './data/NCDC/us/newark/dat.txt'
+# ipath= "./data/NCDC/us/sacramento_arp/dat.txt"
+# ipath= './data/NCDC/us/newark/dat.txt'
+# ipath= "./data/NCDC/us/quad_city_arp/dat.txt"
+# ipath= "./data/NCDC/us/general_mitchell_intl/dat.txt"
+# ipath= "./data/NCDC/us/st_louis_arp/9511346969491dat.txt"
+# ipath= './data/NCDC/us/huron/3461896967321dat.txt'
+# ipath= "./data/NCDC/us/baltimore/9963956959409dat.txt"
+# ipath= './data/NCDC/us/kennedy/5807936958436dat.txt'
+# ipath= './data/NCDC/us/la_guardia/1057036958434dat.txt'
+# ipath= "./data/NCDC/us/olympia_airport/2647036962786dat.txt"
+# ipath= "./data/NCDC/us/sidney/6062326959357dat.txt"
 
 ## Problem dataset
 # ipath= "./data/NCDC/europe/horns_rev_a/dat.txt" # problematic data
