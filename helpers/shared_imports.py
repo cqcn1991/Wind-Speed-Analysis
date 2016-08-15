@@ -1,5 +1,5 @@
 # CommonStandard Scientific Import
-from IPython.display import display, HTML, Javascript
+from IPython.display import display, HTML, Javascript, set_matplotlib_formats
 import numpy as np
 import scipy as sp
 import pandas as pd
