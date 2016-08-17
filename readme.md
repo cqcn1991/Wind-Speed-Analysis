@@ -14,13 +14,13 @@ The method is based on:
 
 ### 1. PDF (Probability Density Function) Comparison
 
-![](./doc/gallery/marham.png)
+![](./docs/gallery/marham.png)
 
 Left: Empirical PDF, Right: Model PDF
 
 ### 2. Sectoral Comparison
 
-![](./doc/sectoral_comparison.png)
+![](./docs/sectoral_comparison.png)
 
 Left: Histogram vs. Model, Middle: Empirical vs. Model CDF, Right: Weibull ECDF Vs. Model CDF
 
@@ -35,33 +35,33 @@ https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.ht
 Here is how the method analysis different locations across the world.
 You can use the code toggle button and sidebar to navigate these reports.
 
-![](./doc/gallery/navigate_tip.gif)
+![](./docs/gallery/navigate_tip.gif)
 
-![](./doc/gallery/marham.png)
+![](./docs/gallery/marham.png)
 
 [Marham, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html)
 
-![](./doc/gallery/tiree.png)
+![](./docs/gallery/tiree.png)
 
 [Tiree, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/tiree.html)
 
-![](./doc/gallery/vatry.png)
+![](./docs/gallery/vatry.png)
 
 [Vatry, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/vatry.html)
 
-![](./doc/gallery/landsberg_lech.png)
+![](./docs/gallery/landsberg_lech.png)
 
 [Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
 
-![](./doc/gallery/luogang.png)
+![](./docs/gallery/luogang.png)
 
 [Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/luogang.html)
 
-![](./doc/gallery/shanghai_hongqiao.png)
+![](./docs/gallery/shanghai_hongqiao.png)
 
 [Shanghai, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html)
 
-![](./doc/gallery/paya_lebar.png)
+![](./docs/gallery/paya_lebar.png)
 
 [Paya Lebar, Singapore](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/paya_lebar.html)
 
@@ -71,11 +71,11 @@ The model I'm using is Gaussian Mixture Model, or simply put, the sum of some no
 
 #### 1. For a certain wind character, the wind vector (speed and direction) follows the normal distribution:
 
-![](./doc/normal_distribution.png)
+![](./docs/normal_distribution.png)
 
 #### 2. For specific location, its wind speed direction distribution is composed of several such wind characters, and hence the sum of several normal distributions:
 
-![](./doc/combination.png)
+![](./docs/combination.png)
 
 fi is the PDF of normal distribution component, pi is its weight.
 
@@ -101,21 +101,18 @@ This repo use Python 2.7, so you should use the 2.7 as well.
 
 After installing Anaconda, there are still some additional packages you need to install:
 
-1. Seaborn
-https://github.com/mwaskom/seaborn/
-2. Windrose
-https://github.com/scls19fr/windrose
-3. jsmin
-https://github.com/tikitu/jsmin
-
-and some others
-
 Just run these in your command line to install them
 
-    pip install seaborn
-    pip install windrose
-    pip install jsmin
+    pip install -r requirements.txt
+
+or
+
+    pip install seaborn # https://github.com/mwaskom/seaborn/
+    pip install windrose # https://github.com/scls19fr/windrose
+    pip install jsmin # https://github.com/tikitu/jsmin
     pip install joblib
+
+
 
 ### 3. Download the current repo
 
