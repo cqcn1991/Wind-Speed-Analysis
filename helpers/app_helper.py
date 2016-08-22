@@ -2,6 +2,11 @@ from __future__ import division
 from .shared_imports import *
 
 
+def myround(x, base=5):
+    import math
+    return int(base * math.floor(float(x)/base))
+
+
 def R_square_of(MSE, kde_result):
     # R square measure:
     # https://en.wikipedia.org/wiki/Coefficient_of_determination

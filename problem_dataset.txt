@@ -15,6 +15,10 @@
 # ipath= "./data/NCDC/uk/lakenheath/dat.txt" # many irregular sampling time, high 0
 # ipath= "./data/NCDC/uk/mildenhall/dat.txt" #  many irregular sampling time, high 0
 
+# ipath= "./data/NCDC/europe/salamanca/dat.txt" # speed is not stable, high 0
+
+# ipath= "./data/NCDC/oceania/brisbane/dat.txt" # time too short
+
 # ipath= "./data/NCDC/cn/广州baiyun/dat.txt" # Problematic data, some direction are blocked
 # ipath= "./data/NCDC/cn/武汉tianhe/dat.txt" # Problematic data, some direction are blocked
 # ipath= "./data/NCDC/cn/长沙huanghua/dat.txt" # direction may not be real
@@ -24,6 +28,7 @@
 # ipath= "./data/NCDC/cn/yueyang/dat.txt" # 16 sectors, possible problem data, some direction may be blocked
 
 ## US dataset, is mostly truncate, low wind speed is not complete
+# ipath= './data/NCDC/us/newark/dat.txt' # truncate, m/s is still problematic
 # ipath= './data/NCDC/us/newark/dat.txt'
 # ipath= "./data/NCDC/us/sacramento_arp/dat.txt"
 # ipath= './data/NCDC/us/newark/dat.txt'
@@ -31,7 +36,6 @@
 # ipath= "./data/NCDC/us/general_mitchell_intl/dat.txt"
 # ipath= "./data/NCDC/us/st_louis_arp/9511346969491dat.txt"
 # ipath= './data/NCDC/us/huron/3461896967321dat.txt'
-# ipath= "./data/NCDC/us/baltimore/dat.txt"
 # ipath= './data/NCDC/us/kennedy/5807936958436dat.txt'
 # ipath= './data/NCDC/us/la_guardia/1057036958434dat.txt'
 # ipath= "./data/NCDC/us/olympia_airport/2647036962786dat.txt"

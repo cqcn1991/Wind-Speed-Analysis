@@ -3,34 +3,16 @@ from .shared_imports import *
 from plot_print_helper import plt_configure
 
 
-# def knot_unit_detect(df):
-#     # df = df.copy()
-#     # 1. Determine whether using knot unit
-#     df['decimal'] = df.speed % 1
-#     df.decimal.hist(alpha=0.5, label='m/s', figsize=(4, 3))
-#     knot_unit = True if len(df.query('decimal >= 0.2')) / len(df) > 0.3 else False
-#
-#     # 2. Convert into knot unit
-#     if knot_unit:
-#         df['speed'] = df['speed'] * 1.943845
-#         df['decimal'] = df.speed % 1
-#         df.decimal.hist(alpha=0.5, label='knot')
-#         # need more elaboration, some is not near an integer
-#         df['speed'] = df['speed'].apply(lambda x: int(round(x)))
-#     plt_configure(xlabel='Decimal', ylabel='Frequency', legend={'loc': 'best'}, title='Decimal Distribution')
-#
-#     return knot_unit, df
-
-
 def is_with_too_many_zero(df, threshold=1.5):
     too_many_zero = False
     bins = arange(0, df.speed.max())
     count, _ = np.histogram(df['speed'], bins=bins)
     null_wind_frequency = count[0]/len(df)
-    if count[0]/count[1] >= threshold:
-        df['speed'].plot(kind='hist', bins=bins, alpha=0.5)
-        plt_configure(figsize=(4, 3), title='Original speed distribution')
-        print ' Too many zeros'
+    # if count[0]/count[1] >= threshold:
+    #     df['speed'].plot(kind='hist', bins=bins, alpha=0.5)
+    #     plt_configure(figsize=(4, 3), title='Original speed distribution')
+    #     print(' Too many zeros')
+    if null_wind_frequency >= 0.1:
         too_many_zero = True
     return too_many_zero, null_wind_frequency
 
@@ -81,20 +63,23 @@ def randomize_angle(df, DIR_REDISTRIBUTE, sector_span = 10):
     return df
 
 
-def randomize_speed(df, contain_zero):
+def randomize_speed(df, redistribute_method='round_up'):
     df = df.copy()
     # Round down speed, need more caution
-    if contain_zero:
+    if redistribute_method == 'round_up':
         speed_redistribution_info = 'Redistribute upward, e.g. 0 -> [0,1]'
         df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(0,1)))
-    else:
+    elif redistribute_method == 'round_down':
         speed_redistribution_info = 'Redistribute downward, e.g. 1 -> [0,1]'
         df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(-1,0)) if x > 0 else x)
+    elif redistribute_method == 'even':
+        speed_redistribution_info = 'Redistribute evenly, e.g. 0 -> [0, 0.5]; 1 -> [0.5,1.5]'
+        df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(-0.5,0.5)) if x > 0 else x+ np.random.uniform(0, 0.5))
 
     max_speed = df.speed.max()
     df['speed'].hist(bins=arange(0, max_speed), alpha=0.5, label='Original Data')
     df['speed_ran'].hist(bins=arange(0, max_speed, 0.5), alpha=0.5, label='Redistributed Data')
-    print speed_redistribution_info
+    print(speed_redistribution_info)
     plt_configure(xlabel="Speed", ylabel="Frequency", legend=True, figsize=(8, 3))
 
     df['speed']=df['speed_ran']

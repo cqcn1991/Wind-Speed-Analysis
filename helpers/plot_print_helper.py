@@ -62,7 +62,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
     # contourf accept vmin, vmax
     if ax is None:
         ax = plt.gca()
-    CS = ax.contourf(X, Y, Z, 6, alpha=.75, cmap='viridis')
+    CS = ax.contourf(X, Y, Z, 8, alpha=.75, cmap='viridis')
     ax.set_aspect('equal')
     plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
     if colorbar:
@@ -80,7 +80,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
         prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
-    print 'GMM Plot Result'
+    print('GMM Plot Result')
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
@@ -156,12 +156,14 @@ def gof_df(gmm_pdf_result, kde_result):
 
 
 def check_time_shift(df):
+    from app_helper import myround
     speed_limit = df.speed.max()
-    for start_time in xrange(19850000, 20160000, 50000):
+    init_time = myround(df.date.min() // 10000, 5) * 10000
+    for start_time in xrange(init_time, 20160000, 50000):
         end_time = min(start_time + 50000, df.date.max()+ 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
         if len(sub_df) > 0 :
-            title = '%s - %s' %(start_time//10000, end_time//10000-1)
+            title = '%s - %s' %(sub_df.date.min()//10000, sub_df.date.max()//10000)
             print title
             plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit)
 

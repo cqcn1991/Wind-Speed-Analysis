@@ -38,3 +38,4 @@ def plot_sectoral_comparison(gmm, weibull, direction, datasize):
     plt_configure(xlabel='Direction',
                   legend={'loc':'best'},figsize=(4.5, 2.5))
     plt.locator_params(axis='y', nbins=5)
+    return gmm_mean, weibull_mean

@@ -16,4 +16,5 @@ def read_cn_database(file_path):
     cols = cols[-1:] + cols[:-1]
     df = df[cols]
     df['type'] = 'default'
+    df['wind_type'] = 'default'
     return df
