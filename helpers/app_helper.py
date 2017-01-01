@@ -66,12 +66,12 @@ def cdf_from_pdf(pdf):
         pdf = pdf.reshape(original_dim, original_dim)
     cdf = np.copy(pdf)
     xdim, ydim = cdf.shape
-    for i in xrange(1, xdim):
+    for i in range(1, xdim):
         cdf[i,0] = cdf[i-1,0] + cdf[i,0]
-    for i in xrange(1, ydim):
+    for i in range(1, ydim):
         cdf[0,i] = cdf[0,i-1] + cdf[0,i]
-    for j in xrange(1, ydim):
-        for i in xrange(1, xdim):
+    for j in range(1, ydim):
+        for i in range(1, xdim):
             cdf[i,j] = cdf[i-1,j] + cdf[i,j-1] - cdf[i-1,j-1] + pdf[i,j]
     return cdf
 

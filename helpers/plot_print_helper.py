@@ -103,7 +103,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
         xy_mean_in_uv = transform_matrix * xy_mean.T
 
         # print fraction, rotation agnle, u v mean(in standalone panel), std
-        print g[0], xy_mean, np.sqrt(w), angle
+        print(g[0], xy_mean, np.sqrt(w), angle)
 
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
                                   angle=angle, alpha=0.7, color=next(prop_cycle), label="{0:.3f}".format(g[0]))
@@ -137,7 +137,7 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=No
 
 
 def pretty_print_gmm(gmm):
-    from gmm_helper import group_gmm_param_from_gmm_param_array
+    from .gmm_helper import group_gmm_param_from_gmm_param_array
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=True)
     pretty_result = pd.DataFrame(gmm, columns=['weight',
@@ -149,22 +149,22 @@ def pretty_print_gmm(gmm):
 
 
 def gof_df(gmm_pdf_result, kde_result):
-    from app_helper import goodness_of_fit_summary
+    from .app_helper import goodness_of_fit_summary
     gof_df = pd.DataFrame([goodness_of_fit_summary(gmm_pdf_result, kde_result)])
     gof_df = gof_df[['R_square', 'K_S','Chi_square', 'MSE', 'RMSE / Max', 'RMSE / Mean']]
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 
 
 def check_time_shift(df):
-    from app_helper import myround
+    from .app_helper import myround
     speed_limit = df.speed.max()
     init_time = myround(df.date.min() // 10000, 5) * 10000
-    for start_time in xrange(init_time, 20160000, 50000):
+    for start_time in range(init_time, 20160000, 50000):
         end_time = min(start_time + 50000, df.date.max()+ 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
         if len(sub_df) > 0 :
             title = '%s - %s' %(sub_df.date.min()//10000, sub_df.date.max()//10000)
-            print title
+            print(title)
             plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit)
 
 

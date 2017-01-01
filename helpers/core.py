@@ -30,7 +30,7 @@ def GMM_fit_score(gmm, kde_result, points, method='square_error'):
 
 def fit_gmm(df, fit_method, config, number_of_gaussian = 3, ):
     # 1. Create Input, speed_set
-    sample = array(zip(df.x, df.y))
+    sample = array(list(zip(df.x, df.y)))
     bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
     fit_limit = config['fit_limit']
 

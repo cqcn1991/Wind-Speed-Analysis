@@ -1,6 +1,6 @@
 from __future__ import division
 from .shared_imports import *
-from plot_print_helper import plt_configure
+from .plot_print_helper import plt_configure
 
 
 def is_with_too_many_zero(df, threshold=1.5):

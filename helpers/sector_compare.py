@@ -26,7 +26,7 @@ def nominal_avg_and_weight_avg(df_weight, df_value):
 
 
 def plot_sectoral_comparison(gmm, weibull, direction, datasize):
-    from plot_print_helper import plt_configure
+    from .plot_print_helper import plt_configure
     _, gmm_mean = nominal_avg_and_weight_avg(datasize, gmm)
     _, weibull_mean = nominal_avg_and_weight_avg(datasize, weibull)
 

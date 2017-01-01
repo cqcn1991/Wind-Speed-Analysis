@@ -3,6 +3,7 @@
 *.xlsm
 *.csv
 data/*
+output_HTML/
 Playground.ipynb
 Variable Inspector.ipynb
 

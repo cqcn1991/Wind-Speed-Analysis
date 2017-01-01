@@ -8,8 +8,8 @@ def myfunc(x):
 
 
 def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, config):
-    from core import fit_gmm
-    from app_helper import goodness_of_fit_summary
+    from .core import fit_gmm
+    from .app_helper import goodness_of_fit_summary
     bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
     sub_df, sub_df_test = df.iloc[train_index], df.iloc[test_index]
 
@@ -21,7 +21,7 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
 
     # 2. Validate
     # GMM from Train - KDE from Test
-    sample = array(zip(sub_df_test.x, sub_df_test.y))
+    sample = array(list(zip(sub_df_test.x, sub_df_test.y)))
     kde_test = neighbors.KernelDensity(bandwidth=bandwidth).fit(sample)
     kde_result_test = exp(kde_test.score_samples(points))
 
@@ -31,7 +31,7 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
 
 
 def resampled_fitting(df, fit_method, gaussian_number, config):
-    from core import fit_gmm
+    from .core import fit_gmm
     df_resampled = df.sample(frac=1, replace=True)
     result = fit_gmm(df_resampled, fit_method=fit_method,
                      config=config, number_of_gaussian=gaussian_number)
@@ -39,8 +39,8 @@ def resampled_fitting(df, fit_method, gaussian_number, config):
 
 
 def direction_compare(gmm, df, angle, incre):
-    from app_helper import select_df_by_angle
-    from gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
+    from .app_helper import select_df_by_angle
+    from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
     mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
     def f(V, theta):
         return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
@@ -56,7 +56,7 @@ def direction_compare(gmm, df, angle, incre):
     density = density_/len(df)
     density_expected_ =[sp.integrate.nquad(f, [[x_, x_+1],[angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
                         for x_ in bins[:-1]]
-    density_expected = array(zip(*density_expected_ )[0])
+    density_expected = array(list(zip(*density_expected_ ))[0])
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
           'density': density, 'density_expected': density_expected}
     return curves

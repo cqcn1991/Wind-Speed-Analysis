@@ -95,7 +95,7 @@ And I'm also working on a paper about it, this is my Master Thesis. And if you h
 Download at
 https://www.continuum.io/downloads
 
-This repo use Python 2.7, so you should use the 2.7 as well.
+This repo use Python 3, so you should use the 3 as well.
 
 ### 2. Additional Environment Configuration
 

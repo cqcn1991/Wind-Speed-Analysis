@@ -3,7 +3,7 @@ from .shared_imports import *
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 
@@ -19,7 +19,7 @@ def group_gmm_param_from_gmm_param_array(gmm_param_array, sort_group=True):
 # GMM result
 def read_gmm_em_result(clf):
     gmm_em_result = []
-    for i in xrange(clf.n_components):
+    for i in range(clf.n_components):
         weight = clf.weights_[i]
         meanx, meany = clf.means_[i].tolist()
         sigx, sigy = np.sqrt(clf.covars_[i][0, 0]), np.sqrt(clf.covars_[i][1, 1])
