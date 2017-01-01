@@ -62,7 +62,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
     # contourf accept vmin, vmax
     if ax is None:
         ax = plt.gca()
-    CS = ax.contourf(X, Y, Z, 8, alpha=.75, cmap='viridis')
+    CS = ax.contourf(X, Y, Z, 10, alpha=.75, cmap='viridis')
     ax.set_aspect('equal')
     plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
     if colorbar:
@@ -75,7 +75,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     from operator import itemgetter
     if 'sns' in globals():
-        prop_cycle = iter(sns.color_palette("hls", 6))
+        prop_cycle = iter(sns.color_palette("hls", 8))
     else:
         prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
