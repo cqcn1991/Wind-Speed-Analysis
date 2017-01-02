@@ -105,9 +105,16 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
         # print fraction, rotation agnle, u v mean(in standalone panel), std
         print(g[0], xy_mean, np.sqrt(w), angle)
 
+        color = next(prop_cycle)
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
-                                  angle=angle, alpha=0.7, color=next(prop_cycle), label="{0:.3f}".format(g[0]))
+                                  angle=angle, alpha=0.7, color=color, label="{0:.3f}".format(g[0]))
         ax.add_patch(ell)
+        x_mean, y_mean = xy_mean.tolist()[0]
+        ax.plot(x_mean,y_mean, 'o',color=color)
+        axis_1_x,axis_1_y = np.sqrt(w[0])*np.cos(angle_arc), np.sqrt(w[0])*np.sin(angle_arc)
+        ax.plot([x_mean-axis_1_x, x_mean+axis_1_x],[y_mean-axis_1_y, y_mean+axis_1_y],'-',color=color)
+        axis_2_x,axis_2_y = -np.sqrt(w[1])*np.sin(angle_arc), np.sqrt(w[1])*np.cos(angle_arc)
+        ax.plot([x_mean-axis_2_x, x_mean+axis_2_x],[y_mean-axis_2_y, y_mean+axis_2_y],'-',color=color)
 
     ax.autoscale()
     ax.set_aspect('equal')
