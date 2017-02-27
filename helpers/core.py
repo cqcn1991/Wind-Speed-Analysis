@@ -38,7 +38,7 @@ def fit_gmm(df, fit_method, config, number_of_gaussian = 3, ):
     kde = neighbors.KernelDensity(bandwidth=bandwidth, kernel = kde_kernel).fit(sample)
     kde_result = exp(kde.score_samples(points))
 
-    clf = mixture.GMM(n_components=number_of_gaussian, covariance_type='full')
+    clf = mixture.GaussianMixture(n_components=number_of_gaussian, covariance_type='full')
     clf.fit(sample)
     gmm_em_result = read_gmm_em_result(clf)
 

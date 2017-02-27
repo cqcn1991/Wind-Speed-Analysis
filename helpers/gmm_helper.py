@@ -22,8 +22,8 @@ def read_gmm_em_result(clf):
     for i in range(clf.n_components):
         weight = clf.weights_[i]
         meanx, meany = clf.means_[i].tolist()
-        sigx, sigy = np.sqrt(clf.covars_[i][0, 0]), np.sqrt(clf.covars_[i][1, 1])
-        rho = clf.covars_[i][0, 1]/(sigx*sigy)
+        sigx, sigy = np.sqrt(clf.covariances_[i][0, 0]), np.sqrt(clf.covariances_[i][1, 1])
+        rho = clf.covariances_[i][0, 1]/(sigx*sigy)
         gaussian_params = weight, meanx, meany, sigx, sigy, rho
         gmm_em_result.extend(gaussian_params)
     return gmm_em_result
