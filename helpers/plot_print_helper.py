@@ -75,7 +75,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     from operator import itemgetter
     if 'sns' in globals():
-        prop_cycle = iter(sns.color_palette("hls", 8))
+        prop_cycle = iter(sns.color_palette("hls"))
     else:
         prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
