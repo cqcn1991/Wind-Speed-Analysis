@@ -63,13 +63,13 @@ def randomize_angle(df, DIR_REDISTRIBUTE, sector_span = 10):
     return df
 
 
-def randomize_speed(df, redistribute_method='round_up'):
+def randomize_speed(df, redistribute_method='up'):
     df = df.copy()
     # Round down speed, need more caution
-    if redistribute_method == 'round_up':
+    if redistribute_method == 'up':
         speed_redistribution_info = 'Redistribute upward, e.g. 0 -> [0,1]'
         df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(0,1)))
-    elif redistribute_method == 'round_down':
+    elif redistribute_method == 'down':
         speed_redistribution_info = 'Redistribute downward, e.g. 1 -> [0,1]'
         df['speed_ran'] = df['speed'].apply(lambda x: (x + np.random.uniform(-1,0)) if x > 0 else x)
     elif redistribute_method == 'even':
