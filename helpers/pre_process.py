@@ -1,4 +1,3 @@
-from __future__ import division
 from .shared_imports import *
 from .plot_print_helper import plt_configure
 
@@ -18,7 +17,6 @@ def is_with_too_many_zero(df, threshold=1.5):
 
 
 def realign_direction(df, effective_column):
-    # df = df.copy()
     if len(effective_column) == 16:
         # For some dataset, the angle is not evenly distributed, so there is a need to redistribute
         original_angle = list(effective_column.sort_index().index)
@@ -34,13 +32,15 @@ def fill_direction_999(df, SECTOR_LENGTH):
     df['wind_type'].value_counts().plot(
         kind='bar', title='Wind Types Comprisement', figsize=(4, 3))
 
-    fig = plt.figure()
-    bins = arange(0, df.dir.max() + 100, 10)
-    df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='before interpolation')
-    df['dir'] = df.apply(lambda x: np.nan if x.dir == 999 else x.dir, axis=1)
-    df['dir'] = df['dir'].interpolate() // SECTOR_LENGTH * SECTOR_LENGTH
-    df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='after interpolation')
-    plt_configure(title='Dir 999 record handling comparison', figsize=(8, 3), legend={'loc': 'best'})
+    if len(df.query('dir == 999') >= 100):
+        fig = plt.figure()
+        bins = arange(0, df.dir.max() + 100, 10)
+        df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='before interpolation')
+        df['dir'] = df.apply(lambda x: np.nan if x.dir == 999 else x.dir, axis=1)
+        # Force to integer direction interval
+        df['dir'] = df['dir'].interpolate() // SECTOR_LENGTH * SECTOR_LENGTH
+        df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='after interpolation')
+        plt_configure(title='Dir 999 record handling comparison', figsize=(8, 3), legend={'loc': 'best'})
     return df
 
 

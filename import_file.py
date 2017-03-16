@@ -17,12 +17,11 @@ set_matplotlib_formats('png', 'pdf')
 
 
 # Module Imports
-from helpers.core import *
 from helpers.app_helper import *
 from helpers.gmm_helper import *
 from helpers.plot_print_helper import *
 from helpers.data_reader import *
-from helpers.sector_compare import *
+from helpers.post_process import *
 from helpers.pre_process import *
 from lib.lib_loader import *
 
@@ -32,3 +31,4 @@ from scipy import integrate
 from sklearn import mixture, neighbors
 from math import ceil as ceil
 from windrose import WindroseAxes, WindAxes
+from scipy.stats import weibull_min

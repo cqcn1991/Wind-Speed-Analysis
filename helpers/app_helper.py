@@ -1,5 +1,10 @@
-from __future__ import division
 from .shared_imports import *
+
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i+n]
 
 
 def myround(x, base=5):

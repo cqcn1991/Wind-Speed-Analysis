@@ -1,4 +1,3 @@
-from __future__ import division
 from .shared_imports import *
 
 
@@ -31,9 +30,9 @@ def plot_sectoral_comparison(gmm, weibull, direction, datasize):
     _, weibull_mean = nominal_avg_and_weight_avg(datasize, weibull)
 
     line, = plt.plot(direction, gmm, '-', label = 'GMM', marker='o')
-    plt.axhline(gmm_mean, linestyle='--', color = line.get_color(), label ='GMM weighted average')
+    plt.axhline(gmm_mean, linestyle='-', color = line.get_color(), label ='GMM weighted average')
 
-    line,= plt.plot(direction, weibull, '-', label = 'Weibull', marker='o')
+    line,= plt.plot(direction, weibull, '--', label = 'Weibull', marker='o')
     plt.axhline(weibull_mean, linestyle='--', color = line.get_color(), label ='Weibull weighted average')
     plt_configure(xlabel='Direction',
                   legend={'loc':'best'},figsize=(4.5, 2.5))

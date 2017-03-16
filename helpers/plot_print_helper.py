@@ -74,16 +74,16 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
 
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
     from operator import itemgetter
-    if 'sns' in globals():
-        prop_cycle = iter(sns.color_palette("hls"))
-    else:
-        prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
     print('GMM Plot Result')
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
+    if 'sns' in globals():
+        prop_cycle = iter(sns.color_palette("hls", len(gmm)))
+    else:
+        prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     for i, g in enumerate(gmm):
         xy_mean = np.matrix([g[1], g[2]])
         sigx, sigy, sigxy = g[3], g[4], g[5]*g[3]*g[4]
@@ -123,7 +123,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
 
 def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None):
-    if speed_limit == None:
+    if speed_limit is None:
         speed_limit = df_speed.max()
     prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     plt.subplot(1, 2, 1)

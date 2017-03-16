@@ -1,14 +1,8 @@
-from __future__ import division
 from .shared_imports import *
 
 
-def myfunc(x):
-    from math import sqrt
-    return sqrt(x)
-
-
 def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, config):
-    from .core import fit_gmm
+    from .gmm_helper import fit_gmm
     from .app_helper import goodness_of_fit_summary
     bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
     sub_df, sub_df_test = df.iloc[train_index], df.iloc[test_index]
@@ -31,7 +25,7 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
 
 
 def resampled_fitting(df, fit_method, gaussian_number, config):
-    from .core import fit_gmm
+    from .gmm_helper import fit_gmm
     df_resampled = df.sample(frac=1, replace=True)
     result = fit_gmm(df_resampled, fit_method=fit_method,
                      config=config, number_of_gaussian=gaussian_number)
