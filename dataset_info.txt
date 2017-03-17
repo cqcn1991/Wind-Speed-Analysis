@@ -39,6 +39,7 @@
 # ipath= "./data/NCDC/cn/yueyang/dat.txt" # 16 sectors, possible problem data, some direction may be blocked
 
 ## US dataset, is mostly truncate, low wind speed is not complete
+# ipath= "./data/NCDC/us/sheboygan/dat.txt" # untruncate us dataset, but recent 5 year maybe corrupted
 # ipath= './data/NCDC/us/newark/dat.txt' # truncate, m/s is still problematic
 # ipath= "./data/NCDC/us/sacramento_arp/dat.txt"
 # ipath= './data/NCDC/us/newark/dat.txt'
