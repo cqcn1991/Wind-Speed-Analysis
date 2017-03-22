@@ -125,10 +125,7 @@ def generate_mean_std_gof(gof_result_groups):
 
 def get_location_name(file_path):
     file_name = file_path.split('/')[-1]
-    if 'dat' in file_name:
-        location_name = file_path.split('/')[-2]
-    else:
-        location_name = file_name.split('.txt')[0]
+    location_name = file_path.split('/')[-2]
     return location_name
 
 

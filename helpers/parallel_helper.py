@@ -36,6 +36,7 @@ def direction_compare(gmm, df, angle, incre):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
     mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
+
     def f(V, theta):
         return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
 
@@ -48,9 +49,9 @@ def direction_compare(gmm, df, angle, incre):
 
     density_, division = np.histogram(sub_df['speed'],bins=bins)
     density = density_/len(df)
-    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+1],[angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
+    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+1], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
                         for x_ in bins[:-1]]
     density_expected = array(list(zip(*density_expected_ ))[0])
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
-          'density': density, 'density_expected': density_expected}
+              'density': density, 'density_expected': density_expected}
     return curves
