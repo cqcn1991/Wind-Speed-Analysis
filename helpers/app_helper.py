@@ -134,3 +134,19 @@ def generate_Z_from_X_Y(X,Y, Z_func):
     coords=np.array((XX.ravel(), YY.ravel())).T
     Z = Z_func(coords).reshape(XX.shape)
     return Z
+
+
+def fit_weibull_and_ecdf(df_speed, x=None):
+    from scipy.stats import weibull_min
+    max_speed = df_speed.max()
+    if x is None:
+        x = linspace(0, max_speed, 20)
+    # Fit Weibull
+    k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
+    y_weibull = weibull_min.pdf(x, *weibull_params)
+    y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)  # Weibull cdf
+    # Fit Ecdf
+    ecdf = sm.distributions.ECDF(df_speed)
+    y_ecdf = ecdf(x)
+    return x, y_weibull, y_cdf_weibull, weibull_params, y_ecdf
+

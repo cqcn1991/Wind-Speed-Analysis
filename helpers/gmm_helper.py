@@ -130,3 +130,15 @@ def fit_gmm(df, fit_method, config, number_of_gaussian = 3, ):
         'gmm_pdf_result': gmm_pdf_result,
         'number_of_iteration': result.nit,
     }
+
+
+def gmm_integration_in_direction(f, start_radian, end_radian, x):
+    from scipy import integrate
+    direction_prob = integrate.nquad(f, [[0, inf], [start_radian, end_radian]])[0]
+    y_gmm_ = [integrate.nquad(f, [[x_-0.01, x_+0.01], [start_radian, end_radian]])
+             for x_ in x]
+    y_gmm = array(list(zip(*y_gmm_))[0])/direction_prob/0.02
+    y_ =[integrate.nquad(f, [[0, x_val],[start_radian, end_radian]])
+         for x_val in x]
+    y_cdf_gmm = array(list(zip(*y_))[0])/direction_prob
+    return x, y_gmm, y_cdf_gmm, direction_prob
