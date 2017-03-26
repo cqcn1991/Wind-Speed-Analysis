@@ -1,6 +1,5 @@
 from IPython.display import display, HTML, Javascript
 from .my_toc.loader import *
-from .output_and_hide.loader import *
 
 
 def align_figures():

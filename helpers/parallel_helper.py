@@ -45,11 +45,12 @@ def direction_compare(gmm, df, angle, incre):
     sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
     data_size = len(sub_df.speed)
 
-    bins = arange(0, sub_df.speed.max()+1)
+    bin_width = 1
+    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
 
-    density_, division = np.histogram(sub_df['speed'],bins=bins)
+    density_, division = np.histogram(sub_df['speed'], bins=bins)
     density = density_/len(df)
-    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+1], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
+    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
                         for x_ in bins[:-1]]
     density_expected = array(list(zip(*density_expected_ ))[0])
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),

@@ -18,13 +18,17 @@ The method is based on:
 
 Left: Empirical PDF, Right: Model PDF
 
-### 2. Sectoral Comparison
+### 2. Speed and Direction Distribution Comparison
+
+![](./docs/speed_direction_distribution.png)
+
+### 3. Sectoral Comparison
 
 ![](./docs/sectoral_comparison.png)
 
 Left: Histogram vs. Model, Middle: Empirical vs. Model CDF, Right: Weibull ECDF Vs. Model CDF
 
-### 3. Live Demo
+### 4. Live Demo
 
 The above results are avaiable at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html
@@ -104,15 +108,6 @@ After installing Anaconda, there are still some additional packages you need to 
 Just run these in your command line to install them
 
     pip install -r requirements.txt
-
-or
-
-    pip install seaborn # https://github.com/mwaskom/seaborn/
-    pip install windrose # https://github.com/scls19fr/windrose
-    pip install jsmin # https://github.com/tikitu/jsmin
-    pip install joblib
-
-
 
 ### 3. Download the current repo
 
