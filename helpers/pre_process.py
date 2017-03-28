@@ -32,7 +32,7 @@ def fill_direction_999(df, SECTOR_LENGTH):
     df['wind_type'].value_counts().plot(
         kind='bar', title='Wind Types Comprisement', figsize=(4, 3))
 
-    if len(df.query('dir == 999')) >= 100:
+    if len(df.query('dir == 999')) >= 1:
         fig = plt.figure()
         bins = arange(0, df.dir.max() + 100, 10)
         df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='before interpolation')

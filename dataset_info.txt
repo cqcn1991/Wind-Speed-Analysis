@@ -27,6 +27,7 @@
 # ipath= "./data/NCDC/europe/gran_canaria/dat.txt" # problem
 # ipath= "./data/NCDC/europe/tenerife_norte/dat.txt" # truncate
 # ipath= './data/NCDC/europe/tenerife_sur/dat.txt'  # recent year speed wired
+# file_path= "./data/NCDC/europe/diepholz/dat.txt" # recent year is integer with less data, use m/s
 
 # ipath= "./data/NCDC/oceania/brisbane/dat.txt" # time too short
 
