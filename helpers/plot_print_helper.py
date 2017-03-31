@@ -11,13 +11,15 @@ def pdf_comparison(X, Y, kde_Z, pdf_Z):
         plot_2d_prob_density(X, Y, pdf_Z, colorbar=False)
 
 
-def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False, no_axis=False):
+def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False, no_axis=False, xunit_text=None):
     if ax == None :
         ax=plt.gca()
         plt.suptitle(title)
     else:
         ax.set_title(title)
     if xlabel:
+        if xunit_text:
+            xlabel=xlabel+xunit_text
         ax.set_xlabel(xlabel)
     if ylabel:
         ax.set_ylabel(ylabel)
@@ -57,14 +59,14 @@ def plot_3d_prob_density(X, Y, Z, ax=None):
     plt.gca().set_aspect('equal')
 
 
-def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_lim=None, colorbar=True):
+def plot_2d_prob_density(X, Y, Z, xlabel='', ylabel='', ax=None, colorbar_lim=None, colorbar=True):
     from matplotlib import ticker
     # contourf accept vmin, vmax
     if ax is None:
         ax = plt.gca()
     CS = ax.contourf(X, Y, Z, 10, alpha=.75, cmap='viridis')
     ax.set_aspect('equal')
-    plt_configure(ax=ax,xlabel=xlabel, ylabel=ylabel)
+    plt_configure(ax=ax, xlabel=xlabel, ylabel=ylabel)
     if colorbar:
         cb = plt.colorbar(CS)
         tick_locator = ticker.MaxNLocator(nbins=6)
@@ -72,7 +74,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel = '', ylabel = '', ax=None, colorbar_li
         cb.update_ticks()
 
 
-def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
+def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)'):
     from operator import itemgetter
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
@@ -118,11 +120,10 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
 
     ax.autoscale()
     ax.set_aspect('equal')
-    plt_configure(xlabel='x', ylabel='y',legend={'loc':'best'})
-    # plt.show()
+    plt_configure(xlabel=xlabel, ylabel=ylabel, legend={'loc':'best'})
 
 
-def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None):
+def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None, speed_unit_text='', dir_unit_text=''):
     if speed_limit is None:
         speed_limit = df_speed.max()
     prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
@@ -130,12 +131,12 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=No
     bins = np.arange(0, speed_limit + 1, 1)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
-    plt_configure(xlabel="Speed", ylabel="Frequency", tight='y')
+    plt_configure(xlabel="Speed"+speed_unit_text, ylabel="Frequency", tight='y')
 
     plt.subplot(1, 2, 2)
     bins = np.arange(-5, df_dir.max()+10, 10)
     df_dir.hist(bins=bins, color=next(prop_cycle))
-    plt_configure(xlabel="Direction", ylabel="Frequency", tight='xtight')
+    plt_configure(xlabel="Direction"+dir_unit_text, ylabel="Frequency", tight='xtight')
     plt.gcf().set_size_inches(10, 1.2)
     plt.locator_params(axis='y', nbins=5)
     if title:
@@ -162,9 +163,10 @@ def gof_df(gmm_pdf_result, kde_result):
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 
 
-def check_time_shift(df):
+def check_time_shift(df, speed_unit_text='', dir_unit_text=''):
     from .app_helper import myround
-    speed_limit = df.speed.max()
+    # speed_limit = df.speed.max()
+    speed_limit = 40
     init_time = myround(df.date.min() // 10000, 5) * 10000
     for start_time in range(init_time, 20160000, 50000):
         end_time = min(start_time + 50000, df.date.max()+ 10000)
@@ -172,7 +174,8 @@ def check_time_shift(df):
         if len(sub_df) > 0 :
             title = '%s - %s' %(sub_df.date.min()//10000, sub_df.date.max()//10000)
             print(title)
-            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit)
+            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit,
+                                              speed_unit_text=speed_unit_text, dir_unit_text=dir_unit_text)
 
 
 

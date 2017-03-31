@@ -113,10 +113,10 @@ def fit_gmm(df, fit_method, config, number_of_gaussian = 3, ):
     result = sp.optimize.minimize(
         lambda x0: GMM_fit_score(x0, kde_result, points, method=fit_method),
         x0,
-        bounds = bonds,
-        constraints = cons,
-        tol = 0.000000000001,
-        options = {"maxiter": 500})
+        bounds=bonds,
+        constraints=cons,
+        tol=0.000000000001,
+        options={"maxiter": 500})
 
     # 4. Returns
     gmm = group_gmm_param_from_gmm_param_array(result.x)
