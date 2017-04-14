@@ -137,11 +137,26 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=No
     bins = np.arange(-5, df_dir.max()+10, 10)
     df_dir.hist(bins=bins, color=next(prop_cycle))
     plt_configure(xlabel="Direction"+dir_unit_text, ylabel="Frequency", tight='xtight')
-    plt.gcf().set_size_inches(10, 1.2)
+    plt.gcf().set_size_inches(7, 1.7)
+    plt.tight_layout()
     plt.locator_params(axis='y', nbins=5)
     if title:
         plt.suptitle(title, y=1.08)
     plt.show()
+
+
+def check_time_shift(df, speed_unit_text='', dir_unit_text=''):
+    from .app_helper import myround
+    speed_limit = min(40, df.speed.max())
+    init_time = myround(df.date.min() // 10000, 5) * 10000
+    for start_time in range(init_time, 20160000, 50000):
+        end_time = min(start_time + 50000, df.date.max() + 10000)
+        sub_df = df.query('(date >= @start_time) & (date < @end_time)')
+        if len(sub_df) > 0:
+            title = '%s - %s' % (sub_df.date.min() // 10000, sub_df.date.max() // 10000)
+            print(title)
+            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit,
+                                              speed_unit_text=speed_unit_text, dir_unit_text=dir_unit_text)
 
 
 def pretty_print_gmm(gmm):
@@ -163,19 +178,7 @@ def gof_df(gmm_pdf_result, kde_result):
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 
 
-def check_time_shift(df, speed_unit_text='', dir_unit_text=''):
-    from .app_helper import myround
-    # speed_limit = df.speed.max()
-    speed_limit = 40
-    init_time = myround(df.date.min() // 10000, 5) * 10000
-    for start_time in range(init_time, 20160000, 50000):
-        end_time = min(start_time + 50000, df.date.max()+ 10000)
-        sub_df = df.query('(date >= @start_time) & (date < @end_time)')
-        if len(sub_df) > 0 :
-            title = '%s - %s' %(sub_df.date.min()//10000, sub_df.date.max()//10000)
-            print(title)
-            plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit,
-                                              speed_unit_text=speed_unit_text, dir_unit_text=dir_unit_text)
+
 
 
 
