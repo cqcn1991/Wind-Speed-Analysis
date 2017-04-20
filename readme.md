@@ -40,7 +40,7 @@ https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_
 
 ## Gallery
 
-Here is how the method applies to different places across the world.
+Here is how the method applies to different places across the world. Weibull is the traditional model, listed for comparison.
 
 ![](./docs/gallery/minneapolis_pdf.png)
 
