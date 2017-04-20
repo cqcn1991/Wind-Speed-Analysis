@@ -3,7 +3,7 @@
 *.xlsm
 *.csv
 data/*
-#output_HTML/*
+output_HTML/*
 Variable Inspector.ipynb
 
 .DS_Store
