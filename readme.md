@@ -1,4 +1,4 @@
-# A Joint Probability Model for Wind Speed and Direction (Gaussian Mixture Models)
+# A Probability Model for the Joint Distribution of Wind Speed and Direction (Gaussian Mixture Models, GMM)
 
 ## What is this?
 
@@ -12,62 +12,81 @@ The method is based on:
 
 ## Fitting Effect
 
+Take Shanghai Hongqiao Intl as an example
+
 ### 1. PDF (Probability Density Function) Comparison
 
-![](./docs/gallery/marham.png)
+![](./docs/shanghai_pdf_comparison.png)
 
 Left: Empirical PDF, Right: Model PDF
 
 ### 2. Speed and Direction Distribution Comparison
 
-![](./docs/speed_direction_distribution.png)
+![](./docs/shanghai_speed_dir_distribution.png)
+
+Histogram vs. Model
 
 ### 3. Sectoral Comparison
 
-![](./docs/sectoral_comparison.png)
+![](./docs/shanghai_sectoral_comparison.png)
 
-Left: Histogram vs. Model, Middle: Empirical vs. Model CDF, Right: Weibull ECDF Vs. Model CDF
+Left: Histogram vs. Model, Right: Empirical vs. Model CDF
 
 ### 4. Live Demo
 
 The above results are avaiable at
-https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html
+https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html
 , along with other analysis.
 
 ## Gallery
 
-Here is how the method analysis different locations across the world.
-You can use the code toggle button and sidebar to navigate these reports.
+Here is how the method applies to different places across the world.
 
-![](./docs/gallery/navigate_tip.gif)
+![](./docs/gallery/minneapolis_pdf.png)
 
-![](./docs/gallery/marham.png)
+![](./docs/gallery/minneapolis_speed_dir.png)
 
-[Marham, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/marham.html)
+[Minneapolis, USA](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/minneapolis.html)
 
-![](./docs/gallery/tiree.png)
+![](./docs/gallery/tiree_pdf.png)
+
+![](./docs/gallery/tiree_speed_dir.png)
 
 [Tiree, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/tiree.html)
 
-![](./docs/gallery/vatry.png)
+![](./docs/gallery/pau_pdf.png)
 
-[Vatry, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/vatry.html)
+![](./docs/gallery/pau_speed_dir.png)
 
-![](./docs/gallery/landsberg_lech.png)
+[Pau Pyrenees, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/pau_pyrenees.html)
+
+![](./docs/gallery/landsberg_pdf.png)
+
+![](./docs/gallery/landsberg_speed_dir.png)
 
 [Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
 
-![](./docs/gallery/luogang.png)
+![](./docs/gallery/luogang_pdf.png)
 
-[Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/luogang.html)
+![](./docs/gallery/luogang_speed_dir.png)
 
-![](./docs/gallery/shanghai_hongqiao.png)
+[Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hefei_luogang.html)
 
-[Shanghai, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html)
+![](./docs/gallery/al_maktoum_pdf.png)
 
-![](./docs/gallery/paya_lebar.png)
+![](./docs/gallery/al_maktoum_speed_dir.png)
 
-[Paya Lebar, Singapore](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/paya_lebar.html)
+[Al_Maktoum, United Arab Emirates](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/al_maktoum.html)
+
+![](./docs/gallery/boston_16nm_pdf.png)
+
+![](./docs/gallery/boston_16nm_speed_dir.png)
+
+[Boston 16 NM East, USA (Offshore)](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/boston_16nm.html)
+
+You can use the code toggle button and sidebar to navigate these reports.
+
+![](./docs/gallery/navigate_tip.gif)
 
 ## The Probability Model
 
