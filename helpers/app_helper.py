@@ -7,6 +7,22 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
+def get_lat_long(file_path):
+    import os
+    # Find stn file
+    file_dir = file_path.rsplit('/', 1)[0] + '/'
+    for file in os.listdir(file_dir):
+        if file.endswith("stn.txt"):
+            stn_file_path = file_dir + file
+    # Get lat, lng
+    with open(stn_file_path) as fp:
+        for i, line in enumerate(fp):
+            if i == 2:
+                lat, long = line.split()[-3:-1]
+    lat, long = float(lat), float(long)
+    return lat, long
+
+
 def myround(x, base=5):
     import math
     return int(base * math.floor(float(x)/base))

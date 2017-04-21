@@ -32,3 +32,4 @@ from sklearn import mixture, neighbors
 from math import ceil as ceil
 from windrose import WindroseAxes, WindAxes
 from scipy.stats import weibull_min
+import folium

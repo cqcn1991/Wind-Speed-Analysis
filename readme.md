@@ -34,7 +34,7 @@ Left: Histogram vs. Model, Right: Empirical vs. Model CDF
 
 ### 4. Live Demo
 
-The above results are avaiable at
+The above results are available at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html
 , along with other analysis.
 
@@ -42,47 +42,55 @@ https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_
 
 Here is how the method applies to different places across the world. Weibull is the traditional model, listed for comparison.
 
+### 1. North America
+
+#### [Minneapolis, USA](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/minneapolis.html)
+
 ![](./docs/gallery/minneapolis_pdf.png)
 
 ![](./docs/gallery/minneapolis_speed_dir.png)
 
-[Minneapolis, USA](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/minneapolis.html)
-
-![](./docs/gallery/tiree_pdf.png)
-
-![](./docs/gallery/tiree_speed_dir.png)
-
-[Tiree, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/tiree.html)
-
-![](./docs/gallery/pau_pdf.png)
-
-![](./docs/gallery/pau_speed_dir.png)
-
-[Pau Pyrenees, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/pau_pyrenees.html)
-
-![](./docs/gallery/landsberg_pdf.png)
-
-![](./docs/gallery/landsberg_speed_dir.png)
-
-[Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
-
-![](./docs/gallery/luogang_pdf.png)
-
-![](./docs/gallery/luogang_speed_dir.png)
-
-[Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hefei_luogang.html)
-
-![](./docs/gallery/al_maktoum_pdf.png)
-
-![](./docs/gallery/al_maktoum_speed_dir.png)
-
-[Al_Maktoum, United Arab Emirates](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/al_maktoum.html)
+#### [Boston 16 NM East, USA (Offshore)](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/boston_16nm.html)
 
 ![](./docs/gallery/boston_16nm_pdf.png)
 
 ![](./docs/gallery/boston_16nm_speed_dir.png)
 
-[Boston 16 NM East, USA (Offshore)](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/boston_16nm.html)
+### 2. Europe
+
+####[Tiree, UK](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/tiree.html)
+
+![](./docs/gallery/tiree_pdf.png)
+
+![](./docs/gallery/tiree_speed_dir.png)
+
+#### [Pau Pyrenees, France](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/pau_pyrenees.html)
+
+![](./docs/gallery/pau_pdf.png)
+
+![](./docs/gallery/pau_speed_dir.png)
+
+#### [Landsberg Lech, Germany](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/landsberg_lech.html)
+
+![](./docs/gallery/landsberg_pdf.png)
+
+![](./docs/gallery/landsberg_speed_dir.png)
+
+### 3. East Asia
+
+#### [Luogang, China](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hefei_luogang.html)
+
+![](./docs/gallery/luogang_pdf.png)
+
+![](./docs/gallery/luogang_speed_dir.png)
+
+### 4. Mid East
+
+#### [Al Maktoum Intl, United Arab Emirates](https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/al_maktoum.html)
+
+![](./docs/gallery/al_maktoum_pdf.png)
+
+![](./docs/gallery/al_maktoum_speed_dir.png)
 
 You can use the code toggle button and sidebar to navigate these reports.
 
@@ -140,4 +148,4 @@ If you have any question, you could post it at [issue](https://github.com/cqcn19
 
 ## Acknowledgement
 
-This work would be impossible without the help from Harris and Cook. Thank you!
+This work would be impossible without the help from Cook and Harris. Thank you!

@@ -2,3 +2,4 @@ seaborn
 windrose
 jsmin
 joblib
+folium
