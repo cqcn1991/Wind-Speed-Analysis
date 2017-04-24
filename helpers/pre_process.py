@@ -7,10 +7,6 @@ def is_with_too_many_zero(df, threshold=1.5):
     bins = arange(0, df.speed.max())
     count, _ = np.histogram(df['speed'], bins=bins)
     null_wind_frequency = count[0]/len(df)
-    # if count[0]/count[1] >= threshold:
-    #     df['speed'].plot(kind='hist', bins=bins, alpha=0.5)
-    #     plt_configure(figsize=(4, 3), title='Original speed distribution')
-    #     print(' Too many zeros')
     if null_wind_frequency >= 0.1:
         too_many_zero = True
     return too_many_zero, null_wind_frequency

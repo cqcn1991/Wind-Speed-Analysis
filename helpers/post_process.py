@@ -21,11 +21,12 @@ def sector_r_square(density, density_expected):
 
 
 def nominal_avg_and_weight_avg(df_weight, df_value):
-    return np.average(df_value), np.sum(df_weight / df_weight.sum() * df_value)
+    return np.average(df_value), np.sum(df_weight/df_weight.sum() * df_value)
 
 
 def plot_sectoral_comparison(gmm, weibull, direction, datasize):
     from .plot_print_helper import plt_configure
+    # Weighted average by datasize at each direction
     _, gmm_mean = nominal_avg_and_weight_avg(datasize, gmm)
     _, weibull_mean = nominal_avg_and_weight_avg(datasize, weibull)
 
