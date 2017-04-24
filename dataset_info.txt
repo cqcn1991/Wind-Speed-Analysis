@@ -1,5 +1,8 @@
 ## Problem datasets
 
+file_path= './data/NCDC/europe/greece/elefsis/dat.txt' # bad dataset
+
+
 # ipath= "./data/NCDC/canada/fort_smith/dat.txt" # truncate, initial data very high
 # ipath= "./data/NCDC/canada/moosonee_awos/dat.txt" # truncate, many irregular sample time
 # ipath= "./data/NCDC/canada/hay_rivier_a/dat.txt" # truncate

@@ -1,0 +1,3 @@
+USAF-WBAN_ID STATION NAME                   COUNTRY                                            STATE 			      LATITUDE LONGITUDE ELEVATION
+------------ ------------------------------ -------------------------------------------------- ------------------------------ -------- --------- ---------
+992420 99999 BOSTON 16 NM EAST OF BOSTON  M UNITED STATES                                                                      +42.350  -070.690   +0000.0

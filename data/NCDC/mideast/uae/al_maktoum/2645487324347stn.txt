@@ -1,0 +1,3 @@
+USAF-WBAN_ID STATION NAME                   COUNTRY                                            STATE 			      LATITUDE LONGITUDE ELEVATION
+------------ ------------------------------ -------------------------------------------------- ------------------------------ -------- --------- ---------
+411945 99999 AL MAKTOUM INTL AIRPORT        UNITED ARAB EMIRATES                                                               +24.886  +055.172   +0018.9
