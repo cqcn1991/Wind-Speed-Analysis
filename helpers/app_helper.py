@@ -166,3 +166,22 @@ def fit_weibull_and_ecdf(df_speed, x=None):
     y_ecdf = ecdf(x)
     return x, y_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
+
+def R_square_for_speed(df_speed, f_gmm, weibull_params, f_gmm_em):
+    from .post_process import sector_r_square
+    bins = arange(0, df_speed.max() + 1)
+    density, _ = np.histogram(df_speed, bins=bins, normed=True)
+
+    density_expected_gmm_ = [sp.integrate.nquad(f_gmm, [[x_, x_ + 1], [0, 2 * pi]]) for x_ in bins[:-1]]
+    density_expected_gmm = array(list(zip(*density_expected_gmm_))[0])
+    R_square_gmm = sector_r_square(density, density_expected_gmm)
+
+    density_expected_gmm_em_ = [sp.integrate.nquad(f_gmm_em, [[x_, x_ + 1], [0, 2 * pi]]) for x_ in bins[:-1]]
+    density_expected_gmm_em = array(list(zip(*density_expected_gmm_em_))[0])
+    R_square_gmm_em = sector_r_square(density, density_expected_gmm_em)
+
+    density_expected_weibull = sp.stats.weibull_min.cdf(bins[1:], *weibull_params) - \
+                               sp.stats.weibull_min.cdf(bins[:-1], *weibull_params)
+    R_square_weibull = sector_r_square(density, density_expected_weibull)
+
+    return R_square_gmm, R_square_weibull, R_square_gmm_em

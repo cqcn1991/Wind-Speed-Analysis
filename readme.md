@@ -38,9 +38,21 @@ The above results are available at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html
 , along with other analysis.
 
+## Application
+
+This model can be used to obtain the wind speed distribution, wind direction distribution and the joint distribution of wind speed and direction distribution with good accuracy.
+
+Its potential applications include:
+
+1. Wind energy evaluation, wind resource assessment (long term). For example, the optimization of wind farm layout.
+
+2. Wind load analysis on structures, such as fatigue analysis. For example, the wind load on highrise buidings.
+
+3. Pedestrian-level wind environment assessment.
+
 ## Gallery
 
-Here is how the method applies to different places across the world. Weibull is the traditional model, listed for comparison.
+Here is how the method applies to different places across the world. The Weibull distribution is listed as the traditional model for comparison.
 
 ### 1. North America
 
