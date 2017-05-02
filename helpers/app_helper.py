@@ -162,8 +162,7 @@ def fit_weibull_and_ecdf(df_speed, x=None):
     y_weibull = weibull_min.pdf(x, *weibull_params)
     y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)  # Weibull cdf
     # Fit Ecdf
-    ecdf = sm.distributions.ECDF(df_speed)
-    y_ecdf = ecdf(x)
+    y_ecdf = sm.distributions.ECDF(df_speed)(x)
     return x, y_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 

@@ -32,6 +32,16 @@ def resampled_fitting(df, fit_method, gaussian_number, config):
     return result
 
 
+def resampled_kde(df, kde_result, config):
+    from .app_helper import goodness_of_fit_summary
+    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
+    df_resampled = df.sample(frac=1, replace=True)
+    speed_resampled = array(list(zip(df_resampled.x, df_resampled.y)))
+    kde2 = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(speed_resampled)
+    kde_result2 = exp(kde2.score_samples(points))
+    return goodness_of_fit_summary(kde_result2, kde_result)
+
+
 def direction_compare(gmm, df, angle, incre):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
