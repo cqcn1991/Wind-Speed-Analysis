@@ -148,7 +148,7 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=No
 def check_time_shift(df, speed_unit_text='', dir_unit_text=''):
     from .app_helper import myround
     speed_limit = min(40, df.speed.max())
-    init_time = myround(df.date.min() // 10000, 5) * 10000
+    init_time = (myround(df.date.min() // 10000, 5)+1) * 10000
     for start_time in range(init_time, 20160000, 50000):
         end_time = min(start_time + 50000, df.date.max() + 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
