@@ -7,6 +7,13 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
+def dir_hist(df_dir, bins=arange(-5, 370, 10), density=False):
+    density, bins = np.histogram(df_dir, bins=bins, density=density)
+    density[0] = density[0] + density[-1]
+    density = density[:-1]
+    return density, bins
+
+
 def get_lat_long(file_path):
     import os
     # Find stn file

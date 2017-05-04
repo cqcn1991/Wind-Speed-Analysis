@@ -42,6 +42,16 @@ def resampled_kde(df, kde_result, config):
     return goodness_of_fit_summary(kde_result2, kde_result)
 
 
+def kde_gofs(df_all_years, start_year, end_year, kde_result_standard, config):
+    from .app_helper import goodness_of_fit_summary
+    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
+    df_previous = df_all_years[str(start_year):str(end_year)]
+    speed_previous = array(list(zip(df_previous.x, df_previous.y)))
+    kde2 = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(speed_previous)
+    kde_result2 = exp(kde2.score_samples(points))
+    return goodness_of_fit_summary(kde_result2, kde_result_standard)
+
+
 def direction_compare(gmm, df, angle, incre):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
@@ -127,12 +137,6 @@ def direction_compare2(gmm, df, angle, incre, complex=False):
     return curves
 
 
-def try_plot(y):
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    x=arange(1,10)
-    ax.plot(x, x*y)
-    return fig
 
 
 
