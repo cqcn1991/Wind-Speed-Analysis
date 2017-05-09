@@ -7,7 +7,7 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-def dir_hist(df_dir, bins=arange(-5, 370, 10), density=False):
+def dir_hist(df_dir, bins=arange(-5, 375, 10), density=False):
     density, bins = np.histogram(df_dir, bins=bins, density=density)
     density[0] = density[0] + density[-1]
     density = density[:-1]
@@ -159,6 +159,35 @@ def generate_Z_from_X_Y(X,Y, Z_func):
     return Z
 
 
+def fit_kde(df, config):
+    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
+    speed_ = array(list(zip(df.x, df.y)))
+    kde = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(speed_)
+    kde_result = exp(kde.score_samples(points))
+    return kde_result, kde
+
+
+def empirical_marginal_distribution(df, x, degs=arange(-5, 375, 10)):
+    bins = x
+    density_speed, _ = np.histogram(df['speed'], bins=bins, density=True)
+    y_ecdf = sm.distributions.ECDF(df['speed'])(x)
+    density_dir, _ = dir_hist(df['dir'], bins=degs, density=True)
+    return x, degs, density_speed, y_ecdf, density_dir
+
+
+def fit_weibull(df_speed, x, weibull_params=None):
+    from scipy.stats import weibull_min
+    if not weibull_params:
+        k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
+    bins = x
+    y_weibull = weibull_min.pdf(x, *weibull_params)
+    k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
+    density_expected_weibull = sp.stats.weibull_min.cdf(bins[1:], *weibull_params) - \
+                               sp.stats.weibull_min.cdf(bins[:-1], *weibull_params)
+    y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
+    return weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull
+
+
 def fit_weibull_and_ecdf(df_speed, x=None):
     from scipy.stats import weibull_min
     max_speed = df_speed.max()
@@ -191,3 +220,6 @@ def R_square_for_speed(df_speed, f_gmm, weibull_params, f_gmm_em):
     R_square_weibull = sector_r_square(density, density_expected_weibull)
 
     return R_square_gmm, R_square_weibull, R_square_gmm_em
+
+
+

@@ -27,38 +27,33 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
 def resampled_fitting(df, fit_method, gaussian_number, config):
     from .gmm_helper import fit_gmm
     df_resampled = df.sample(frac=1, replace=True)
-    result = fit_gmm(df_resampled, fit_method=fit_method,
-                     config=config, number_of_gaussian=gaussian_number)
+    result = fit_gmm(df_resampled, fit_method=fit_method, number_of_gaussian=gaussian_number,
+                     config=config)
     return result
 
 
 def resampled_kde(df, kde_result, config):
-    from .app_helper import goodness_of_fit_summary
-    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
+    from .app_helper import goodness_of_fit_summary, fit_kde
     df_resampled = df.sample(frac=1, replace=True)
-    speed_resampled = array(list(zip(df_resampled.x, df_resampled.y)))
-    kde2 = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(speed_resampled)
-    kde_result2 = exp(kde2.score_samples(points))
+    kde_result2, _ = fit_kde(df_resampled, config)
     return goodness_of_fit_summary(kde_result2, kde_result)
 
 
-def kde_gofs(df_all_years, start_year, end_year, kde_result_standard, config):
-    from .app_helper import goodness_of_fit_summary
-    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
-    df_previous = df_all_years[str(start_year):str(end_year)]
-    speed_previous = array(list(zip(df_previous.x, df_previous.y)))
-    kde2 = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(speed_previous)
-    kde_result2 = exp(kde2.score_samples(points))
+def kde_gofs(df_previous,  kde_result_standard, config):
+    from .app_helper import goodness_of_fit_summary, fit_kde
+    kde_result2, _ = fit_kde(df_previous, config)
     return goodness_of_fit_summary(kde_result2, kde_result_standard)
 
 
-def direction_compare(gmm, df, angle, incre):
+def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
+    from .app_helper import goodness_of_fit_summary, fit_kde
+    kde_result_previous, _ = fit_kde(df_previous, config)
+    return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous)
+
+
+def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
-    mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
-
-    def f(V, theta):
-        return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
 
     angle_radian, incre_radian = radians(angle), radians(incre)
     start_angle, end_angle = angle-incre/2, angle+incre/2
@@ -70,9 +65,19 @@ def direction_compare(gmm, df, angle, incre):
 
     density_, division = np.histogram(sub_df['speed'], bins=bins)
     density = density_/len(df)
-    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
-                        for x_ in bins[:-1]]
-    density_expected = array(list(zip(*density_expected_ ))[0])
+
+    if not empirical:
+        mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
+        def f(V, theta):
+            return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
+        density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
+                            for x_ in bins[:-1]]
+        density_expected = array(list(zip(*density_expected_ ))[0])
+    else:
+        sub_df_previous, _ = select_df_by_angle(df_previous, start_angle, end_angle)
+        density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
+        density_expected = density_expected_ / len(df_previous)
+
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
               'density': density, 'density_expected': density_expected}
     return curves
