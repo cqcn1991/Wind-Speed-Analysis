@@ -38,7 +38,7 @@ The above results are available at
 https://cdn.rawgit.com/cqcn1991/Wind-Speed-Analysis/master/output_HTML/hongqiao_intl.html
 , along with other analysis.
 
-## Application
+## Applications
 
 This model can be used to obtain the wind speed distribution, wind direction distribution and the joint distribution of wind speed and direction distribution with good accuracy.
 

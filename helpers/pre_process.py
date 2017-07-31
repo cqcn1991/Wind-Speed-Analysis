@@ -22,7 +22,7 @@ def realign_direction(df, effective_column):
     return df
 
 
-def fill_direction_999(df, SECTOR_LENGTH):
+def fill_direction_999(df, SECTOR_LENGTH, integer_data):
     # df = df.copy()
     fig = plt.figure()
     df['wind_type'].value_counts().plot(
@@ -34,7 +34,10 @@ def fill_direction_999(df, SECTOR_LENGTH):
         df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='before interpolation')
         df['dir'] = df.apply(lambda x: np.nan if x.dir == 999 else x.dir, axis=1)
         # Force to integer direction interval
-        df['dir'] = df['dir'].interpolate() // SECTOR_LENGTH * SECTOR_LENGTH
+        if integer_data:
+            df['dir'] = df['dir'].interpolate() // SECTOR_LENGTH * SECTOR_LENGTH
+        else:
+            df['dir'] = df['dir'].interpolate()
         df['dir'].plot(kind='hist', alpha=0.5, bins=bins, label='after interpolation')
         plt_configure(title='Dir 999 record handling comparison', figsize=(8, 3), legend={'loc': 'best'})
     return df

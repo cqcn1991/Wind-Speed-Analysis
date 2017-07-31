@@ -123,12 +123,12 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)')
     plt_configure(xlabel=xlabel, ylabel=ylabel, legend={'loc':'best'})
 
 
-def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None, speed_unit_text='', dir_unit_text=''):
+def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=None, speed_unit_text='', dir_unit_text='', bin_width=1):
     if speed_limit is None:
         speed_limit = df_speed.max()
     prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     plt.subplot(1, 2, 1)
-    bins = np.arange(0, speed_limit + 1, 1)
+    bins = np.arange(0, speed_limit + bin_width, bin_width)
     df_speed.hist(bins=bins, color=next(prop_cycle))
     plt.locator_params(axis='y', nbins=5)
     plt_configure(xlabel="Speed"+speed_unit_text, ylabel="Frequency", tight='y')
@@ -145,18 +145,18 @@ def plot_speed_and_angle_distribution(df_speed, df_dir, title='', speed_limit=No
     plt.show()
 
 
-def check_time_shift(df, speed_unit_text='', dir_unit_text=''):
+def check_time_shift(df, speed_unit_text='', dir_unit_text='', bin_width=1):
     from .app_helper import myround
     speed_limit = min(40, df.speed.max())
     init_time = (myround(df.date.min() // 10000, 5)+1) * 10000
-    for start_time in range(init_time, 20160000, 50000):
+    for start_time in range(init_time, 20200000, 50000):
         end_time = min(start_time + 50000, df.date.max() + 10000)
         sub_df = df.query('(date >= @start_time) & (date < @end_time)')
         if len(sub_df) > 0:
             title = '%s - %s' % (sub_df.date.min() // 10000, sub_df.date.max() // 10000)
             print(title)
             plot_speed_and_angle_distribution(sub_df.speed, sub_df.dir, speed_limit=speed_limit,
-                                              speed_unit_text=speed_unit_text, dir_unit_text=dir_unit_text)
+                                              speed_unit_text=speed_unit_text, dir_unit_text=dir_unit_text, bin_width=bin_width)
 
 
 def pretty_print_gmm(gmm):

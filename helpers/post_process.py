@@ -14,9 +14,9 @@ def x_compare(y_ecdf, y_cdf_gmm, y_cdf_weibull, x):
 
 def sector_r_square(density, density_expected):
     y_mean = np.mean(density)
-    SS_tot = np.sum(np.power(density - y_mean, 2))
-    SS_res = np.sum(np.power(density - density_expected, 2))
-    R_square = 1 - SS_res / SS_tot
+    SS_tot = np.sum(power(density - y_mean, 2))
+    SS_res = np.sum(power(density - density_expected, 2))
+    R_square = 1 - SS_res/SS_tot
     return R_square
 
 

@@ -1,7 +1,18 @@
 ## Problem datasets
 
-file_path= './data/NCDC/europe/greece/elefsis/dat.txt' # bad dataset
+# file_path= './data/NCDC/mideast/iran/chahbahar/dat.txt'# no 0
+# file_path= './data/NCDC/mideast/iran/torbat_heydarieh/dat.txt' # Unusable
+# file_path= './data/NCDC/mideast/iran/zabol/dat.txt' # Problematic data, high 0
 
+# ipath= "./data/NCDC/south_america/carlos_ibanez/dat.txt" # bad dataset, direction
+# ipath= "./data/NCDC/south_america/rio_cuarto/dat.txt"  # bad dataset
+# ipath= "./data/NCDC/south_america/senador_nilo/dat.txt" # bad dataset, direction
+# ipath= "./data/NCDC/south_america/senador_petronio/dat.txt" # instable speed distribution
+# ipath= "./data/NCDC/south_america/ambrosio_lv/dat.txt" # truncate 16 sectors
+# file_path= './data/NCDC/south_america/venezuela/arturo/dat.txt' # 16 sector
+# file_path= './data/NCDC/south_america/venezuela/simon_bolivar_intl/dat.txt' # 16 sector
+
+file_path= './data/NCDC/europe/greece/elefsis/dat.txt' # bad dataset
 
 # ipath= "./data/NCDC/canada/fort_smith/dat.txt" # truncate, initial data very high
 # ipath= "./data/NCDC/canada/moosonee_awos/dat.txt" # truncate, many irregular sample time
@@ -17,9 +28,6 @@ file_path= './data/NCDC/europe/greece/elefsis/dat.txt' # bad dataset
 # ipath= "./data/NCDC/canada/baker_lake/dat.txt" # wrong data
 # ipath= "./data/NCDC/canada/rankin_inlet/dat.txt" # wrong data
 # ipath= "./data/NCDC/canada/deer_lake_a/dat.txt" # bad dataset
-
-# ipath= "./data/NCDC/south_america/senador_petronio/dat.txt" # instable speed distribution
-# ipath= "./data/NCDC/south_america/ambrosio_lv/dat.txt" # truncate 16 sectors
 
 # ipath= "./data/NCDC/uk/lakenheath/dat.txt" # many irregular sampling time, high 0
 # ipath= "./data/NCDC/uk/mildenhall/dat.txt" #  many irregular sampling time, high 0
@@ -56,9 +64,6 @@ file_path= './data/NCDC/europe/greece/elefsis/dat.txt' # bad dataset
 # ipath= "./data/NCDC/us/olympia_airport/2647036962786dat.txt"
 # ipath= "./data/NCDC/us/sidney/6062326959357dat.txt"
 
-# ipath= "./data/NCDC/south_america/carlos_ibanez/dat.txt" # bad dataset, direction
-# ipath= "./data/NCDC/south_america/rio_cuarto/dat.txt"  # bad dataset
-# ipath= "./data/NCDC/south_america/senador_nilo/dat.txt" # bad dataset, direction
 # ipath= "./data/NCDC/dr_ambedkar_intl/dat.txt" # Wrong data
 
 ---------------------

@@ -45,13 +45,27 @@ def kde_gofs(df_previous,  kde_result_standard, config):
     return goodness_of_fit_summary(kde_result2, kde_result_standard)
 
 
+def univar_gof(df_previous, density, y_ecdf, x, density_dir):
+    from .app_helper import empirical_marginal_distribution
+    from .post_process import sector_r_square
+    _, _, density_expected, y_ecdf_previous, density_dir_expected = empirical_marginal_distribution(df_previous, x)
+
+    # 1. Speed
+    r_square = sector_r_square(density, density_expected)
+    k_s = max(np.abs(y_ecdf - y_ecdf_previous))
+
+    # 2. Direction
+    r_square_dir = sector_r_square(density_dir, density_dir_expected)
+    return {'r_square': r_square, 'k_s': k_s, 'r_square_dir': r_square_dir}
+
+
 def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
     from .app_helper import goodness_of_fit_summary, fit_kde
     kde_result_previous, _ = fit_kde(df_previous, config)
     return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous)
 
 
-def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None):
+def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
 
@@ -60,7 +74,6 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None):
     sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
     data_size = len(sub_df.speed)
 
-    bin_width = 1
     bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
 
     density_, division = np.histogram(sub_df['speed'], bins=bins)
@@ -72,7 +85,7 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None):
             return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
         density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
                             for x_ in bins[:-1]]
-        density_expected = array(list(zip(*density_expected_ ))[0])
+        density_expected = array(list(zip(*density_expected_))[0])
     else:
         sub_df_previous, _ = select_df_by_angle(df_previous, start_angle, end_angle)
         density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
