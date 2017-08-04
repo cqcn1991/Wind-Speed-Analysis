@@ -3,3 +3,4 @@ windrose
 jsmin
 joblib
 folium
+lmoments3

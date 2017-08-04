@@ -132,13 +132,12 @@ def fit_gmm(df, fit_method, config, number_of_gaussian=3):
     }
 
 
-def gmm_marginal_distribution(f, x, rads=linspace(0, 2*pi, num=36+1)):
+def gmm_marginal_distribution(f, x, rads=linspace(0, 2*pi, num=36+1), bin_width=1):
     from scipy import integrate
-    bins = x
-    density_expected_gmm_ = [integrate.nquad(f, [[x_, x_ + 1], [0, 2 * pi]]) for x_ in bins[:-1]]
+    density_expected_gmm_ = [integrate.nquad(f, [[x_, x_+bin_width], [0, 2 * pi]]) for x_ in x[:-1]]
     density_speed_expected_gmm = array(list(zip(*density_expected_gmm_))[0])
 
-    y_ = [integrate.nquad(f, [[0, x_val], [0, 2 * pi]]) for x_val in x]
+    y_ = [integrate.nquad(f, [[0, x_val], [0, 2*pi]]) for x_val in x]
     y_cdf_gmm = array(list(zip(*y_))[0])
 
     y_ = [integrate.nquad(f, [[0, inf], [x_-pi/36, x_+pi/36]]) for x_ in rads]

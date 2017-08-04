@@ -32,5 +32,6 @@ from scipy import integrate
 from sklearn import mixture, neighbors
 from math import ceil as ceil
 from windrose import WindroseAxes, WindAxes
-from scipy.stats import weibull_min
+from scipy.stats import weibull_min, vonmises, beta
 import folium
+from lmoments3 import distr

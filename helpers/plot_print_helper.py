@@ -78,7 +78,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)')
     from operator import itemgetter
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
-    print('GMM Plot Result')
+    # print('GMM Plot Result')
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
@@ -105,7 +105,7 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)')
         xy_mean_in_uv = transform_matrix * xy_mean.T
 
         # print fraction, rotation agnle, u v mean(in standalone panel), std
-        print(g[0], xy_mean, np.sqrt(w), angle)
+        # print(g[0], xy_mean, np.sqrt(w), angle)
 
         color = next(prop_cycle)
         ell = mpl.patches.Ellipse(xy=xy_mean.T, width=2*np.sqrt(w[0]), height=2*np.sqrt(w[1]),
@@ -174,7 +174,7 @@ def pretty_print_gmm(gmm):
 def gof_df(gmm_pdf_result, kde_result):
     from .app_helper import goodness_of_fit_summary
     gof_df = pd.DataFrame([goodness_of_fit_summary(gmm_pdf_result, kde_result)])
-    gof_df = gof_df[['R_square', 'K_S','Chi_square', 'MSE', 'RMSE / Max', 'RMSE / Mean']]
+    gof_df = gof_df[['R_square', 'K_S','Chi_square', 'Chi_square_2', 'MSE', 'RMSE / Max', 'RMSE / Mean']]
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 
 

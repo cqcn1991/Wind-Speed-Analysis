@@ -50,26 +50,27 @@ def R_square_of(MSE, kde_result):
 
 
 def true_R_square(density_collection, datasize, params_num=24):
-    densities = []
-    densities_expected = []
+    densities = np.array([])
+    densities_expected = np.array([])
     bin_num = 0
     for density_curves in density_collection:
-        densities.extend(density_curves['density'])
-        densities_expected.extend(density_curves['density_expected'])
+        densities = np.concatenate([densities, density_curves['density']])
+        densities_expected =  np.concatenate([densities_expected, density_curves['density_expected']])
         bin_num = bin_num + ceil(density_curves['max_speed'])
     y_mean = np.mean(densities)
     SS_tot = np.sum(np.power(densities - y_mean, 2))
-    SS_res = np.sum(np.power(np.asarray(densities) - np.asarray(densities_expected), 2))
+    SS_res = np.sum(np.power(densities - densities_expected, 2))
     SS_tot_avg = SS_tot
     SS_res_avg = SS_res
 
     RMSE = sqrt(SS_res/bin_num)
-    MAE = np.sum(np.absolute(np.asarray(densities) - np.asarray(densities_expected)))/bin_num
-    IA = 1 - SS_res/(np.sum(power(np.absolute(np.asarray(densities) - y_mean) - np.absolute(np.asarray(densities_expected) - y_mean), 2)))
-    Chi_square = np.sum(power(1 - np.asarray(densities)/np.asarray(densities_expected), 2))
+    RRMSE = np.sum(power(1 - densities_expected, 2))
+    MAE = np.sum(np.absolute(densities - densities_expected))/bin_num
+    IA = 1 - SS_res/(np.sum(power(np.absolute(densities - y_mean) - np.absolute(densities_expected - y_mean), 2)))
+    Chi_square = np.sum(power(1 - densities/densities_expected, 2))
     adjust_R_square = 1 - (SS_res/(bin_num-params_num-1))/(SS_tot/(bin_num-1))
     R_square = 1 - SS_res_avg / SS_tot_avg
-    return RMSE*datasize, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
+    return RMSE*datasize, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
 
 
 def goodness_of_fit_summary(gmm_pdf_result, kde_result):
@@ -79,6 +80,7 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     RMSE = np.sqrt(MSE)
     R_square = R_square_of(MSE, kde_result)
     Chi_square = sum(error_array/gmm_pdf_result)
+    Chi_square_2 = sum(power(kde_result/gmm_pdf_result-1, 2))
 
     gmm_cdf = cdf_from_pdf(gmm_pdf_result)
     kde_cdf = cdf_from_pdf(kde_result)
@@ -89,6 +91,7 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
         'MSE': MSE,
         'R_square': R_square,
         'Chi_square': Chi_square,
+        'Chi_square_2': Chi_square_2,
         'K_S': KS_stat,
         'RMSE / Max': RMSE/np.max(kde_result),
         'RMSE / Mean': RMSE/np.mean(kde_result),
@@ -186,11 +189,10 @@ def fit_weibull(df_speed, x, weibull_params=None):
     from scipy.stats import weibull_min
     if not weibull_params:
         k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
-    bins = x
     y_weibull = weibull_min.pdf(x, *weibull_params)
     k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
-    density_expected_weibull = sp.stats.weibull_min.cdf(bins[1:], *weibull_params) - \
-                               sp.stats.weibull_min.cdf(bins[:-1], *weibull_params)
+    density_expected_weibull = sp.stats.weibull_min.cdf(x[1:], *weibull_params) - \
+                               sp.stats.weibull_min.cdf(x[:-1], *weibull_params)
     y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
     return weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull
 

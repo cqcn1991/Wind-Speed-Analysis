@@ -65,6 +65,33 @@ def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
     return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous)
 
 
+def angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params):
+    from scipy.stats import kappa4, vonmises
+    # 1. Speed
+    k, h, scale, loc = speed_params
+    x_pdf = kappa4.pdf(x, h, k, loc=loc, scale=scale)
+    x_cdf = kappa4.cdf(x, h, k, loc=loc, scale=scale)
+    # 2. Direction
+    alpha_pdf, alpha_cdf = 0, 0
+    for k, u, w in vonmises_params:
+        alpha_pdf = alpha_pdf + vonmises.pdf(alpha, k, loc=u, scale=1)*w
+        alpha_cdf = alpha_cdf + vonmises.cdf(alpha, k, loc=u, scale=1)*w
+    # 3. Connection
+    phi = 2*pi*(x_cdf-alpha_cdf)
+    phi_pdf = np.sum([vonmises.pdf(phi, k, loc=u, scale=1)*w for k, u, w in connection_params])
+    return 2*pi*x_pdf*alpha_pdf*phi_pdf
+
+
+def f_al_parallel(params, angle_radian, incre_radian, bins, bin_width):
+    speed_params, vonmises_params, connection_params= params
+    def f_al(x, alpha):
+        return angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params)
+    density_expected_al_ = [sp.integrate.nquad(f_al, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
+                             for x_ in bins[:-1]]
+    density_expected_al = array(list(zip(*density_expected_al_))[0])
+    return density_expected_al
+
+
 def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
@@ -90,6 +117,38 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, 
         sub_df_previous, _ = select_df_by_angle(df_previous, start_angle, end_angle)
         density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
         density_expected = density_expected_ / len(df_previous)
+
+    curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
+              'density': density, 'density_expected': density_expected}
+    return curves
+
+
+def al_direction_compare(al_params, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
+    from .app_helper import select_df_by_angle
+    from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
+
+    angle_radian, incre_radian = radians(angle), radians(incre)
+    start_angle, end_angle = angle-incre/2, angle+incre/2
+    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
+    data_size = len(sub_df.speed)
+
+    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
+
+    density_, division = np.histogram(sub_df['speed'], bins=bins)
+    density = density_/len(df)
+
+    if not empirical:
+        speed_params, vonmises_params, connection_params = al_params
+        def f_al(x, alpha):
+            return angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params)
+        density_expected_al_ = [sp.integrate.nquad(f_al, [[x_, x_ + bin_width], [angle_radian - incre_radian / 2, angle_radian + incre_radian / 2]])
+                                for x_ in bins[:-1]]
+        density_expected = array(list(zip(*density_expected_al_))[0])
+    else:
+        sub_df_previous, _ = select_df_by_angle(df_previous, start_angle, end_angle)
+        density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
+        density_expected = density_expected_ / len(df_previous)
+
 
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
               'density': density, 'density_expected': density_expected}
