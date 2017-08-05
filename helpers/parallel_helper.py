@@ -47,7 +47,7 @@ def kde_gofs(df_previous,  kde_result_standard, config):
 
 def univar_gof(df_previous, density, y_ecdf, x, density_dir):
     from .app_helper import empirical_marginal_distribution
-    from .post_process import sector_r_square
+    from helpers.app_helper import sector_r_square
     _, _, density_expected, y_ecdf_previous, density_dir_expected = empirical_marginal_distribution(df_previous, x)
 
     # 1. Speed
@@ -63,33 +63,6 @@ def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
     from .app_helper import goodness_of_fit_summary, fit_kde
     kde_result_previous, _ = fit_kde(df_previous, config)
     return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous)
-
-
-def angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params):
-    from scipy.stats import kappa4, vonmises
-    # 1. Speed
-    k, h, scale, loc = speed_params
-    x_pdf = kappa4.pdf(x, h, k, loc=loc, scale=scale)
-    x_cdf = kappa4.cdf(x, h, k, loc=loc, scale=scale)
-    # 2. Direction
-    alpha_pdf, alpha_cdf = 0, 0
-    for k, u, w in vonmises_params:
-        alpha_pdf = alpha_pdf + vonmises.pdf(alpha, k, loc=u, scale=1)*w
-        alpha_cdf = alpha_cdf + vonmises.cdf(alpha, k, loc=u, scale=1)*w
-    # 3. Connection
-    phi = 2*pi*(x_cdf-alpha_cdf)
-    phi_pdf = np.sum([vonmises.pdf(phi, k, loc=u, scale=1)*w for k, u, w in connection_params])
-    return 2*pi*x_pdf*alpha_pdf*phi_pdf
-
-
-def f_al_parallel(params, angle_radian, incre_radian, bins, bin_width):
-    speed_params, vonmises_params, connection_params= params
-    def f_al(x, alpha):
-        return angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params)
-    density_expected_al_ = [sp.integrate.nquad(f_al, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
-                             for x_ in bins[:-1]]
-    density_expected_al = array(list(zip(*density_expected_al_))[0])
-    return density_expected_al
 
 
 def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
@@ -125,7 +98,7 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, 
 
 def al_direction_compare(al_params, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
     from .app_helper import select_df_by_angle
-    from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
+    from .angular_linear import angular_linear_pdf
 
     angle_radian, incre_radian = radians(angle), radians(incre)
     start_angle, end_angle = angle-incre/2, angle+incre/2
@@ -158,7 +131,7 @@ def al_direction_compare(al_params, df, angle, incre, empirical=False, df_previo
 def direction_compare2(gmm, df, angle, incre, complex=False):
     from .app_helper import select_df_by_angle, fit_weibull_and_ecdf
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param, gmm_integration_in_direction
-    from .post_process import sector_r_square
+    from helpers.app_helper import sector_r_square
     mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
 
     def f(V, theta):

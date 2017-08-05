@@ -27,8 +27,7 @@ def read_gmm_em_result(clf):
 def create_gaussian_2d(meanx, meany, sigx, sigy, rho):
     from scipy.stats import multivariate_normal
     sigxy = rho*sigx*sigy
-    return multivariate_normal(mean=[meanx, meany],
-                               cov=[[sigx**2, sigxy], [sigxy, sigy**2]],
+    return multivariate_normal(mean=[meanx, meany], cov=[[sigx**2, sigxy], [sigxy, sigy**2]],
                                allow_singular=True)
 
 
@@ -51,8 +50,7 @@ def width_height_ratio(g):
     sigx, sigy, sigxy = g[3], g[4], g[5]*g[3]*g[4]
     cov_matrix = np.matrix([[sigx**2, sigxy], [sigxy, sigy**2]])
     w, v = np.linalg.eigh(cov_matrix)
-    a = np.sqrt(w[0])
-    b = np.sqrt(w[1])
+    a, b = np.sqrt(w[0]), np.sqrt(w[1])
     return a/b
 
 

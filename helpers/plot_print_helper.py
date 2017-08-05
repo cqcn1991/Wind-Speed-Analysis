@@ -1,5 +1,4 @@
 from .shared_imports import *
-from .gmm_helper import group_gmm_param_from_gmm_param_array
 
 
 def pdf_comparison(X, Y, kde_Z, pdf_Z):
@@ -76,6 +75,7 @@ def plot_2d_prob_density(X, Y, Z, xlabel='', ylabel='', ax=None, colorbar_lim=No
 
 def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)'):
     from operator import itemgetter
+    from .gmm_helper import group_gmm_param_from_gmm_param_array
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
     # print('GMM Plot Result')
@@ -178,7 +178,20 @@ def gof_df(gmm_pdf_result, kde_result):
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 
 
+def nominal_avg_and_weight_avg(df_weight, df_value):
+    return np.average(df_value), np.sum(df_weight/df_weight.sum() * df_value)
 
 
+def plot_sectoral_comparison(gmm, weibull, direction, datasize):
+    # Weighted average by datasize at each direction
+    _, gmm_mean = nominal_avg_and_weight_avg(datasize, gmm)
+    _, weibull_mean = nominal_avg_and_weight_avg(datasize, weibull)
 
+    line, = plt.plot(direction, gmm, '-', label = 'GMM', marker='o')
+    plt.axhline(gmm_mean, linestyle='-', color = line.get_color(), label ='GMM weighted average')
 
+    line,= plt.plot(direction, weibull, '--', label = 'Weibull', marker='o')
+    plt.axhline(weibull_mean, linestyle='--', color = line.get_color(), label ='Weibull weighted average')
+    plt_configure(xlabel='Direction (degree)', legend={'loc':'best'},figsize=(4, 2.5))
+    plt.locator_params(axis='y', nbins=5)
+    return gmm_mean, weibull_mean

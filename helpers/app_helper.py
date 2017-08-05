@@ -35,17 +35,14 @@ def myround(x, base=5):
     return int(base * math.floor(float(x)/base))
 
 
-def R_square_of(MSE, kde_result):
+def sector_r_square(density, density_expected):
     # R square measure:
     # https://en.wikipedia.org/wiki/Coefficient_of_determination
     # Measures Model-Observation variance against Observation-Average variance
-    y_mean = np.mean(kde_result)
-    SS_tot = np.power(kde_result - y_mean,2)
-    SS_tot_avg = np.average(SS_tot)
-
-    SS_res_avg = MSE
-    R_square = 1 - SS_res_avg/SS_tot_avg
-
+    y_mean = np.mean(density)
+    SS_tot = np.sum(power(density - y_mean, 2))
+    SS_res = np.sum(power(density - density_expected, 2))
+    R_square = 1 - SS_res/SS_tot
     return R_square
 
 
@@ -78,7 +75,7 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
 
     MSE = np.average(error_array)
     RMSE = np.sqrt(MSE)
-    R_square = R_square_of(MSE, kde_result)
+    R_square = sector_r_square(kde_result, gmm_pdf_result)
     Chi_square = sum(error_array/gmm_pdf_result)
     Chi_square_2 = sum(power(kde_result/gmm_pdf_result-1, 2))
 
@@ -190,9 +187,7 @@ def fit_weibull(df_speed, x, weibull_params=None):
     if not weibull_params:
         k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
     y_weibull = weibull_min.pdf(x, *weibull_params)
-    k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
-    density_expected_weibull = sp.stats.weibull_min.cdf(x[1:], *weibull_params) - \
-                               sp.stats.weibull_min.cdf(x[:-1], *weibull_params)
+    density_expected_weibull = weibull_min.cdf(x[1:], *weibull_params) - weibull_min.cdf(x[:-1], *weibull_params)
     y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
     return weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull
 
@@ -203,16 +198,14 @@ def fit_weibull_and_ecdf(df_speed, x=None):
     if x is None:
         x = linspace(0, max_speed, 20)
     # Fit Weibull, notice loc value 0 or not
-    k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
-    y_weibull = weibull_min.pdf(x, *weibull_params)
-    y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)  # Weibull cdf
+    weibull_params, y_weibull, _, y_cdf_weibull = fit_weibull(df_speed, x)
     # Fit Ecdf
     y_ecdf = sm.distributions.ECDF(df_speed)(x)
     return x, y_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 
 def R_square_for_speed(df_speed, f_gmm, weibull_params, f_gmm_em, bin_width=1):
-    from .post_process import sector_r_square
+    from scipy.stats import weibull_min
     bins = arange(0, df_speed.max()+bin_width, bin_width)
     density, _ = np.histogram(df_speed, bins=bins, density=True)
 
@@ -224,11 +217,9 @@ def R_square_for_speed(df_speed, f_gmm, weibull_params, f_gmm_em, bin_width=1):
     density_expected_gmm_em = array(list(zip(*density_expected_gmm_em_))[0])
     R_square_gmm_em = sector_r_square(density*bin_width, density_expected_gmm_em)
 
-    density_expected_weibull = sp.stats.weibull_min.cdf(bins[1:], *weibull_params) - \
-                               sp.stats.weibull_min.cdf(bins[:-1], *weibull_params)
+    density_expected_weibull = weibull_min.cdf(bins[1:], *weibull_params) - weibull_min.cdf(bins[:-1], *weibull_params)
     R_square_weibull = sector_r_square(density*bin_width, density_expected_weibull)
 
     return R_square_gmm, R_square_weibull, R_square_gmm_em
-
 
 
