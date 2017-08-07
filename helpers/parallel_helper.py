@@ -4,7 +4,7 @@ from .shared_imports import *
 def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, config):
     from .gmm_helper import fit_gmm
     from .app_helper import goodness_of_fit_summary
-    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
+    bandwidth, points, kde_kernel, bin_width = config['bandwidth'], config['fitting_range'], config['kde_kernel'], config['bin_width']
     sub_df, sub_df_test = df.iloc[train_index], df.iloc[test_index]
 
     # 1. Train
@@ -19,8 +19,8 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
     kde_test = neighbors.KernelDensity(bandwidth=bandwidth).fit(sample)
     kde_result_test = exp(kde_test.score_samples(points))
 
-    gof_train = goodness_of_fit_summary(gmm_pdf_result_train, kde_result_train)
-    gof_test = goodness_of_fit_summary(gmm_pdf_result_train, kde_result_test)
+    gof_train = goodness_of_fit_summary(gmm_pdf_result_train, kde_result_train, bin_width)
+    gof_test = goodness_of_fit_summary(gmm_pdf_result_train, kde_result_test, bin_width)
     return gof_train, gof_test
 
 
@@ -36,13 +36,13 @@ def resampled_kde(df, kde_result, config):
     from .app_helper import goodness_of_fit_summary, fit_kde
     df_resampled = df.sample(frac=1, replace=True)
     kde_result2, _ = fit_kde(df_resampled, config)
-    return goodness_of_fit_summary(kde_result2, kde_result)
+    return goodness_of_fit_summary(kde_result2, kde_result, config['bin_width'])
 
 
 def kde_gofs(df_previous,  kde_result_standard, config):
     from .app_helper import goodness_of_fit_summary, fit_kde
     kde_result2, _ = fit_kde(df_previous, config)
-    return goodness_of_fit_summary(kde_result2, kde_result_standard)
+    return goodness_of_fit_summary(kde_result2, kde_result_standard, config['bin_width'])
 
 
 def univar_gof(df_previous, density, y_ecdf, x, density_dir):
@@ -62,7 +62,7 @@ def univar_gof(df_previous, density, y_ecdf, x, density_dir):
 def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
     from .app_helper import goodness_of_fit_summary, fit_kde
     kde_result_previous, _ = fit_kde(df_previous, config)
-    return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous)
+    return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous, config['bin_width'])
 
 
 def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):

@@ -171,9 +171,9 @@ def pretty_print_gmm(gmm):
     return pretty_result.applymap(decimal_format)
 
 
-def gof_df(gmm_pdf_result, kde_result):
+def gof_df(gmm_pdf_result, kde_result, bin_width=1):
     from .app_helper import goodness_of_fit_summary
-    gof_df = pd.DataFrame([goodness_of_fit_summary(gmm_pdf_result, kde_result)])
+    gof_df = pd.DataFrame([goodness_of_fit_summary(gmm_pdf_result, kde_result, bin_width=bin_width)])
     gof_df = gof_df[['R_square', 'K_S','Chi_square', 'Chi_square_2', 'MSE', 'RMSE / Max', 'RMSE / Mean']]
     return gof_df.applymap(lambda x: "{0:.3f}".format(x) if x > 0.005 else x)
 

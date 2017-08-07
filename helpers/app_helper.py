@@ -70,7 +70,7 @@ def true_R_square(density_collection, datasize, params_num=24):
     return RMSE*datasize, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
 
 
-def goodness_of_fit_summary(gmm_pdf_result, kde_result):
+def goodness_of_fit_summary(gmm_pdf_result, kde_result, bin_width):
     error_array = np.power(gmm_pdf_result - kde_result, 2)
 
     MSE = np.average(error_array)
@@ -79,8 +79,8 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     Chi_square = sum(error_array/gmm_pdf_result)
     Chi_square_2 = sum(power(kde_result/gmm_pdf_result-1, 2))
 
-    gmm_cdf = cdf_from_pdf(gmm_pdf_result)
-    kde_cdf = cdf_from_pdf(kde_result)
+    gmm_cdf = cdf_from_pdf(gmm_pdf_result, bin_width)
+    kde_cdf = cdf_from_pdf(kde_result, bin_width)
     diff = abs(gmm_cdf - kde_cdf)
     KS_stat = np.amax(diff)
 
@@ -95,7 +95,7 @@ def goodness_of_fit_summary(gmm_pdf_result, kde_result):
     }
 
 
-def cdf_from_pdf(pdf):
+def cdf_from_pdf(pdf, bin_width=1):
     if not isinstance(pdf[0], np.ndarray):
         original_dim = int(np.sqrt(len(pdf)))
         pdf = pdf.reshape(original_dim, original_dim)
@@ -108,7 +108,7 @@ def cdf_from_pdf(pdf):
     for j in range(1, ydim):
         for i in range(1, xdim):
             cdf[i,j] = cdf[i-1,j] + cdf[i,j-1] - cdf[i-1,j-1] + pdf[i,j]
-    return cdf
+    return cdf*(bin_width**2)
 
 
 def select_df_by_angle(df, start_angle, end_angle):
