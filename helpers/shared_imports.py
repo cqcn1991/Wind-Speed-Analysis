@@ -14,6 +14,7 @@ from matplotlib.pyplot import plot as plot
 
 # Custom Import
 from sklearn import mixture, neighbors
+from scipy import integrate
 
 
 

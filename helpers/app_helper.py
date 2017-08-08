@@ -46,7 +46,7 @@ def sector_r_square(density, density_expected):
     return R_square
 
 
-def true_R_square(density_collection, datasize, params_num=24):
+def true_R_square(density_collection, datasize, max_speed, params_num=24):
     densities = np.array([])
     densities_expected = np.array([])
     bin_num = 0
@@ -61,13 +61,14 @@ def true_R_square(density_collection, datasize, params_num=24):
     SS_res_avg = SS_res
 
     RMSE = sqrt(SS_res/bin_num)
+    RMSE2 = SS_res
     RRMSE = np.sum(power(1 - densities_expected, 2))
     MAE = np.sum(np.absolute(densities - densities_expected))/bin_num
     IA = 1 - SS_res/(np.sum(power(np.absolute(densities - y_mean) - np.absolute(densities_expected - y_mean), 2)))
     Chi_square = np.sum(power(1 - densities/densities_expected, 2))
     adjust_R_square = 1 - (SS_res/(bin_num-params_num-1))/(SS_tot/(bin_num-1))
     R_square = 1 - SS_res_avg / SS_tot_avg
-    return RMSE*datasize, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
+    return RMSE*datasize, RMSE2, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
 
 
 def goodness_of_fit_summary(gmm_pdf_result, kde_result, bin_width):
@@ -122,18 +123,18 @@ def select_df_by_angle(df, start_angle, end_angle):
     return sub_df, sub_max_speed
 
 
-def max_count_for_histogram(data):
-    count, div = np.histogram(data, bins=np.arange(0, data.max()))
+def max_count_for_histogram(data, bin_width):
+    count, div = np.histogram(data, bins=np.arange(0, data.max()+bin_width, bin_width))
     max_count = count.max()
     return max_count
 
 
-def max_count_for_angles(df, start, end, incre):
+def max_count_for_angles(df, start, end, incre, bin_width):
     max_count_group = []
     for angle in arange(start, end, incre):
         start_angle, end_angle = angle-incre/2, angle+incre/2
         sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-        sub_max_count = max_count_for_histogram(sub_df.speed)
+        sub_max_count = max_count_for_histogram(sub_df.speed, bin_width)
         max_count_group.append(sub_max_count)
     return max(max_count_group)
 
@@ -193,33 +194,15 @@ def fit_weibull(df_speed, x, weibull_params=None):
 
 
 def fit_weibull_and_ecdf(df_speed, x=None):
-    from scipy.stats import weibull_min
     max_speed = df_speed.max()
     if x is None:
         x = linspace(0, max_speed, 20)
     # Fit Weibull, notice loc value 0 or not
-    weibull_params, y_weibull, _, y_cdf_weibull = fit_weibull(df_speed, x)
+    weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull = fit_weibull(df_speed, x)
     # Fit Ecdf
     y_ecdf = sm.distributions.ECDF(df_speed)(x)
-    return x, y_weibull, y_cdf_weibull, weibull_params, y_ecdf
+    return x, y_weibull, density_expected_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 
-def R_square_for_speed(df_speed, f_gmm, weibull_params, f_gmm_em, bin_width=1):
-    from scipy.stats import weibull_min
-    bins = arange(0, df_speed.max()+bin_width, bin_width)
-    density, _ = np.histogram(df_speed, bins=bins, density=True)
-
-    density_expected_gmm_ = [sp.integrate.nquad(f_gmm, [[x_, x_+bin_width], [0, 2*pi]]) for x_ in bins[:-1]]
-    density_expected_gmm = array(list(zip(*density_expected_gmm_))[0])
-    R_square_gmm = sector_r_square(density*bin_width, density_expected_gmm)
-
-    density_expected_gmm_em_ = [sp.integrate.nquad(f_gmm_em, [[x_, x_+bin_width], [0, 2*pi]]) for x_ in bins[:-1]]
-    density_expected_gmm_em = array(list(zip(*density_expected_gmm_em_))[0])
-    R_square_gmm_em = sector_r_square(density*bin_width, density_expected_gmm_em)
-
-    density_expected_weibull = weibull_min.cdf(bins[1:], *weibull_params) - weibull_min.cdf(bins[:-1], *weibull_params)
-    R_square_weibull = sector_r_square(density*bin_width, density_expected_weibull)
-
-    return R_square_gmm, R_square_weibull, R_square_gmm_em
 
 

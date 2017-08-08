@@ -65,17 +65,20 @@ def gmm_gofs_in_previous(df_previous, gmm_pdf_result, config):
     return goodness_of_fit_summary(gmm_pdf_result, kde_result_previous, config['bin_width'])
 
 
+def sub_df_at_angle(df, angle, incre, bin_width):
+    from .app_helper import select_df_by_angle
+    start_angle, end_angle = angle-incre/2, angle+incre/2
+    start_radian, end_radian = np.radians([start_angle, end_angle])
+    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
+    data_size = len(sub_df.speed)
+    bins = arange(0, sub_max_speed + bin_width, bin_width)
+    return sub_df, bins, start_radian, end_radian, data_size
+
+
 def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
     from .app_helper import select_df_by_angle
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
-
-    angle_radian, incre_radian = radians(angle), radians(incre)
-    start_angle, end_angle = angle-incre/2, angle+incre/2
-    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-    data_size = len(sub_df.speed)
-
-    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
-
+    sub_df, bins, start_radian, end_radian, data_size = sub_df_at_angle(df, angle, incre, bin_width)
     density_, division = np.histogram(sub_df['speed'], bins=bins)
     density = density_/len(df)
 
@@ -83,11 +86,10 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, 
         mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
         def f(V, theta):
             return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
-        density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
-                            for x_ in bins[:-1]]
-        density_expected = array(list(zip(*density_expected_))[0])
+        density_expected = array([integrate.nquad(f, [[x_, x_+bin_width], [start_radian, end_radian]])
+                                  for x_ in bins[:-1]])[:, 0]
     else:
-        sub_df_previous, _ = select_df_by_angle(df_previous, start_angle, end_angle)
+        sub_df_previous, _ = select_df_by_angle(df_previous, angle-incre/2, angle+incre/2)
         density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
         density_expected = density_expected_ / len(df_previous)
 
@@ -97,90 +99,54 @@ def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, 
 
 
 def al_direction_compare(al_params, df, angle, incre, bin_width=1):
-    from .app_helper import select_df_by_angle
-    from .angular_linear import angular_linear_pdf
-
-    angle_radian, incre_radian = radians(angle), radians(incre)
-    start_angle, end_angle = angle-incre/2, angle+incre/2
-    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-    data_size = len(sub_df.speed)
-
-    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
-
+    from .angular_linear import generate_al_pdf_from
+    sub_df, bins, start_radian, end_radian, data_size = sub_df_at_angle(df, angle, incre, bin_width)
     density_, division = np.histogram(sub_df['speed'], bins=bins)
     density = density_/len(df)
 
     speed_params, vonmises_params, connection_params = al_params
-    def f_al(x, alpha):
-        return angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params)
-    density_expected_al_ = [sp.integrate.nquad(f_al, [[x_, x_ + bin_width], [angle_radian - incre_radian / 2, angle_radian + incre_radian / 2]])
-                            for x_ in bins[:-1]]
-    density_expected = array(list(zip(*density_expected_al_))[0])
+    f_al = generate_al_pdf_from(speed_params, vonmises_params, connection_params)
+    density_expected_al = array([integrate.nquad(f_al, [[x_, x_ + bin_width], [start_radian, end_radian]])
+                                 for x_ in bins[:-1]])[:, 0]
 
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
-              'density': density, 'density_expected': density_expected}
+              'density': density, 'density_expected': density_expected_al}
     return curves
 
 
-def empirical_direction(df, angle, incre, bin_width=1):
-    from .app_helper import select_df_by_angle
-
-    start_angle, end_angle = angle-incre/2, angle+incre/2
-    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-    data_size = len(sub_df.speed)
-    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
-
-    density_, division = np.histogram(sub_df['speed'], bins=bins)
-    density = density_/len(df)
-
-    curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(), 'bins': bins,
-              'density': density}
-    return curves
-
-
-def gmm_direction(gmm, df, angle, incre, bin_width=1):
-    from .app_helper import select_df_by_angle
+def gmm_weibull_empirical_direction(gmm, df, angle, incre, bin_width=1):
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param, gmm_integration_in_direction
+    from .app_helper import fit_weibull_and_ecdf
+    sub_df, bins, start_radian, end_radian, _ = sub_df_at_angle(df, angle, incre, bin_width)
 
-    angle_radian, incre_radian = radians(angle), radians(incre)
-    start_angle, end_angle = angle-incre/2, angle+incre/2
-    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
+    density, _ = np.histogram(sub_df['speed'], bins=bins, density=True)
+    _, y_weibull, density_expected_weibull, y_cdf_weibull, _, y_ecdf = fit_weibull_and_ecdf(sub_df.speed, bins)
 
     mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
     def f(V, theta):
         return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
+    _, y_gmm, y_cdf_gmm, direction_prob = gmm_integration_in_direction(f, start_radian, end_radian, bins, bin_width)
 
-    _, y_gmm, y_cdf_gmm, direction_prob = gmm_integration_in_direction(f, angle_radian - incre_radian / 2,
-                                                                       angle_radian + incre_radian / 2, x)
-
-    density_expected_ =[sp.integrate.nquad(f, [[x_, x_+bin_width], [angle_radian-incre_radian/2, angle_radian+incre_radian/2]])
-                        for x_ in bins[:-1]]
-    density_expected = array(list(zip(*density_expected_))[0])
-
-    curves = {'angle': angle,  'bins': bins,
-              'density_expected': density_expected, 'y_gmm': y_gmm, 'y_cdf_gmm': y_cdf_gmm, 'direction_prob': direction_prob}
+    curves = {'angle': angle,  'bins': bins, 'y_ecdf': y_ecdf, 'density': density,
+              'y_weibull': y_weibull, 'density_expected_weibull': density_expected_weibull, 'y_cdf_weibull': y_cdf_weibull,
+              'density_expected_gmm': y_gmm, 'y_cdf_gmm': y_cdf_gmm, 'direction_prob': direction_prob}
     return curves
 
 
 def al_direction(al_params, df, angle, incre, bin_width=1):
-    from .app_helper import select_df_by_angle
-    from .angular_linear import angular_linear_pdf
-
-    angle_radian, incre_radian = radians(angle), radians(incre)
-    start_angle, end_angle = angle-incre/2, angle+incre/2
-    sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
-    bins = arange(0, sub_df.speed.max()+bin_width, bin_width)
-
+    from .angular_linear import generate_al_pdf_from, al_integration_in_direction
+    sub_df, bins, start_radian, end_radian, _ = sub_df_at_angle(df, angle, incre, bin_width)
     speed_params, dir_params, connection_params = al_params
-    def f_al(x, alpha):
-        return angular_linear_pdf(x, alpha, speed_params, dir_params, connection_params)
-    density_expected_al_ = [sp.integrate.nquad(f_al, [[x_, x_ + bin_width], [angle_radian - incre_radian / 2, angle_radian + incre_radian / 2]])
-                            for x_ in bins[:-1]]
-    density_expected = array(list(zip(*density_expected_al_))[0])
+    f_al = generate_al_pdf_from(speed_params, dir_params, connection_params)
+    _, density_expected, y_cdf, direction_prob = al_integration_in_direction(f_al, start_radian,
+                                                                                 end_radian, bins, bin_width)
 
-    curves = {'angle': angle, 'density_expected': density_expected, 'bins': bins}
+    curves = {'angle': angle,
+              'y_al': density_expected, 'y_cdf_al': y_cdf, 'direction_prob': direction_prob }
     return curves
+
+
+
 
 
 

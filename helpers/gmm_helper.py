@@ -132,26 +132,24 @@ def fit_gmm(df, fit_method, config, number_of_gaussian=3):
 
 def gmm_marginal_distribution(f, x, rads=linspace(0, 2*pi, num=36+1), bin_width=1):
     from scipy import integrate
-    density_expected_gmm_ = [integrate.nquad(f, [[x_, x_+bin_width], [0, 2 * pi]]) for x_ in x[:-1]]
-    density_speed_expected_gmm = array(list(zip(*density_expected_gmm_))[0])
-
-    y_ = [integrate.nquad(f, [[0, x_val], [0, 2*pi]]) for x_val in x]
-    y_cdf_gmm = array(list(zip(*y_))[0])
-
-    y_ = [integrate.nquad(f, [[0, inf], [x_-pi/36, x_+pi/36]]) for x_ in rads]
-    density_dir_expected = array(list(zip(*y_))[0])
+    density_speed_expected_gmm = array([integrate.nquad(f, [[x_, x_+bin_width], [0, 2*pi]])
+                                        for x_ in x[:-1]])[:, 0]
+    y_cdf_gmm = array([integrate.nquad(f, [[0, x_val], [0, 2*pi]])
+                       for x_val in x])[:, 0]
+    density_dir_expected = array([integrate.nquad(f, [[0, inf], [x_-pi/36, x_+pi/36]])
+                                  for x_ in rads])[:, 0]
     return x, rads, density_speed_expected_gmm, y_cdf_gmm, density_dir_expected
 
 
-def gmm_integration_in_direction(f, start_radian, end_radian, x):
+def gmm_integration_in_direction(f, start_radian, end_radian, bins, bin_width=1):
     from scipy import integrate
     direction_prob = integrate.nquad(f, [[0, inf], [start_radian, end_radian]])[0]
-    y_gmm_ = [integrate.nquad(f, [[x_-0.01, x_+0.01], [start_radian, end_radian]])
-             for x_ in x]
-    y_gmm = array(list(zip(*y_gmm_))[0])/direction_prob/0.02
-    y_ =[integrate.nquad(f, [[0, x_val],[start_radian, end_radian]])
-         for x_val in x]
-    y_cdf_gmm = array(list(zip(*y_))[0])/direction_prob
-    return x, y_gmm, y_cdf_gmm, direction_prob
+    y_gmm_ = array([integrate.nquad(f, [[x_, x_ + bin_width], [start_radian, end_radian]])
+        for x_ in bins[:-1]])[:, 0]
+    y_gmm = y_gmm_/direction_prob/bin_width
+
+    y_cdf_gmm = array([integrate.nquad(f, [[0, x_], [start_radian, end_radian]])
+         for x_ in bins])[:, 0]/direction_prob
+    return bins, y_gmm, y_cdf_gmm, direction_prob
 
 

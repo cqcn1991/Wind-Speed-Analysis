@@ -182,16 +182,16 @@ def nominal_avg_and_weight_avg(df_weight, df_value):
     return np.average(df_value), np.sum(df_weight/df_weight.sum() * df_value)
 
 
-def plot_sectoral_comparison(gmm, weibull, direction, datasize):
-    # Weighted average by datasize at each direction
-    _, gmm_mean = nominal_avg_and_weight_avg(datasize, gmm)
-    _, weibull_mean = nominal_avg_and_weight_avg(datasize, weibull)
+def plot_sectoral_comparison(vals, direction, datasize):
+    means = []
+    line_styles = ['-', '--', '-.']
+    for v, line_style in zip(vals, line_styles):
+        # Weighted average by datasize at each direction
+        _, mean = nominal_avg_and_weight_avg(datasize, v['value'])
+        line, = plt.plot(direction, v['value'], line_style, label=v['name'], marker='o')
+        plt.axhline(mean, linestyle=line_style, color=line.get_color(), label=v['name'] + ' weighted average')
+        means.append(mean)
 
-    line, = plt.plot(direction, gmm, '-', label = 'GMM', marker='o')
-    plt.axhline(gmm_mean, linestyle='-', color = line.get_color(), label ='GMM weighted average')
-
-    line,= plt.plot(direction, weibull, '--', label = 'Weibull', marker='o')
-    plt.axhline(weibull_mean, linestyle='--', color = line.get_color(), label ='Weibull weighted average')
-    plt_configure(xlabel='Direction (degree)', legend={'loc':'best'},figsize=(4, 2.5))
+    plt_configure(xlabel='Direction (degree)', legend={'loc': 'best'}, figsize=(4, 2.5))
     plt.locator_params(axis='y', nbins=5)
-    return gmm_mean, weibull_mean
+    return means
