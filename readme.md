@@ -158,6 +158,18 @@ If you want additional data, you can find them at http://www.ncdc.noaa.gov/
 
 If you have any question, you could post it at [issue](https://github.com/cqcn1991/Wind-Speed-Analysis/issues), or mail me at 38306608#qq.com
 
+### 5. R configuration (optional)
+
+The program now uses some R packages to fit von Mises mixture model. You can either delete related code, or install R and Rpy 2 to enable this feature. Specifically: 
+
+- Install R and R studio from [https://cran.r-project.org/](https://cran.r-project.org/) and [https://www.rstudio.com](https://www.rstudio.com) 
+
+- Install R packge movMF from [https://cran.r-project.org/web/packages/movMF/index.html](https://cran.r-project.org/web/packages/movMF/index.html), by running `install.packages("movMF")` in R studio
+
+- Install Rpy2 for running R with Python
+
+    - For Windows, see [https://stackoverflow.com/questions/14882477/rpy2-install-on-windows-7](https://stackoverflow.com/questions/14882477/rpy2-install-on-windows-7)
+
 ## Acknowledgement
 
 This work would be impossible without the help from Cook and Harris. Thank you!
