@@ -115,7 +115,7 @@ def cdf_from_pdf(pdf, bin_width=1):
 def select_df_by_angle(df, start_angle, end_angle):
     start_angle, end_angle = start_angle%360, end_angle%360
     if start_angle > end_angle:
-        sub_df = df.query('(dir >= @start_angle) & (dir <= 360)|(dir >= 0) & (dir <= @end_angle)')
+        sub_df = df.query('(dir >= @start_angle) & (dir <= 360)|(dir >= 0) & (dir < @end_angle)')
     else:
         sub_df = df.query('(dir >= @start_angle) & (dir < @end_angle)')
     sub_max_speed = sub_df.speed.max()
@@ -176,9 +176,10 @@ def fit_kde(df, config):
 
 
 def empirical_marginal_distribution(df, x, degs=arange(-5, 375, 10)):
+    from statsmodels.distributions.empirical_distribution import ECDF
     bins = x
     density_speed, _ = np.histogram(df['speed'], bins=bins, density=True)
-    y_ecdf = sm.distributions.ECDF(df['speed'])(x)
+    y_ecdf = ECDF(df['speed'])(x)
     density_dir, _ = dir_hist(df['dir'], bins=degs, density=True)
     return x, degs, density_speed, y_ecdf, density_dir
 
@@ -194,13 +195,14 @@ def fit_weibull(df_speed, x, weibull_params=None):
 
 
 def fit_weibull_and_ecdf(df_speed, x=None):
+    from statsmodels.distributions.empirical_distribution import ECDF
     max_speed = df_speed.max()
     if x is None:
         x = linspace(0, max_speed, 20)
     # Fit Weibull, notice loc value 0 or not
     weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull = fit_weibull(df_speed, x)
     # Fit Ecdf
-    y_ecdf = sm.distributions.ECDF(df_speed)(x)
+    y_ecdf = ECDF(df_speed)(x)
     return x, y_weibull, density_expected_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 
