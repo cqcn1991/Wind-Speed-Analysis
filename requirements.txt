@@ -4,3 +4,4 @@ jsmin
 joblib
 folium
 lmoments3
+papermill

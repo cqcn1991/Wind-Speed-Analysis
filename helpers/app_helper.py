@@ -46,7 +46,7 @@ def sector_r_square(density, density_expected):
     return R_square
 
 
-def true_R_square(density_collection, datasize, max_speed, params_num=24):
+def true_R_square(density_collection, datasize, params_num=24):
     densities = np.array([])
     densities_expected = np.array([])
     bin_num = 0
@@ -64,11 +64,12 @@ def true_R_square(density_collection, datasize, max_speed, params_num=24):
     RMSE2 = SS_res
     RRMSE = np.sum(power(1 - densities_expected, 2))
     MAE = np.sum(np.absolute(densities - densities_expected))/bin_num
-    IA = 1 - SS_res/(np.sum(power(np.absolute(densities - y_mean) - np.absolute(densities_expected - y_mean), 2)))
-    Chi_square = np.sum(power(1 - densities/densities_expected, 2))
+    # IA = 1 - SS_res/(np.sum(power(np.absolute(densities - y_mean) - np.absolute(densities_expected - y_mean), 2)))
+    # Chi_square = np.sum(power(1 - densities/densities_expected, 2))
     adjust_R_square = 1 - (SS_res/(bin_num-params_num-1))/(SS_tot/(bin_num-1))
     R_square = 1 - SS_res_avg / SS_tot_avg
-    return RMSE*datasize, RMSE2, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
+    # return RMSE*datasize, RMSE2, RRMSE, MAE*datasize, IA, Chi_square, adjust_R_square, R_square
+    return RMSE*datasize, RMSE2, RRMSE, MAE*datasize, adjust_R_square, R_square
 
 
 def goodness_of_fit_summary(gmm_pdf_result, kde_result, bin_width):

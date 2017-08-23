@@ -75,23 +75,32 @@ def sub_df_at_angle(df, angle, incre, bin_width):
     return sub_df, bins, start_radian, end_radian, data_size
 
 
-def direction_compare(gmm, df, angle, incre, empirical=False, df_previous=None, bin_width=1):
-    from .app_helper import select_df_by_angle
+def direction_compare(gmm, df, angle, incre, bin_width=1):
     from .gmm_helper import generate_gmm_pdf_from_grouped_gmm_param
     sub_df, bins, start_radian, end_radian, data_size = sub_df_at_angle(df, angle, incre, bin_width)
     density_, division = np.histogram(sub_df['speed'], bins=bins)
     density = density_/len(df)
 
-    if not empirical:
-        mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
-        def f(V, theta):
-            return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
-        density_expected = array([integrate.nquad(f, [[x_, x_+bin_width], [start_radian, end_radian]])
-                                  for x_ in bins[:-1]])[:, 0]
-    else:
-        sub_df_previous, _ = select_df_by_angle(df_previous, angle-incre/2, angle+incre/2)
-        density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
-        density_expected = density_expected_ / len(df_previous)
+    mixed_model_pdf = generate_gmm_pdf_from_grouped_gmm_param(gmm)
+    def f(V, theta):
+        return (mixed_model_pdf([[V * cos(theta), V * sin(theta)]])) * V
+    density_expected = array([integrate.nquad(f, [[x_, x_+bin_width], [start_radian, end_radian]])
+                              for x_ in bins[:-1]])[:, 0]
+
+    curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
+              'density': density, 'density_expected': density_expected}
+    return curves
+
+
+def emp_direction_compare(df_previous, df, angle, incre, bin_width=1):
+    from .app_helper import select_df_by_angle
+    sub_df, bins, start_radian, end_radian, data_size = sub_df_at_angle(df, angle, incre, bin_width)
+    density_, division = np.histogram(sub_df['speed'], bins=bins)
+    density = density_/len(df)
+
+    sub_df_previous, _ = select_df_by_angle(df_previous, angle-incre/2, angle+incre/2)
+    density_expected_, division = np.histogram(sub_df_previous['speed'], bins=bins)
+    density_expected = density_expected_ / len(df_previous)
 
     curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
               'density': density, 'density_expected': density_expected}
