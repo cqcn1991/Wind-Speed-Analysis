@@ -1,19 +1,20 @@
 from .shared_imports import *
 
 
-def pdf_comparison(X, Y, kde_Z, pdf_Z):
-    fig = plt.figure(figsize=(6, 3))
-    with sns.axes_style({'axes.grid': False}):
-        ax1 = fig.add_subplot(1, 2, 1)
-        plot_2d_prob_density(X, Y, kde_Z, colorbar=False)
-        ax2 = fig.add_subplot(1, 2, 2)
-        plot_2d_prob_density(X, Y, pdf_Z, colorbar=False)
+# def pdf_comparison(X, Y, kde_Z, pdf_Z):
+#     fig = plt.figure(figsize=(6, 3))
+#     with sns.axes_style({'axes.grid': False}):
+#         ax1 = fig.add_subplot(1, 2, 1)
+#         plot_2d_prob_density(X, Y, kde_Z, colorbar=False)
+#         ax2 = fig.add_subplot(1, 2, 2)
+#         plot_2d_prob_density(X, Y, pdf_Z, colorbar=False)
 
 
 def plt_configure(ax=None, xlabel=None, ylabel=None, title='', legend=False, tight=False, figsize=False, no_axis=False, xunit_text=None):
     if ax == None :
         ax=plt.gca()
         plt.suptitle(title)
+        # plt.suptitle(title, fontsize=12)
     else:
         ax.set_title(title)
     if xlabel:
@@ -73,7 +74,8 @@ def plot_2d_prob_density(X, Y, Z, xlabel='', ylabel='', ax=None, colorbar_lim=No
         cb.update_ticks()
 
 
-def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)'):
+def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y'):
+    import seaborn as sns
     from operator import itemgetter
     from .gmm_helper import group_gmm_param_from_gmm_param_array
     if ax is None:
@@ -82,10 +84,8 @@ def plot_gmm_ellipses(gmm, ax=None, xlabel='x', ylabel='y', unit_text=' (knot)')
     if not isinstance(gmm[0], np.ndarray) and not isinstance(gmm[0], list):
         gmm = group_gmm_param_from_gmm_param_array(gmm, sort_group=False)
     gmm = sorted(gmm, key=itemgetter(0),reverse=True)
-    if 'sns' in globals():
-        prop_cycle = iter(sns.color_palette("hls", len(gmm)))
-    else:
-        prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
+    prop_cycle = iter(sns.color_palette("hls", len(gmm)))
+    # prop_cycle = iter(mpl.rcParams['axes.color_cycle'])
     for i, g in enumerate(gmm):
         xy_mean = np.matrix([g[1], g[2]])
         sigx, sigy, sigxy = g[3], g[4], g[5]*g[3]*g[4]
@@ -182,16 +182,16 @@ def nominal_avg_and_weight_avg(df_weight, df_value):
     return np.average(df_value), np.sum(df_weight/df_weight.sum() * df_value)
 
 
-def plot_sectoral_comparison(vals, direction, datasize):
+def plot_sectoral_comparison(vals, direction, datasize, figsize=(4, 3.2)):
     means = []
     line_styles = ['-', '--', '-.']
     for v, line_style in zip(vals, line_styles):
         # Weighted average by datasize at each direction
         _, mean = nominal_avg_and_weight_avg(datasize, v['value'])
         line, = plt.plot(direction, v['value'], line_style, label=v['name'], marker='o')
-        plt.axhline(mean, linestyle=line_style, color=line.get_color(), label=v['name'] + ' weighted average')
+        plt.axhline(mean, linestyle=line_style, color=line.get_color(), label=v['name'] + ' weighted avg')
         means.append(mean)
 
-    plt_configure(xlabel='Direction (degree)', legend={'loc': 'best'}, figsize=(4, 2.5))
+    plt_configure(xlabel='Direction (degree)', legend={'handlelength': 1.8}, figsize=figsize)
     plt.locator_params(axis='y', nbins=5)
     return means

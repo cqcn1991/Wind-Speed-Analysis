@@ -130,7 +130,7 @@ def max_count_for_histogram(data, bin_width):
     return max_count
 
 
-def max_count_for_angles(df, start, end, incre, bin_width):
+def max_count_for_angles(df, start, end, incre, bin_width=1):
     max_count_group = []
     for angle in arange(start, end, incre):
         start_angle, end_angle = angle-incre/2, angle+incre/2
