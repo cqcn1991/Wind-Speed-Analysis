@@ -1,6 +1,16 @@
 from .shared_imports import *
 
 
+def create_gmm_config(bandwidth, fitting_range, fit_limit, bin_width, kde_kernel='gaussian', fit_method='square_error'):
+    config = {'bandwidth': bandwidth,
+              'fitting_range': fitting_range,
+              'fit_limit': fit_limit,
+              'bin_width': bin_width,
+              'kde_kernel': kde_kernel,
+              'fit_method': fit_method}
+    return config
+
+
 def group_gmm_param_from_gmm_param_array(gmm_param_array, sort_group=True):
     from operator import itemgetter
     from .app_helper import chunks
@@ -85,22 +95,59 @@ def GMM_fit_score(gmm, kde_result, points, method='square_error'):
     return result
 
 
-def fit_gmm(df, fit_method, config, number_of_gaussian=3):
+def bandwidth_selection(df, knot_unit, kde_kernel='gaussian'):
+    # The bandwidth value sometimes would be too radical
+    from sklearn.model_selection import GridSearchCV
+    from .plot_print_helper import plt_configure
+    if knot_unit:
+        bandwidth_range = arange(0.7, 2, 0.2)
+    else:
+        bandwidth_range = arange(0.3, 1.2, 0.1)
+
+    # Grid search is unable to deal with too many data (a long time is needed)
+    if len(df) > 50000:
+        df_resample = df.sample(n=40000, replace=True)
+        bandwidth_search_sample = array(list(zip(df_resample.x, df_resample.y)))
+    else:
+        bandwidth_search_sample = array(list(zip(df.x, df.y)))
+
+    grid = GridSearchCV(neighbors.KernelDensity(kernel=kde_kernel),
+                        {'bandwidth': bandwidth_range}, n_jobs=-1, cv=4, return_train_score=False)
+
+    grid.fit(bandwidth_search_sample)
+    bandwidth = grid.best_params_['bandwidth']
+
+    # Create Data Viz
+    fig, ax = plt.subplots()
+    ax.plot(bandwidth_range, grid.cv_results_['mean_test_score'], label='test')
+    ax.fill_between(bandwidth_range,
+                     grid.cv_results_['mean_test_score'] + grid.cv_results_['std_test_score'],
+                     grid.cv_results_['mean_test_score'] - grid.cv_results_['std_test_score'], alpha=0.2)
+    plt_configure(figsize=(4, 3))
+    plt.close()
+
+    return bandwidth, fig
+
+
+def fit_gmm(df, config, x0=None, number_of_gaussian=3):
     # 1. Create Input, speed_set
     sample = array(list(zip(df.x, df.y)))
-    bandwidth, points, kde_kernel = config['bandwidth'], config['fitting_range'], config['kde_kernel']
-    fit_limit = config['fit_limit']
+    bandwidth, points, kde_kernel, fit_limit, fit_method = config['bandwidth'], config['fitting_range'], \
+                                               config['kde_kernel'], config['fit_limit'], config['fit_method']
 
     # 2. KDE + EM fitting
-    kde = neighbors.KernelDensity(bandwidth=bandwidth, kernel = kde_kernel).fit(sample)
+    kde = neighbors.KernelDensity(bandwidth=bandwidth, kernel=kde_kernel).fit(sample)
     kde_result = exp(kde.score_samples(points))
 
-    clf = mixture.GaussianMixture(n_components=number_of_gaussian, covariance_type='full')
-    clf.fit(sample)
-    gmm_em_result = read_gmm_em_result(clf)
+    if not x0:
+        clf = mixture.GaussianMixture(n_components=number_of_gaussian, covariance_type='full')
+        clf.fit(sample)
+        gmm_em_result = read_gmm_em_result(clf)
+        x0 = gmm_em_result
+    else:
+         x0 = x0
 
     # 3. GMM fitting
-    x0 = gmm_em_result
     bonds = [(0., 0.99),(-fit_limit, fit_limit),
              (-fit_limit, fit_limit),(0., fit_limit),(0., fit_limit),(-0.99, 0.99)]*int(len(x0)/6)
     cons = [{'type': 'eq', 'fun': lambda x: sum(x[::6]) - 1},
@@ -122,7 +169,7 @@ def fit_gmm(df, fit_method, config, number_of_gaussian=3):
     gmm_pdf_result = mixed_model_pdf(points)
 
     return {
-        'gmm' : gmm,
+        'gmm': gmm,
         'kde_clf': kde,
         'kde_result': kde_result,
         'gmm_pdf_result': gmm_pdf_result,

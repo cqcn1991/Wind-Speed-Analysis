@@ -8,8 +8,7 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
     sub_df, sub_df_test = df.iloc[train_index], df.iloc[test_index]
 
     # 1. Train
-    result = fit_gmm(sub_df, fit_method=fit_method,
-                     config=config, number_of_gaussian=number_of_gaussian)
+    result = fit_gmm(sub_df, config=config, number_of_gaussian=number_of_gaussian)
     gmm_pdf_result_train = result['gmm_pdf_result']
     kde_result_train = result['kde_result']
 
@@ -24,10 +23,10 @@ def fit_per_fold(df, train_index, test_index, fit_method, number_of_gaussian, co
     return gof_train, gof_test
 
 
-def resampled_fitting(df, fit_method, gaussian_number, config):
+def resampled_fitting(df, gaussian_number, config):
     from .gmm_helper import fit_gmm
     df_resampled = df.sample(frac=1, replace=True)
-    result = fit_gmm(df_resampled, fit_method=fit_method, number_of_gaussian=gaussian_number,
+    result = fit_gmm(df_resampled, number_of_gaussian=gaussian_number,
                      config=config)
     return result
 

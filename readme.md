@@ -150,11 +150,14 @@ Just run these in your command line to install them
 
 ### 3. Download the current repo
 
-### 4. Start Jupyter Notebook, open the `GMM.ipynb`, and start playing with it
+### 4. GMM Fitting 
 
-You may need some datasets to get started. For this reason,  I have include some in
-https://github.com/cqcn1991/Wind-Speed-Analysis/tree/master/data
-If you want additional data, you can find them at http://www.ncdc.noaa.gov/
+- You can start with barebone fitting with `barebone_fitter.ipynb`. It takes data in x, y format and output the GMM params directly. 
+
+- For complete analysis and fitting, use `GMM.ipynb`. It includes data analysis, fitting and validation with many plots.
+
+- Example wind data can be find at https://github.com/cqcn1991/Wind-Speed-Analysis/tree/master/data ,
+For additional data, you can find them at http://www.ncdc.noaa.gov/ or http://ecmwf.int/
 
 If you have any question, you could post it at [issue](https://github.com/cqcn1991/Wind-Speed-Analysis/issues), or mail me at 38306608#qq.com
 
