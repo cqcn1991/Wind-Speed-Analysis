@@ -207,5 +207,19 @@ def fit_weibull_and_ecdf(df_speed, x=None):
     return x, y_weibull, density_expected_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 
+def direction_plot(df, original_incre, incre, BIN_WIDTH):
+    from .plot_print_helper import plt_configure
+    start, end = -original_incre/2 + incre/2, 360
+    max_speed = df.speed.max()
+    max_count = max_count_for_angles(df, start, end, incre, BIN_WIDTH)
+    plot_range = [0, max_speed, 0, max_count*1.05]
 
+    for angle in arange(start, end, incre):
+        start_angle, end_angle = angle-incre/2, angle+incre/2
+        sub_df, sub_max_speed = select_df_by_angle(df, start_angle, end_angle)
+
+        fig = plt.figure()
+        sub_df['speed'].hist(bins=arange(0, max_speed+BIN_WIDTH, BIN_WIDTH), alpha=0.5, label='Data')
+        plt.axis(plot_range)
+        plt_configure(figsize=(3,1.5), title='%s (%s - %s), %s' % (angle, start_angle, end_angle, len(sub_df)) )
 

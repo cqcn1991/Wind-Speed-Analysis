@@ -14,5 +14,6 @@ from matplotlib.pyplot import plot as plot
 from sklearn import mixture, neighbors
 from scipy import integrate
 from statsmodels.distributions.empirical_distribution import ECDF
+from joblib import Parallel, delayed
 
 
