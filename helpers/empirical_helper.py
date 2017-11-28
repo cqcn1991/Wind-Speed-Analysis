@@ -39,10 +39,22 @@ def bivar_empirical_limit(df_all_years, config):
     return gofs_bivar_set, gofs_mean_set_bivar, fig1, fig2
 
 
+def kde_univar_gof(df_standard, df, x):
+    from .app_helper import empirical_marginal_distribution, sector_r_square
+    _, _, density, y_ecdf, density_dir = empirical_marginal_distribution(df_standard, x)
+    _, _, density_expected, y_ecdf_previous, density_dir_expected = empirical_marginal_distribution(df, x)
+
+    # 1. Speed
+    r_square = sector_r_square(density, density_expected)
+    k_s = max(np.abs(y_ecdf - y_ecdf_previous))
+
+    # 2. Direction
+    r_square_dir = sector_r_square(density_dir, density_dir_expected)
+    return {'r_square': r_square, 'k_s': k_s, 'r_square_dir': r_square_dir}
+
+
 def univar_empirical_limit(df, df_all_years):
     from .plot_print_helper import plt_configure
-    from .app_helper import empirical_marginal_distribution
-    from .parallel_helper import univar_gof
     x = arange(0, df.speed.max() + 1)
     fig1, ax1 = plt.subplots(figsize=(2.7,2.4))
     fig2, ax2 = plt.subplots(figsize=(2.7,2.4))
@@ -54,8 +66,7 @@ def univar_empirical_limit(df, df_all_years):
         start_year, end_year =df_all_years.index.year[0], 2015-year_length+1
         # 2. Obtain gofs
         df_standard = df_all_years[str(2015-year_length+1):str(2015)]
-        _, _, density, y_ecdf, density_dir = empirical_marginal_distribution(df_standard, x)
-        gofs = [univar_gof(df_all_years[str(start_year):str(start_year+year_length-1)], density, y_ecdf, x, density_dir)
+        gofs = [kde_univar_gof(df_standard, df_all_years[str(start_year):str(start_year+year_length-1)], x)
                 for start_year in arange(start_year, end_year+1)]
         # 3. Make plot
         if len(gofs)>0:

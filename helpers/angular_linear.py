@@ -1,5 +1,5 @@
 from .shared_imports import *
-
+from lmoments3 import distr
 
 def div0( a, b ):
     """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
@@ -9,10 +9,10 @@ def div0( a, b ):
     return c
 
 
-def angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params, cartesian=False):
+def angular_linear_pdf(x, alpha, kap_params, vonmises_params, connection_params, cartesian=False):
     from scipy.stats import kappa4, vonmises
     # 1. Speed
-    k, h, scale, loc = speed_params
+    k, h, scale, loc = kap_params['k'], kap_params['h'], kap_params['scale'], kap_params['loc']
     x_pdf = kappa4.pdf(x, h, k, loc=loc, scale=scale)
     x_cdf = kappa4.cdf(x, h, k, loc=loc, scale=scale)
     # 2. Direction
@@ -28,15 +28,15 @@ def angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_param
     return pdf
 
 
-def generate_al_pdf_from(speed_params, vonmises_params, connection_params, cartesian=False):
+def generate_al_pdf_from(kap_params, vonmises_params, connection_params, cartesian=False):
     def al_pdf(x, alpha):
-        return angular_linear_pdf(x, alpha, speed_params, vonmises_params, connection_params, cartesian=cartesian)
+        return angular_linear_pdf(x, alpha, kap_params, vonmises_params, connection_params, cartesian=cartesian)
     return al_pdf
 
 
-def phi_from_speed_dir(df_speed, df_dir, speed_params, dir_params):
+def phi_from_speed_dir(df_speed, df_dir, kap_params, dir_params):
     from scipy.stats import kappa4, vonmises
-    k, h, scale, loc = speed_params
+    k, h, scale, loc = kap_params['k'], kap_params['h'], kap_params['scale'], kap_params['loc']
     speed_cdf = kappa4.cdf(df_speed, h, k, loc=loc, scale=scale)
     alpha_cdf = np.sum([vonmises.cdf(df_dir/180*pi, k, loc=u) * w for k, u, w in dir_params], axis=0)
     phi = 2*pi*(speed_cdf - alpha_cdf)%(2*pi)
@@ -61,6 +61,23 @@ def al_integration_in_direction(f, start_radian, end_radian, bins, bin_width):
     # y_cdf = None
     return bins, density_expected, y_cdf, direction_prob
 
+
+def al_univar_gof(df_standard, kap_params, dir_params, x, bin_width):
+    from .app_helper import empirical_marginal_distribution, sector_r_square
+    _, _, density, y_ecdf, density_dir = empirical_marginal_distribution(df_standard, x)
+    bins = x
+    kap = distr.kap(**kap_params)
+    density_expected_kap = kap.cdf(bins[1:]) - kap.cdf(bins[:-1])
+    y_cdf_kappa = kap.cdf(x)
+
+    theta = linspace(0, 2 * pi, num=36 + 1)
+    y_vonmises = von_mises_mixture_pdf(theta, dir_params)
+
+    r_square = sector_r_square(density * bin_width, density_expected_kap)
+    k_s = max(np.abs(y_cdf_kappa - y_ecdf))
+    r_square_dir = sector_r_square(density_dir * 10, (y_vonmises * 2 * pi / 36)[:-1])
+
+    return {'r_square': r_square, 'k_s': k_s, 'r_square_dir': r_square_dir}
 
 def original_cabo_degata_params():
     speed_params = k, h, scale, loc = 0.351, 0.626, 5.095, 2.508

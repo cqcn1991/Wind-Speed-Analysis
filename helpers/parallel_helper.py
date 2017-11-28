@@ -45,8 +45,7 @@ def kde_gofs(df_previous,  kde_result_standard, config):
 
 
 def univar_gof(df_previous, density, y_ecdf, x, density_dir):
-    from .app_helper import empirical_marginal_distribution
-    from helpers.app_helper import sector_r_square
+    from .app_helper import empirical_marginal_distribution, sector_r_square
     _, _, density_expected, y_ecdf_previous, density_dir_expected = empirical_marginal_distribution(df_previous, x)
 
     # 1. Speed
@@ -72,6 +71,15 @@ def sub_df_at_angle(df, angle, incre, bin_width):
     data_size = len(sub_df.speed)
     bins = arange(0, sub_max_speed + bin_width, bin_width)
     return sub_df, bins, start_radian, end_radian, data_size
+
+
+def base_direction_compare(df, angle, incre, bin_width=1):
+    sub_df, bins, start_radian, end_radian, data_size = sub_df_at_angle(df, angle, incre, bin_width)
+    density_, division = np.histogram(sub_df['speed'], bins=bins)
+    density = density_/len(df)
+    curves = {'angle': angle, 'data_size': data_size, 'max_speed': sub_df.speed.max(),
+              'density': density,}
+    return curves
 
 
 def direction_compare(gmm, df, angle, incre, bin_width=1):
@@ -154,7 +162,15 @@ def al_direction(al_params, df, angle, incre, bin_width=1):
     return curves
 
 
-
+def gmm_cv_time(df_all_years, start_year, year_length, x, config, NUMBER_OF_GAUSSIAN):
+    from .gmm_helper import fit_gmm, gmm_univar_gof
+    current_df = df_all_years[str(start_year):str(start_year+year_length-1)]
+    result = fit_gmm(current_df, config=config, number_of_gaussian=NUMBER_OF_GAUSSIAN)
+    train_gof = gmm_univar_gof(current_df, result['gmm'],  x, config['bin_width'])
+    # 2. Validated on later dataset, 2001-2010
+    new_df = df_all_years[str(start_year+year_length):str(start_year+2*year_length-1)]
+    test_gof = gmm_univar_gof(new_df, result['gmm'],  x, config['bin_width'])
+    return train_gof, test_gof
 
 
 

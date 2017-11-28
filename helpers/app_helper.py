@@ -185,13 +185,24 @@ def empirical_marginal_distribution(df, x, degs=arange(-5, 375, 10)):
     return x, degs, density_speed, y_ecdf, density_dir
 
 
+def weibull_univar_gof(df_standard, weibull_params, x, bin_width):
+    _, y_weibull, density_expected_weibull, y_cdf_weibull = fit_weibull(None, x, weibull_params)
+    _, _, density, y_ecdf, density_dir = empirical_marginal_distribution(df_standard, x)
+    r_square_weibull = sector_r_square(density * bin_width, density_expected_weibull)
+    k_s_weibull = max(np.abs(y_ecdf - y_cdf_weibull))
+    return {'r_square': r_square_weibull, 'k_s': k_s_weibull, 'r_square_dir': 0}
+
+
 def fit_weibull(df_speed, x, weibull_params=None):
     from scipy.stats import weibull_min
     if not weibull_params:
-        k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, loc=0)
+        k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, floc=0)
+    else:
+        k_shape, _, lamb_scale = weibull_params
     y_weibull = weibull_min.pdf(x, *weibull_params)
     density_expected_weibull = weibull_min.cdf(x[1:], *weibull_params) - weibull_min.cdf(x[:-1], *weibull_params)
-    y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
+    # y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
+    y_cdf_weibull = weibull_min.cdf(x, *weibull_params)
     return weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull
 
 

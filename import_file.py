@@ -13,8 +13,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 sns.set()
 sns.set_style('whitegrid')
-# set_matplotlib_formats('png', 'svg')
 set_matplotlib_formats('png', 'pdf')
+# set_matplotlib_formats('png','svg','pdf')
 
 
 # Module Imports

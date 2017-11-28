@@ -140,7 +140,9 @@ https://www.continuum.io/downloads
 
 This repo use Python 3, so you should use the 3 as well.
 
-### 2. Additional Environment Configuration
+### 2. Download the code
+
+### 3. Additional Environment Configuration
 
 After installing Anaconda, there are still some additional packages you need to install:
 
@@ -148,13 +150,11 @@ Just run these in your command line to install them
 
     pip install -r requirements.txt
 
-### 3. Download the current repo
-
 ### 4. GMM Fitting 
 
 - You can start with barebone fitting with `barebone_fitter.ipynb`. It takes data in x, y format and output the GMM params directly. 
 
-- For complete analysis and fitting, use `GMM.ipynb`. It includes data analysis, fitting and validation with many plots.
+- For complete analysis and fitting for GMM, use `GMM.ipynb`. It includes data analysis, fitting and validation with many plots.
 
 - Example wind data can be find at https://github.com/cqcn1991/Wind-Speed-Analysis/tree/master/data ,
 For additional data, you can find them at http://www.ncdc.noaa.gov/ or http://ecmwf.int/
