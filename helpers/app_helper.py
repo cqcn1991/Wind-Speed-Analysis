@@ -193,15 +193,18 @@ def weibull_univar_gof(df_standard, weibull_params, x, bin_width):
     return {'r_square': r_square_weibull, 'k_s': k_s_weibull, 'r_square_dir': 0}
 
 
-def fit_weibull(df_speed, x, weibull_params=None):
+def fit_weibull(df_speed, x, weibull_params=None, floc=True):
     from scipy.stats import weibull_min
     if not weibull_params:
-        k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, floc=0)
+        if floc:
+            # sometimes need to set as loc=0
+            k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed, floc=0)
+        else:
+            k_shape, _, lamb_scale = weibull_params = weibull_min.fit(df_speed)
     else:
         k_shape, _, lamb_scale = weibull_params
     y_weibull = weibull_min.pdf(x, *weibull_params)
     density_expected_weibull = weibull_min.cdf(x[1:], *weibull_params) - weibull_min.cdf(x[:-1], *weibull_params)
-    # y_cdf_weibull = 1 - exp(-(x / lamb_scale) ** k_shape)
     y_cdf_weibull = weibull_min.cdf(x, *weibull_params)
     return weibull_params, y_weibull, density_expected_weibull, y_cdf_weibull
 
@@ -218,7 +221,7 @@ def fit_weibull_and_ecdf(df_speed, x=None):
     return x, y_weibull, density_expected_weibull, y_cdf_weibull, weibull_params, y_ecdf
 
 
-def direction_plot(df, original_incre, incre, BIN_WIDTH):
+def direction_plot(df, original_incre, incre, BIN_WIDTH, speed_unit_text):
     from .plot_print_helper import plt_configure
     start, end = -original_incre/2 + incre/2, 360
     max_speed = df.speed.max()
@@ -232,5 +235,6 @@ def direction_plot(df, original_incre, incre, BIN_WIDTH):
         fig = plt.figure()
         sub_df['speed'].hist(bins=arange(0, max_speed+BIN_WIDTH, BIN_WIDTH), alpha=0.5, label='Data')
         plt.axis(plot_range)
-        plt_configure(figsize=(3,1.5), title='%s (%s - %s), %s' % (angle, start_angle, end_angle, len(sub_df)) )
+        plt_configure(figsize=(3,1.5), title='Dir %s - %s, n: %s' % (int(start_angle), int(end_angle), len(sub_df)),
+                      xlabel='Speed'+speed_unit_text, ylabel='Frequency')
 

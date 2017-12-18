@@ -173,6 +173,14 @@ The program now uses some R packages to fit von Mises mixture model. You can eit
 
     - For Windows, see [https://stackoverflow.com/questions/14882477/rpy2-install-on-windows-7](https://stackoverflow.com/questions/14882477/rpy2-install-on-windows-7)
 
+### 6. Jupyter Extention config (Optional)
+
+Install extentions from https://github.com/ipython-contrib/jupyter_contrib_nbextensions
+
+    pip install jupyter_contrib_nbextensions
+    jupyter contrib nbextension install --user --skip-running-check
+    jupyter nbextension enable toc2/main
+
 ## Acknowledgement
 
 This work would be impossible without the help from Cook and Harris. Thank you!

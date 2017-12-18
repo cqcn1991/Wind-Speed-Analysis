@@ -63,7 +63,7 @@ def save_notebook():
 
 def load_libs():
     display(toggle_cell())
-    display(sidebar())
+    # display(sidebar())
 
 
 def test_libs():
