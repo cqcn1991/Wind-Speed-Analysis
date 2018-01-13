@@ -89,6 +89,9 @@ def fit_gmm(df, config, x0=None, number_of_gaussian=3):
         clf = mixture.GaussianMixture(n_components=number_of_gaussian, covariance_type='full')
         clf.fit(sample)
         x0 = gmm_em_result = read_gmm_em_result(clf)
+        # x0 = [0.3333, 1, 1, 1, 1, 0.5,
+        #  0.3333, 1, 1, 1, 1, 0.5,
+        #  0.3333, 1, 1, 1, 1, 0.5]
 
     # 3. GMM fitting
     # 3. 使用优化算法求解GMM
